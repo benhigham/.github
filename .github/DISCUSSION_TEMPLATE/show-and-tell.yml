@@ -1,0 +1,35 @@
+title: "[Show and Tell] "
+labels: showcase
+
+body:
+  - type: textarea
+    id: overview
+    attributes:
+      label: Project Overview
+      description: Provide a brief description of what you've built or accomplished
+    validations:
+      required: true
+
+  - type: textarea
+    id: assets
+    attributes:
+      label: Assets
+      description: Share any relevant screenshots, videos, or links that showcase your work
+    validations:
+      required: true
+
+  - type: textarea
+    id: technologies
+    attributes:
+      label: Technologies Used
+      description: List the technologies, tools, or processes you used in your project
+    validations:
+      required: true
+
+  - type: textarea
+    id: challenges
+    attributes:
+      label: Challenges Faced
+      description: Describe any challenges you encountered during the project and how you overcame them
+    validations:
+      required: true

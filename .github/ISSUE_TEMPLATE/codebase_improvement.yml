@@ -1,0 +1,84 @@
+name: 🛠️ Codebase Improvement
+description: Suggest an improvement to the codebase (refactoring, optimization, etc.)
+title: "refactor: "
+labels: ["enhancement"]
+assignees: ["benhigham"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement to our codebase 🙌
+        Please make sure there aren't any existing issues for this improvement 🙏
+
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Provide a clear and concise summary of the improvement
+      placeholder: e.g., "Refactor authentication module"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-state
+    attributes:
+      label: Current State
+      description: Describe the current state of the code that needs improvement
+    validations:
+      required: true
+
+  - type: textarea
+    id: improvement-description
+    attributes:
+      label: Proposed Improvement
+      description: Describe what changes you'd like to make and how they would improve the codebase
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: What are the benefits of this improvement? (e.g., better performance, cleaner code, better maintainability)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Estimated Effort
+      description: How much effort do you think this improvement would require?
+      options:
+        - Small (few hours)
+        - Medium (few days)
+        - Large (1-2 weeks)
+        - X-Large (more than 2 weeks)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      description: What's the impact of making this improvement?
+      options:
+        - Critical (blocking other work/causing major issues)
+        - High (significantly improves functionality/maintainability)
+        - Medium (moderate improvement to system)
+        - Low (minor enhancement)
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-approach
+    attributes:
+      label: Implementation Approach
+      description: If you have ideas about how to implement this improvement, please share them
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: Provide any additional context, code examples, links to resources, or other information that might be helpful

@@ -1,6 +1,6 @@
-name: 🐛 Bug report
-description: File a bug report here
-title: "[BUG]: "
+name: 🐞 Bug Report
+description: File a bug report to help us improve
+title: "fix: "
 labels: ["bug"]
 assignees: ["benhigham"]
 body:
@@ -8,26 +8,102 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report ❤️
-        Please make sure there aren't any open/closed issues for this topic 🙏
+        Please make sure there aren't any existing issues for this bug 🙏
+
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Provide a clear and concise summary of the bug
+      placeholder: e.g., "App crashes when uploading large images"
+    validations:
+      required: true
 
   - type: textarea
-    id: bug-description
+    id: description
     attributes:
-      label: Description of the bug
-      description: Give us a brief description of what happened and what should have happened
+      label: Description
+      description: |
+        Describe in detail what's happening, the context in which the bug occurs, and any troubleshooting steps you've already taken.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
     validations:
       required: true
 
   - type: textarea
     id: steps-to-reproduce
     attributes:
-      label: Steps To Reproduce
+      label: Steps to Reproduce
       description: Steps to reproduce the behavior.
       placeholder: |
+        Example:
         1. Go to '...'
         2. Click on '...'
         3. Scroll down to '...'
         4. See error
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of our software were you using?
+      placeholder: e.g., v1.2.3, main branch as of 2023-03-15
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Where is this bug occurring?
+      options:
+        - Production
+        - Development
+        - Testing
+        - Local
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequency
+      description: How often does this bug occur?
+      options:
+        - Always
+        - Frequently
+        - Sometimes
+        - Rarely
+        - Once
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: How severe is this bug?
+      options:
+        - Critical (complete blockers, data loss)
+        - Major (significant impact to functionality)
+        - Minor (inconvenient but workable)
+        - Trivial (cosmetic issues)
     validations:
       required: true
 
@@ -36,4 +112,4 @@ body:
     attributes:
       label: Additional Information
       description: |
-        Provide any additional information such as logs, screenshots, likes, scenarios in which the bug occurs so that it facilitates resolving the issue.
+        Provide any additional context, logs, screenshots, links, scenarios, or other information that might be helpful

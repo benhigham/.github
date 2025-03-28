@@ -1,5 +1,5 @@
 name: Setup Node.js environment
-description: This workflow sets up a Node.js environment with pnpm and installs dependencies (with caching).
+description: Setup a Node.js environment with pnpm and install dependencies (with caching).
 
 on:
   workflow_call:

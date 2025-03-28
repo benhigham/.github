@@ -1,24 +1,26 @@
-<!--
-Thanks for creating this pull request 🤗
+## Description
+<!-- Describe the changes in this PR -->
 
-Please make sure that the pull request is limited to one type (docs, feature, etc.) and keep it as small as possible. You can open multiple PRs instead of opening a huge one.
--->
+## Related Issue
+<!-- Link to the related issue -->
 
-<!-- If this pull request closes an issue, please mention the issue number below -->
-Closes # <!-- Issue # here -->
+## Type of Change
+<!-- Mark the appropriate option with an [x] -->
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Documentation update
+- [ ] Refactoring
+- [ ] Dependency update
+- [ ] Performance improvement
+- [ ] Other (please describe):
 
-## 📑 Description
-<!-- Add a brief description of the PR -->
+## Testing
+<!-- Describe the testing done -->
 
-<!-- You can also choose to add a list of changes and if they have been completed or not by using the Markdown to-do list syntax
-- [ ] Not Completed
-- [x] Completed
--->
+## Checklist
 
-## ✅ Checks
-<!-- Make sure your PR passes the CI checks and check the following fields as needed: -->
-- [ ] My pull request adheres to the code style of this project
-- [ ] I have updated the documentation where required
-
-## ℹ Additional Information
-<!-- Any additional information like breaking changes, dependencies added, screenshots, comparisons between new and old behavior, etc. -->
+- [ ] My code follows the project's style guidelines
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have updated the documentation accordingly
+- [ ] My changes generate no new warnings

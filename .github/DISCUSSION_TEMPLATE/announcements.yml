@@ -1,0 +1,35 @@
+title: "[Announcement] "
+labels: announcement, news
+
+body:
+  - type: textarea
+    id: announcement
+    attributes:
+      label: Announcement
+      description: Provide details about your announcement
+    validations:
+      required: true
+
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Timeline
+      description: Share when this announcement takes effect or any important dates
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Explain who will be affected by this announcement and how it might change current workflows, processes, or experiences
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: Additional Information
+      description: Provide any additional context, resources, or documentation related to this announcement
+    validations:
+      required: false

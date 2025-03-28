@@ -1,0 +1,26 @@
+title: "[Discussion] "
+
+body:
+  - type: textarea
+    id: topic
+    attributes:
+      label: Topic
+      description: Introduce the topic you'd like to discuss
+    validations:
+      required: true
+
+  - type: textarea
+    id: thoughts
+    attributes:
+      label: Your Thoughts
+      description: Share your thoughts, ideas, or questions related to the topic
+    validations:
+      required: true
+
+  - type: textarea
+    id: discussion-points
+    attributes:
+      label: Discussion Points
+      description: List any specific points or questions you'd like to discuss
+    validations:
+      required: true
