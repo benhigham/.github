@@ -31,8 +31,6 @@ on:
         default: "chore(release): create new release"
         required: false
     secrets:
-      GITHUB_TOKEN:
-        required: true
       NPM_TOKEN:
         required: true
 
