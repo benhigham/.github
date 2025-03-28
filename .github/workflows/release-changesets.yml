@@ -1,0 +1,61 @@
+name: Release changesets
+description: |
+  This workflow creates a new release using `changesets`. It will:
+  - Bump the version of the packages based on the changesets
+  - Create a pull request for the new version to be released
+  - Publish the packages to npm
+  If your repository requires a build step, you should do that before, or as part of, this workflow.
+  Use the `publish-command` input to specify the command to run, e.g. `pnpm run build && pnpm run release`.
+
+on:
+  workflow_call:
+    inputs:
+      version-command:
+        description: "The command to update version, edit CHANGELOG, read and delete changesets"
+        type: string
+        default: pnpm run version
+        required: false
+      publish-command:
+        description: "The command to build and publish packages"
+        type: string
+        default: pnpm run release
+        required: false
+      commit-message:
+        description: "Commit message for the version bump"
+        type: string
+        default: "chore(release): update package versions"
+        required: false
+      pr-title:
+        description: "Title of the pull request"
+        type: string
+        default: "chore(release): create new release"
+        required: false
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+      NPM_TOKEN:
+        required: true
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions: {}
+
+jobs:
+  release:
+    name: Create release
+    permissions:
+      contents: write # to create the release (changesets/action)
+      issues: write # to post issue comments (changesets/action)
+      pull-requests: write # to create the pull request (changesets/action)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create and publish a new release
+        uses: changesets/action@v1
+        with:
+          version: ${{ inputs.version-command }}
+          publish: ${{ inputs.publish-command }}
+          commit: ${{ inputs.commit-message }}
+          title: ${{ inputs.pr-title }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

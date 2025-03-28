@@ -1,0 +1,46 @@
+name: Setup Node.js environment
+description: This workflow sets up a Node.js environment with pnpm and installs dependencies (with caching).
+
+on:
+  workflow_call:
+    inputs:
+      fetch-depth:
+        description: "The number of commits to fetch from the repository. 0 indicates all history for all branches and tags. The default is 1."
+        type: number
+        required: false
+      node-version:
+        description: "The version of Node.js to use, e.g. 18.x, ^20.10.0, >=21.0.0. If not specified, the version will be read from package.json."
+        type: string
+        required: false
+      pnpm-version:
+        description: "The version of pnpm to use, e.g. 8, 10.7.0, latest. If not specified, the version will be read from package.json."
+        type: string
+        required: false
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  setup:
+    name: Setup environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.fetch-depth }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ inputs.pnpm-version }}
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          node-version-file: package.json
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install

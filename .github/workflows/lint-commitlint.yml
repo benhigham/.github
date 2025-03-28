@@ -1,0 +1,24 @@
+name: Lint commit messages
+description: |
+  This workflow lints commit messages using `commitlint`. It will:
+  - Lint all commit messages in a push
+  - Lint all commit messages in a pull request
+  Requires the calling workflow to checkout the repository with fetch-depth 0.
+  This is to ensure that all commit messages are available for linting.
+
+on: workflow_call
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  commitlint:
+    name: Lint commit messages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate pushed commits
+        if: github.event_name == 'push'
+        run: pnpm exec commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
+
+      - name: Validate PR commits
+        if: github.event_name == 'pull_request'
+        run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
