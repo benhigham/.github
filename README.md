@@ -7,12 +7,16 @@ Repository containing my default community health files that apply to all public
 This repository contains the following community health files:
 
 - [x] CODE_OF_CONDUCT.md - Guidelines for community behavior
+- [x] CODEOWNERS - Defines ownership of repository code
 - [x] CONTRIBUTING.md - How to contribute to my projects
+- [x] DISCUSSION_TEMPLATE/ - Templates for discussions
+- [x] FUNDING.yml - How to fund my projects
 - [x] GOVERNANCE.md - Project governance structure and processes
 - [x] ISSUE_TEMPLATE/ - Templates for filing issues
-- [x] PULL_REQUEST_TEMPLATE.md - Template for pull requests
+- [x] PULL_REQUEST_TEMPLATE/ - Templates for pull requests
 - [x] SECURITY.md - How to report security vulnerabilities
 - [x] SUPPORT.md - Where to get help
+- [x] workflows/ - GitHub Actions workflows
 
 ## How It Works
 
