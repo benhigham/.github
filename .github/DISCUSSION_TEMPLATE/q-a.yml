@@ -19,8 +19,9 @@ body:
       required: false
 
   - type: textarea
-    attibutes:
-      label: What Have You Tried?
+    id: investigation
+    attributes:
+      label: Investigation Steps
       description: Describe any steps you've taken to find a solution or any resources you've consulted
     validations:
       required: true
