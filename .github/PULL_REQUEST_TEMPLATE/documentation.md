@@ -5,6 +5,9 @@ title: "docs: "
 labels: documentation
 ---
 
+## Related Issue
+<!-- Link to the related issue -->
+
 ## Documentation Changes
 <!-- Describe what documentation was changed and why -->
 

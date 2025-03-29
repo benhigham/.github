@@ -5,6 +5,9 @@ title: "feat: "
 labels: enhancement
 ---
 
+## Related Issue
+<!-- Link to the related issue -->
+
 ## Feature Description
 <!-- Describe the new feature -->
 

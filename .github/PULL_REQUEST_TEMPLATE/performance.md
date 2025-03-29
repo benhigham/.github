@@ -5,6 +5,9 @@ title: "perf: "
 labels: performance
 ---
 
+## Related Issue
+<!-- Link to the related issue -->
+
 ## Performance Issue
 <!-- Describe the performance issue addressed -->
 

@@ -1,6 +1,6 @@
 name: 🛠️ Codebase Improvement
 description: Suggest an improvement to the codebase (refactoring, optimization, etc.)
-title: "refactor: "
+title: "[Enhancement] "
 labels: ["enhancement"]
 assignees: ["benhigham"]
 body:

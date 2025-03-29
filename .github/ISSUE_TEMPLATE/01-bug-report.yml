@@ -1,13 +1,13 @@
 name: 🐞 Bug Report
-description: File a bug report to help us improve
-title: "fix: "
-labels: ["bug"]
+description: File a bug report.
+title: "[Bug] "
+labels: ["bug", "triage"]
 assignees: ["benhigham"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report ❤️
+        Thanks for taking the time to fill out this bug report! ❤️
         Please make sure there aren't any existing issues for this bug 🙏
 
   - type: input

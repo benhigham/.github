@@ -5,6 +5,9 @@ title: "build(deps): "
 labels: dependencies
 ---
 
+## Related Issue
+<!-- Link to the related issue -->
+
 ## Dependencies Updated
 <!-- List the dependencies that were updated with old and new versions -->
 - [ ] Package Name: `old-version` → `new-version`

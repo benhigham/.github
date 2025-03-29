@@ -5,6 +5,9 @@ title: "fix: "
 labels: bug
 ---
 
+## Related Issue
+<!-- Link to the related issue -->
+
 ## Bug Description
 <!-- Describe the bug that was fixed -->
 
