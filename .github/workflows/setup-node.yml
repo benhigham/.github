@@ -16,13 +16,24 @@ on:
         description: "The version of pnpm to use, e.g. 8, 10.7.0, latest. If not specified, the version will be read from package.json."
         type: string
         required: false
+    outputs:
+      cache-hit:
+        description: "Whether the dependencies were restored from cache"
+        value: ${{ jobs.setup.outputs.cache-hit }}
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+  group: setup-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: { contents: read }
 
 jobs:
   setup:
     name: Setup environment
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      cache-hit: ${{ steps.setup-node.outputs.cache-hit }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,11 +47,14 @@ jobs:
           run_install: false
 
       - name: Setup Node.js
+        id: setup-node
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
           node-version-file: package.json
           cache: pnpm
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+        timeout-minutes: 5

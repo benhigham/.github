@@ -11,41 +11,59 @@ on:
   workflow_call:
     inputs:
       version-command:
-        description: "The command to update version, edit CHANGELOG, read and delete changesets"
+        description: The command to update version, edit CHANGELOG, read and delete changesets
         type: string
         default: pnpm run version
         required: false
       publish-command:
-        description: "The command to build and publish packages"
+        description: The command to build and publish packages
         type: string
         default: pnpm run release
         required: false
       commit-message:
-        description: "Commit message for the version bump"
+        description: Commit message for the version bump
         type: string
         default: "chore(release): update package versions"
         required: false
       pr-title:
-        description: "Title of the pull request"
+        description: Title of the pull request
         type: string
         default: "chore(release): create new release"
+        required: false
+      release-branch:
+        description: Branch where releases should be performed from
+        type: string
+        default: "main"
         required: false
     secrets:
       NPM_TOKEN:
         required: true
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
-permissions: {}
+permissions: { contents: read }
 
 jobs:
+  check-branch:
+    name: Check branch
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref_name == inputs.release-branch
+    steps:
+      - run: echo "Running on ${{ inputs.release-branch }} branch"
+
   release:
     name: Create release
+    needs: check-branch
     permissions:
+      attestations: write # to create attestations (changesets/action)
       contents: write # to create the release (changesets/action)
+      id-token: write # for npm provenance verification (changesets/action)
       issues: write # to post issue comments (changesets/action)
       pull-requests: write # to create the pull request (changesets/action)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Create and publish a new release
         uses: changesets/action@v1
@@ -57,3 +75,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
