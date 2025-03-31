@@ -1,0 +1,50 @@
+name: Setup Node.js environment with pnpm
+description: This action sets up a Node.js environment with pnpm and caches the pnpm store.
+
+inputs:
+  node-version:
+    description: |
+      The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 18.x, ^20.10.0, >=21)
+      If not specified, the version will be read from package.json.
+    required: false
+  pnpm-version:
+    description: |
+      The version of pnpm to use (supports the Semantic Versioning Specification, e.g. 8, 10.7.0, latest)
+      If not specified, the version will be read from package.json.
+    required: false
+  fetch-depth:
+    description: 'The depth of the git history to fetch, 0 represents the full history. Default is 1 (latest commit).'
+    required: false
+    default: '1'
+
+outputs:
+  cache-hit:
+    description: 'Whether the pnpm store was restored from cache.'
+    value: ${{ steps.setup-node.outputs.cache-hit }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: ${{ inputs.fetch-depth }}
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: ${{ inputs.pnpm-version }}
+        run_install: false
+
+    - name: Setup Node.js
+      id: setup-node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        node-version-file: package.json
+        cache: pnpm
+        cache-dependency-path: '**/pnpm-lock.yaml'
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash

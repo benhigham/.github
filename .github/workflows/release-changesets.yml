@@ -4,31 +4,50 @@ description: |
   - Bump the version of the packages based on the changesets
   - Create a pull request for the new version to be released
   - Publish the packages to npm
-  If your repository requires a build step, you should do that before, or as part of, this workflow.
-  Use the `publish-command` input to specify the command to run, e.g. `pnpm run build && pnpm run release`.
+  If your repository requires a build step:
+  - Use the `needs-build` input to specify whether to run the build step before publishing (uses `pnpm run build`)
+  - Use the `publish-command` input to specify the command to run, e.g. `pnpm run build && pnpm run release`
+  - Use the `release` script in package.json to specify the command to run, e.g. `pnpm run build && changeset publish`
 
 on:
   workflow_call:
     inputs:
+      node-version:
+        description: |
+          The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 18.x, ^20.10.0, >=21)
+          If not specified, the version will be read from package.json.
+        type: string
+        required: false
+      pnpm-version:
+        description: |
+          The version of pnpm to use (supports the Semantic Versioning Specification, e.g. 8, 10.7.0, latest)
+          If not specified, the version will be read from package.json.
+        type: string
+        required: false
+      needs-build:
+        description: Whether to run the build step before publishing
+        type: boolean
+        default: false
+        required: false
       version-command:
         description: The command to update version, edit CHANGELOG, read and delete changesets
         type: string
         default: pnpm run version
         required: false
       publish-command:
-        description: The command to build and publish packages
+        description: The command to publish packages
         type: string
         default: pnpm run release
         required: false
       commit-message:
         description: Commit message for the version bump
         type: string
-        default: "chore(release): bump package versions"
+        default: 'chore(release): bump package versions'
         required: false
       pr-title:
         description: Title of the pull request
         type: string
-        default: "chore(release): create new release"
+        default: 'chore(release): create new release'
         required: false
     secrets:
       NPM_TOKEN:
@@ -51,7 +70,22 @@ jobs:
       pull-requests: write # to create the pull request (changesets/action)
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    outputs:
+      cache-hit: ${{ steps.setup-node-pnpm.outputs.cache-hit }}
     steps:
+      - name: Setup Node.js and pnpm
+        id: setup-node-pnpm
+        uses: ./.github/actions/setup-node-pnpm
+        with:
+          node-version: ${{ inputs.node-version }}
+          pnpm-version: ${{ inputs.pnpm-version }}
+        timeout-minutes: 5
+
+      - name: Build packages
+        if: inputs.needs-build
+        run: pnpm run build
+        timeout-minutes: 5
+
       - name: Create and publish a new release
         uses: changesets/action@v1
         with:
