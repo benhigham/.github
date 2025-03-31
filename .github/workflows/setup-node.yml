@@ -25,11 +25,12 @@ concurrency:
   group: setup-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions: { contents: read }
+permissions: {}
 
 jobs:
   setup:
     name: Setup environment
+    permissions: { contents: read }
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:

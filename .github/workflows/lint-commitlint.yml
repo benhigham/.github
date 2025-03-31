@@ -8,36 +8,23 @@ description: |
 
 on:
   workflow_call:
-    inputs:
-      working-directory:
-        description: "Directory containing commitlint config"
-        type: string
-        default: "."
-        required: false
 
 concurrency:
   group: commitlint-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions: { contents: read }
+permissions: {}
 
 jobs:
   commitlint:
     name: Lint commit messages
+    permissions: { contents: read }
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    defaults:
-      run:
-        working-directory: ${{ inputs.working-directory }}
     steps:
       - name: Validate pushed commits
         if: github.event_name == 'push'
-        run: |
-          if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
-            echo "This is the first push to the repository, skipping commitlint"
-            exit 0
-          fi
-          pnpm exec commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
+        run: pnpm exec commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
 
       - name: Validate PR commits
         if: github.event_name == 'pull_request'

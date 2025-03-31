@@ -23,17 +23,12 @@ on:
       commit-message:
         description: Commit message for the version bump
         type: string
-        default: "chore(release): update package versions"
+        default: "chore(release): bump package versions"
         required: false
       pr-title:
         description: Title of the pull request
         type: string
         default: "chore(release): create new release"
-        required: false
-      release-branch:
-        description: Branch where releases should be performed from
-        type: string
-        default: "main"
         required: false
     secrets:
       NPM_TOKEN:
@@ -43,19 +38,11 @@ concurrency:
   group: release-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
-permissions: { contents: read }
+permissions: {}
 
 jobs:
-  check-branch:
-    name: Check branch
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref_name == inputs.release-branch
-    steps:
-      - run: echo "Running on ${{ inputs.release-branch }} branch"
-
   release:
     name: Create release
-    needs: check-branch
     permissions:
       attestations: write # to create attestations (changesets/action)
       contents: write # to create the release (changesets/action)
