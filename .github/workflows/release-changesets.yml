@@ -71,17 +71,28 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
-      cache-hit: ${{ steps.setup-node-pnpm.outputs.cache-hit }}
+      cache-hit: ${{ steps.setup-node.outputs.cache-hit }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js and pnpm
-        id: setup-node-pnpm
-        uses: ./.github/actions/setup-node-pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ inputs.pnpm-version }}
+          run_install: false
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          pnpm-version: ${{ inputs.pnpm-version }}
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
         timeout-minutes: 5
 
       - name: Build packages
