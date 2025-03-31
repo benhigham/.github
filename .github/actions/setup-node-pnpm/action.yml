@@ -1,5 +1,5 @@
 name: Setup Node.js environment with pnpm
-description: This action sets up a Node.js environment with pnpm and caches the pnpm store.
+description: This action sets up a Node.js environment with pnpm and caches the pnpm store
 
 inputs:
   node-version:
@@ -13,13 +13,15 @@ inputs:
       If not specified, the version will be read from package.json.
     required: false
   fetch-depth:
-    description: 'The depth of the git history to fetch, 0 represents the full history. Default is 1 (latest commit).'
+    description: |
+      The depth of the git history to fetch, 0 represents the full history
+      Default is 1 (latest commit)
     required: false
     default: '1'
 
 outputs:
   cache-hit:
-    description: 'Whether the pnpm store was restored from cache.'
+    description: Whether the pnpm store was restored from cache
     value: ${{ steps.setup-node.outputs.cache-hit }}
 
 runs:
