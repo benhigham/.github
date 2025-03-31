@@ -12,12 +12,6 @@ inputs:
       The version of pnpm to use (supports the Semantic Versioning Specification, e.g. 8, 10.7.0, latest)
       If not specified, the version will be read from package.json.
     required: false
-  fetch-depth:
-    description: |
-      The depth of the git history to fetch, 0 represents the full history
-      Default is 1 (latest commit)
-    required: false
-    default: '1'
 
 outputs:
   cache-hit:
@@ -27,11 +21,6 @@ outputs:
 runs:
   using: 'composite'
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: ${{ inputs.fetch-depth }}
-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
