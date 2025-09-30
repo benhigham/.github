@@ -69,6 +69,31 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What type of improvement is this?
+      options:
+        - Refactoring
+        - Performance
+        - Security
+        - Testing
+        - Documentation
+        - Code Quality
+        - Architecture
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks & Considerations
+      description: What are potential risks or breaking changes associated with this improvement?
+    validations:
+      required: false
+
   - type: textarea
     id: implementation-approach
     attributes:
@@ -82,3 +107,17 @@ body:
     attributes:
       label: Additional Information
       description: Provide any additional context, code examples, links to resources, or other information that might be helpful
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched for existing improvement suggestions before creating this one
+          required: true
+        - label: This improvement aligns with the project's goals and architecture
+          required: true
+        - label: I am willing to contribute to implementing this improvement if guided
+          required: false

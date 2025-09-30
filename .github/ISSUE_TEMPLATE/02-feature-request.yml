@@ -85,9 +85,29 @@ body:
       required: false
 
   - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups/Examples
+      description: If applicable, provide mockups, wireframes, or examples from other applications
+    validations:
+      required: false
+
+  - type: textarea
     id: additional-information
     attributes:
       label: Additional Information
       description: Provide any additional context, proposed solutions, links, screenshots, etc.
     validations:
       required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched for existing feature requests before creating this one
+          required: true
+        - label: This feature would benefit multiple users, not just myself
+          required: true
+        - label: I am willing to contribute to implementing this feature if guided
+          required: false

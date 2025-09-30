@@ -1,0 +1,80 @@
+name: Auto-merge Dependabot PRs
+
+on:
+  workflow_call:
+    inputs:
+      enable-auto-merge:
+        description: Whether to enable auto-merge for Dependabot PRs
+        type: boolean
+        default: true
+        required: false
+      merge-method:
+        description: The merge method to use (merge, squash, rebase)
+        type: string
+        default: squash
+        required: false
+      auto-merge-patch:
+        description: Auto-merge patch version updates
+        type: boolean
+        default: true
+        required: false
+      auto-merge-minor:
+        description: Auto-merge minor version updates
+        type: boolean
+        default: true
+        required: false
+      auto-merge-major:
+        description: Auto-merge major version updates
+        type: boolean
+        default: false
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: Auto-merge Dependabot PR
+    if: github.actor == 'dependabot[bot]' && inputs.enable-auto-merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Get Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Approve Dependabot PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge for patch updates
+        if: |
+          inputs.auto-merge-patch &&
+          steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge for minor updates
+        if: |
+          inputs.auto-merge-minor &&
+          steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge for major updates
+        if: |
+          inputs.auto-merge-major &&
+          steps.metadata.outputs.update-type == 'version-update:semver-major'
+        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

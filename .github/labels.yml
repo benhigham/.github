@@ -1,0 +1,158 @@
+# Standard label configuration for all repositories
+# This file defines consistent labels across all projects
+
+# Type labels
+- name: 'bug'
+  color: 'd73a4a'
+  description: "Something isn't working"
+
+- name: 'enhancement'
+  color: 'a2eeef'
+  description: 'New feature or request'
+
+- name: 'documentation'
+  color: '0075ca'
+  description: 'Improvements or additions to documentation'
+
+- name: 'refactoring'
+  color: 'fbca04'
+  description: 'Code refactoring without changing functionality'
+
+- name: 'performance'
+  color: 'ff6b6b'
+  description: 'Performance improvements'
+
+- name: 'testing'
+  color: '1d76db'
+  description: 'Adding or updating tests'
+
+# Priority labels
+- name: 'priority: critical'
+  color: 'b60205'
+  description: 'Critical priority - needs immediate attention'
+
+- name: 'priority: high'
+  color: 'd93f0b'
+  description: 'High priority'
+
+- name: 'priority: medium'
+  color: 'fbca04'
+  description: 'Medium priority'
+
+- name: 'priority: low'
+  color: '0e8a16'
+  description: 'Low priority'
+
+# Status labels
+- name: 'status: blocked'
+  color: 'd73a4a'
+  description: 'Blocked by another issue or external dependency'
+
+- name: 'status: in progress'
+  color: 'fbca04'
+  description: 'Currently being worked on'
+
+- name: 'status: needs review'
+  color: '0e8a16'
+  description: 'Needs code review'
+
+- name: 'status: needs testing'
+  color: '1d76db'
+  description: 'Needs testing before merge'
+
+- name: 'status: ready'
+  color: '0e8a16'
+  description: 'Ready to be worked on'
+
+# Triage labels
+- name: 'triage'
+  color: 'ededed'
+  description: 'Needs triage and investigation'
+
+- name: 'duplicate'
+  color: 'cfd3d7'
+  description: 'This issue or pull request already exists'
+
+- name: 'invalid'
+  color: 'e4e669'
+  description: "This doesn't seem right"
+
+- name: 'wontfix'
+  color: 'ffffff'
+  description: 'This will not be worked on'
+
+- name: 'good first issue'
+  color: '7057ff'
+  description: 'Good for newcomers'
+
+- name: 'help wanted'
+  color: '008672'
+  description: 'Extra attention is needed'
+
+# Dependency labels
+- name: 'dependencies'
+  color: '0366d6'
+  description: 'Pull requests that update a dependency file'
+
+- name: 'npm'
+  color: 'e99695'
+  description: 'npm dependency updates'
+
+- name: 'github-actions'
+  color: '000000'
+  description: 'GitHub Actions workflow updates'
+
+# Area labels
+- name: 'area: ci/cd'
+  color: 'f9d0c4'
+  description: 'Related to CI/CD pipelines'
+
+- name: 'area: security'
+  color: 'ee0701'
+  description: 'Related to security'
+
+- name: 'area: api'
+  color: 'c5def5'
+  description: 'Related to API'
+
+- name: 'area: ui'
+  color: 'bfdadc'
+  description: 'Related to user interface'
+
+# Size labels (for PRs)
+- name: 'size: xs'
+  color: '3cbf00'
+  description: 'Extra small PR (1-10 lines)'
+
+- name: 'size: s'
+  color: '5d9801'
+  description: 'Small PR (11-50 lines)'
+
+- name: 'size: m'
+  color: '7f7203'
+  description: 'Medium PR (51-200 lines)'
+
+- name: 'size: l'
+  color: 'a14c05'
+  description: 'Large PR (201-500 lines)'
+
+- name: 'size: xl'
+  color: 'c32607'
+  description: 'Extra large PR (501-1000 lines)'
+
+- name: 'size: xxl'
+  color: 'e50009'
+  description: 'Huge PR (1000+ lines)'
+
+# Special labels
+- name: 'breaking change'
+  color: 'd73a4a'
+  description: 'Introduces breaking changes'
+
+- name: 'backport'
+  color: 'c5def5'
+  description: 'Should be backported to a previous version'
+
+- name: 'chore'
+  color: 'fef2c0'
+  description: 'Maintenance tasks'

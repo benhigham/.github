@@ -1,8 +1,8 @@
 name: 🐞 Bug Report
 description: File a bug report.
-title: "[Bug] "
-labels: ["bug", "triage"]
-assignees: ["benhigham"]
+title: '[Bug] '
+labels: ['bug', 'triage']
+assignees: ['benhigham']
 body:
   - type: markdown
     attributes:
@@ -108,8 +108,53 @@ body:
       required: true
 
   - type: textarea
+    id: system-info
+    attributes:
+      label: System Information
+      description: |
+        Please provide relevant system information (OS, browser, Node.js version, etc.)
+      placeholder: |
+        - OS: macOS 14.0
+        - Browser: Chrome 120.0
+        - Node.js: v20.10.0
+        - npm/pnpm: pnpm 8.15.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: If applicable, provide error logs or stack traces
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain the problem
+    validations:
+      required: false
+
+  - type: textarea
     id: additional-information
     attributes:
       label: Additional Information
       description: |
-        Provide any additional context, logs, screenshots, links, scenarios, or other information that might be helpful
+        Provide any additional context, links, scenarios, or other information that might be helpful
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched for existing issues before creating this one
+          required: true
+        - label: I have provided all the information requested above
+          required: true
+        - label: I am willing to help fix this bug if guided
+          required: false
