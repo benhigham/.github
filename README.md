@@ -58,7 +58,18 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **DEVELOPMENT.md** - Template for development setup and guidelines
 - [x] **RELEASING.md** - Template for release process documentation
 - [x] **CHANGELOG.md** - Changelog following Keep a Changelog format
-- [x] **LABELS.md** - Comprehensive guide to all standard labels
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the [GitHub Wiki](https://github.com/benhigham/.github/wiki):
+
+- **[Getting Started](https://github.com/benhigham/.github/wiki/Getting-Started)** - 5-minute quickstart guide
+- **[Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference)** - Copy-paste examples for all workflows
+- **[Advanced Usage](https://github.com/benhigham/.github/wiki/Advanced-Usage)** - Matrix testing, complex patterns, and custom configurations
+- **[Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting)** - Common issues and solutions
+- **[Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference)** - Complete guide to all 42 standard labels
+- **[Templates Guide](https://github.com/benhigham/.github/wiki/Templates-Guide)** - How to use ARCHITECTURE.md, DEVELOPMENT.md, RELEASING.md
+- **[Governance](https://github.com/benhigham/.github/wiki/Governance)** - Project structure and decision-making
 
 ## How It Works
 

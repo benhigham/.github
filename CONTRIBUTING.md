@@ -4,6 +4,14 @@ When contributing to this repository, please first discuss the change you wish t
 
 Note: we have a [Code of Conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
 
+## 📚 Documentation
+
+For comprehensive guides on using the workflows and templates, see the [GitHub Wiki](https://github.com/benhigham/.github/wiki):
+
+- [Getting Started](https://github.com/benhigham/.github/wiki/Getting-Started) - 5-minute setup guide
+- [Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference) - All workflow syntax
+- [Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting) - Common issues and solutions
+
 ## Development Environment Setup
 
 This repository contains templates, workflows, and configurations. No traditional "installation" is needed, but here's how to work with it:

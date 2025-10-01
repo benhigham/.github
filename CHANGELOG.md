@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Documentation migrated to GitHub Wiki** - All user guides now available in the wiki for better organization and navigation
+  - [Getting Started](https://github.com/benhigham/.github/wiki/Getting-Started) - 5-minute quickstart guide
+  - [Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference) - All workflow syntax
+  - [Advanced Usage](https://github.com/benhigham/.github/wiki/Advanced-Usage) - Complex patterns and configurations
+  - [Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting) - Common issues and solutions
+  - [Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference) - Complete label guide
+  - [Templates Guide](https://github.com/benhigham/.github/wiki/Templates-Guide) - Template usage documentation
+  - [Governance](https://github.com/benhigham/.github/wiki/Governance) - Project governance
+
 ### Added
 
 - PR Title Check workflow for enforcing conventional commit format in pull request titles
