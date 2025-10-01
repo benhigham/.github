@@ -33,7 +33,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open',
-                labels: 'security,branch-protection',
+                labels: labels,
                 per_page: 10
               });
 
