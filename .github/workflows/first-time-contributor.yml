@@ -20,13 +20,44 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Greet on first PR
-        if: github.event_name == 'pull_request_target'
-        uses: actions/first-interaction@v1
+      - name: Greet first-time contributors
+        uses: actions/github-script@v7
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pr-message: |
-            👋 Thanks for opening your first pull request! We're excited to have you contribute.
+          script: |
+            const issue_number = context.issue.number;
+            const is_pr = context.eventName === 'pull_request_target';
+            const is_issue = context.eventName === 'issues';
+
+            // Get the author
+            const author = context.payload.sender.login;
+
+            // Check if this is the author's first contribution
+            const { data: contributions } = is_pr
+              ? await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  commit_sha: context.payload.pull_request.head.sha,
+                })
+              : await github.rest.issues.listForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  creator: author,
+                  state: 'all',
+                });
+
+            // Count previous contributions by this author
+            const previousContributions = contributions.filter(item => {
+              if (is_pr) {
+                return item.number !== issue_number;
+              } else {
+                return item.number !== issue_number && !item.pull_request;
+              }
+            });
+
+            // Only greet if this is their first contribution
+            if (previousContributions.length === 0) {
+              const message = is_pr
+                ? `👋 Thanks for opening your first pull request! We're excited to have you contribute.
 
             A maintainer will review your PR soon. In the meantime, please make sure:
             - [ ] Your code follows the project's style guidelines
@@ -34,19 +65,24 @@ jobs:
             - [ ] You've updated documentation if needed
             - [ ] All CI checks pass
 
-            Feel free to ask questions if you need any help! 🚀
-
-      - name: Greet on first issue
-        if: github.event_name == 'issues'
-        uses: actions/first-interaction@v1
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue-message: |
-            👋 Thanks for opening your first issue! We appreciate you taking the time to report this.
+            Feel free to ask questions if you need any help! 🚀`
+                : `👋 Thanks for opening your first issue! We appreciate you taking the time to report this.
 
             A maintainer will review your issue and respond as soon as possible. To help us address this quickly, please make sure you've provided:
             - A clear description of the issue
             - Steps to reproduce (if applicable)
             - Any relevant context or screenshots
 
-            Thanks for contributing to the project! 🙏
+            Thanks for contributing to the project! 🙏`;
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue_number,
+                body: message
+              });
+
+              console.log(`Greeted first-time contributor: ${author}`);
+            } else {
+              console.log(`Not a first-time contributor: ${author} (${previousContributions.length} previous contributions)`);
+            }
