@@ -1,3 +1,5 @@
+# Validates branch protection settings weekly and creates issues if configuration problems are found.
+# Checks for required settings like PR reviews, status checks, and other security configurations.
 name: Branch Protection Check
 
 on:
