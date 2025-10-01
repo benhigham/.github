@@ -80,26 +80,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ inputs.pnpm-version }}
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js with pnpm
+        uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
           node-version: ${{ inputs.node-version }}
-          node-version-file: package.json
-          cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        timeout-minutes: 5
+          pnpm-version: ${{ inputs.pnpm-version }}
 
       - name: Run linting
         run: ${{ inputs.lint-command }}
@@ -110,26 +95,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ inputs.pnpm-version }}
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js with pnpm
+        uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
           node-version: ${{ inputs.node-version }}
-          node-version-file: package.json
-          cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        timeout-minutes: 5
+          pnpm-version: ${{ inputs.pnpm-version }}
 
       - name: Run type checking
         run: ${{ inputs.typecheck-command }}
@@ -140,26 +110,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ inputs.pnpm-version }}
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js with pnpm
+        uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
           node-version: ${{ inputs.node-version }}
-          node-version-file: package.json
-          cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        timeout-minutes: 5
+          pnpm-version: ${{ inputs.pnpm-version }}
 
       - name: Run tests
         run: ${{ inputs.test-command }}
@@ -178,26 +133,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ inputs.pnpm-version }}
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js with pnpm
+        uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
           node-version: ${{ inputs.node-version }}
-          node-version-file: package.json
-          cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        timeout-minutes: 5
+          pnpm-version: ${{ inputs.pnpm-version }}
 
       - name: Build
         run: ${{ inputs.build-command }}

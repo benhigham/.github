@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- First-time contributor greeter workflow for welcoming new contributors
+- Label sync workflow for automated label management from configuration file
+- LABELS.md documentation with comprehensive label definitions and usage guidelines
+- Five new dependency labels for comprehensive Dependabot coverage:
+  - `docker` - Docker/container dependency updates
+  - `terraform` - Terraform dependency updates
+  - `devcontainers` - Development container dependency updates
+  - `git-submodules` - Git submodule updates
+  - `go` - Go module dependency updates
+
+### Changed
+
+- Enhanced Dependabot configuration with five additional package ecosystems:
+  - Docker image updates monitoring
+  - Terraform dependency tracking
+  - Development container dependency updates
+  - Git submodule update monitoring
+  - Go module dependency management
+- Updated QUICK_REFERENCE.md with new workflows and enhanced documentation
+- Updated README.md with documentation for new workflows and features
+- Refactored all workflows to use the custom `setup-node-pnpm` action, eliminating 100+ lines of code duplication:
+  - CI workflow (ci.yml) - All 4 jobs now use the custom action
+  - Release workflow (release-changesets.yml) - Uses custom action with proper output handling
+- Added timeout constraints to all workflows for better resource management:
+  - sync-labels.yml - 5 minute timeout
+  - first-time-contributor.yml - 5 minute timeout
+- Updated label documentation (LABELS.md and README.md) to reflect 42 total labels (increased from 37)
+
 ## [2.0.0] - 2024-09-30
 
 ### Added

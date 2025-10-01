@@ -110,6 +110,11 @@ These labels indicate **dependency-related** changes.
 | `dependencies` | ![#0366d6](https://via.placeholder.com/15/0366d6/000000?text=+) `#0366d6` | Pull requests that update a dependency file | Any dependency updates |
 | `npm` | ![#e99695](https://via.placeholder.com/15/e99695/000000?text=+) `#e99695` | npm dependency updates | Specifically for npm package updates |
 | `github-actions` | ![#000000](https://via.placeholder.com/15/000000/000000?text=+) `#000000` | GitHub Actions workflow updates | Updates to GitHub Actions versions |
+| `docker` | ![#0db7ed](https://via.placeholder.com/15/0db7ed/000000?text=+) `#0db7ed` | Docker/container dependency updates | Updates to Docker images or container dependencies |
+| `terraform` | ![#844fba](https://via.placeholder.com/15/844fba/000000?text=+) `#844fba` | Terraform dependency updates | Updates to Terraform providers or modules |
+| `devcontainers` | ![#2496ed](https://via.placeholder.com/15/2496ed/000000?text=+) `#2496ed` | Development container dependency updates | Updates to devcontainer features or images |
+| `git-submodules` | ![#fbca04](https://via.placeholder.com/15/fbca04/000000?text=+) `#fbca04` | Git submodule updates | Updates to Git submodule references |
+| `go` | ![#00add8](https://via.placeholder.com/15/00add8/000000?text=+) `#00add8` | Go module dependency updates | Updates to Go module dependencies |
 
 ---
 

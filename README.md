@@ -136,14 +136,14 @@ This repository includes a comprehensive label system with automatic syncing cap
 
 ### Available Labels
 
-The repository includes **37 standardized labels** organized into categories:
+The repository includes **42 standardized labels** organized into categories:
 
 - **Type Labels**: `bug`, `enhancement`, `documentation`, `refactoring`, `performance`, `testing`
 - **Priority Labels**: `priority: critical`, `priority: high`, `priority: medium`, `priority: low`
 - **Status Labels**: `status: blocked`, `status: in progress`, `status: needs review`, `status: needs testing`, `status: ready`
 - **Size Labels**: `size: xs`, `size: s`, `size: m`, `size: l`, `size: xl`, `size: xxl` (auto-assigned)
 - **Area Labels**: `area: ci/cd`, `area: security`, `area: api`, `area: ui`
-- **Dependency Labels**: `dependencies`, `npm`, `github-actions`
+- **Dependency Labels**: `dependencies`, `npm`, `github-actions`, `docker`, `terraform`, `devcontainers`, `git-submodules`, `go`
 - **Special Labels**: `breaking change`, `backport`, `chore`
 - **Triage Labels**: `triage`, `duplicate`, `invalid`, `wontfix`, `good first issue`, `help wanted`
 

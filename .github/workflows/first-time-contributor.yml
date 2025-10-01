@@ -14,6 +14,7 @@ jobs:
   greeting:
     name: Greet First-Time Contributors
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Greet on first PR
         if: github.event_name == 'pull_request_target'

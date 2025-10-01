@@ -102,6 +102,26 @@
   color: '000000'
   description: 'GitHub Actions workflow updates'
 
+- name: 'docker'
+  color: '0db7ed'
+  description: 'Docker/container dependency updates'
+
+- name: 'terraform'
+  color: '844fba'
+  description: 'Terraform dependency updates'
+
+- name: 'devcontainers'
+  color: '2496ed'
+  description: 'Development container dependency updates'
+
+- name: 'git-submodules'
+  color: 'fbca04'
+  description: 'Git submodule updates'
+
+- name: 'go'
+  color: '00add8'
+  description: 'Go module dependency updates'
+
 # Area labels
 - name: 'area: ci/cd'
   color: 'f9d0c4'
