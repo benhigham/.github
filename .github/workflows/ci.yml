@@ -126,6 +126,7 @@ jobs:
       - name: Setup Node.js with pnpm
         uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
+          # Use matrix.node-version if set and not 'default', otherwise use inputs.node-version
           node-version: ${{ matrix.node-version != 'default' && matrix.node-version || inputs.node-version }}
           pnpm-version: ${{ inputs.pnpm-version }}
 
