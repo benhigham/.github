@@ -169,6 +169,14 @@
   color: 'd73a4a'
   description: 'Introduces breaking changes'
 
+- name: 'security'
+  color: 'ee0701'
+  description: 'Security-related issues or improvements'
+
+- name: 'branch-protection'
+  color: 'ee0701'
+  description: 'Related to branch protection configuration'
+
 - name: 'backport'
   color: 'c5def5'
   description: 'Should be backported to a previous version'

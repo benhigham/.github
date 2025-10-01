@@ -1,0 +1,50 @@
+# Automatically reviews dependencies for security vulnerabilities in pull requests.
+# Configurable severity thresholds, license checking, and PR comment settings.
+name: Dependency Review
+
+on:
+  workflow_call:
+    inputs:
+      fail-on-severity:
+        description: 'Minimum severity to fail the check (low, moderate, high, critical)'
+        type: string
+        default: 'moderate'
+        required: false
+      comment-summary-in-pr:
+        description: 'Whether to comment summary in PR (always, on-failure, never)'
+        type: string
+        default: 'always'
+        required: false
+      allow-licenses:
+        description: 'Comma-separated list of allowed licenses'
+        type: string
+        required: false
+      deny-licenses:
+        description: 'Comma-separated list of denied licenses'
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: dependency-review-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-review:
+    name: Review Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: ${{ inputs.fail-on-severity }}
+          comment-summary-in-pr: ${{ inputs.comment-summary-in-pr }}
+          allow-licenses: ${{ inputs.allow-licenses }}
+          deny-licenses: ${{ inputs.deny-licenses }}

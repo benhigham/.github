@@ -7,8 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- **Documentation migrated to GitHub Wiki** - All user guides now available in the wiki for better organization and navigation
+  - [Getting Started](https://github.com/benhigham/.github/wiki/Getting-Started) - 5-minute quickstart guide
+  - [Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference) - All workflow syntax
+  - [Advanced Usage](https://github.com/benhigham/.github/wiki/Advanced-Usage) - Complex patterns and configurations
+  - [Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting) - Common issues and solutions
+  - [Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference) - Complete label guide
+  - [Templates Guide](https://github.com/benhigham/.github/wiki/Templates-Guide) - Template usage documentation
+  - [Governance](https://github.com/benhigham/.github/wiki/Governance) - Project governance
+
 ### Added
 
+- PR Title Check workflow for enforcing conventional commit format in pull request titles
+- Comprehensive workflow decision tree in README.md for choosing appropriate workflows by project type
+- Troubleshooting guide in QUICK_REFERENCE.md with solutions for common CI, release, and workflow issues
+- Missing labels to labels.yml:
+  - `security` - Security-related issues or improvements
+  - `branch-protection` - Related to branch protection configuration
+- Workflow descriptions as comments to all reusable workflows for better discoverability
+- Duplicate issue detection in branch-protection-check.yml to prevent issue spam
+- Dependency Review workflow with configurable inputs (fail-on-severity, license checking)
+- Branch Protection Checker workflow to validate branch protection settings weekly
+- Node.js version matrix testing support in CI workflow (test across multiple Node versions)
 - First-time contributor greeter workflow for welcoming new contributors
 - Label sync workflow for automated label management from configuration file
 - LABELS.md documentation with comprehensive label definitions and usage guidelines
@@ -21,27 +43,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Enhanced Dependabot configuration with five additional package ecosystems:
-  - Docker image updates monitoring
-  - Terraform dependency tracking
-  - Development container dependency updates
-  - Git submodule update monitoring
-  - Go module dependency management
-- Updated QUICK_REFERENCE.md with new workflows and enhanced documentation
-- Updated README.md with documentation for new workflows and features
-- Refactored all workflows to use the custom `setup-node-pnpm` action, eliminating 100+ lines of code duplication:
-  - CI workflow (ci.yml) - All 4 jobs now use the custom action
-  - Release workflow (release-changesets.yml) - Uses custom action with proper output handling
-- Added timeout constraints to all workflows for better resource management:
-  - sync-labels.yml - 5 minute timeout
-  - first-time-contributor.yml - 5 minute timeout
-- Updated label documentation (LABELS.md and README.md) to reflect 42 total labels (increased from 37)
-- Added concurrency groups to 5 workflows to prevent overlapping runs and optimize CI resource usage:
-  - auto-merge-dependabot.yml
-  - stale.yml
-  - labeler.yml
-  - sync-labels.yml
-  - first-time-contributor.yml
+- Converted dependency-review.yml from standalone to reusable workflow with configurable security thresholds
+- Consolidated auto-merge workflow steps from 3 duplicate steps into 1 with composite conditional (DRY principle)
+- Optimized first-time contributor API calls by adding per_page limit to reduce API consumption
+- Enhanced branch-protection-check.yml to update existing issues instead of creating duplicates
+- Replaced deprecated `actions/first-interaction@v1` with `actions/github-script@v7` in first-time contributor workflow
+- Enhanced CI workflow with optional Node.js version matrix testing capability
+- Enhanced Dependabot configuration with five additional package ecosystems
+- Updated QUICK_REFERENCE.md with new workflows, enhanced documentation, and troubleshooting guide
+- Updated README.md with workflow decision tree, new workflows, and usage guidelines
+- Refactored all workflows to use the custom `setup-node-pnpm` action
+- Added timeout constraints to all workflows for better resource management
+- Updated label documentation to reflect 44 total labels (increased from 42)
+- Added concurrency groups to workflows for optimal resource usage
+
+### Removed
+
+- Release Drafter workflow and configuration (conflicts with Changesets approach)
+  - Deleted `.github/workflows/release-drafter.yml`
+  - Deleted `.github/release-drafter.yml`
+  - Removed references from README.md and QUICK_REFERENCE.md
+
+### Fixed
+
+- Branch protection checker now prevents duplicate issue creation
+- Auto-merge workflow no longer has code duplication
+- First-time contributor workflow now uses fewer API calls
+- Dependency review workflow now reusable with proper configuration options
 - Completed CONTRIBUTING.md with comprehensive development setup, testing, and validation guidance
 
 ## [2.0.0] - 2024-09-30

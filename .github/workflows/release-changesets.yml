@@ -1,13 +1,7 @@
+# Automated release workflow using Changesets for version management and npm publishing.
+# Supports optional build steps, NPM provenance, and automatic changelog generation.
+# Creates version bump PRs and publishes packages when merged.
 name: Release changesets
-description: |
-  This workflow creates a new release using `changesets`. It will:
-  - Bump the version of the packages based on the changesets
-  - Create a pull request for the new version to be released
-  - Publish the packages to npm
-  If your repository requires a build step:
-  - Use the `needs-build` input to specify whether to run the build step before publishing (uses `pnpm run build`)
-  - Use the `publish-command` input to specify the command to run, e.g. `pnpm run build && pnpm run release`
-  - Use the `release` script in package.json to specify the command to run, e.g. `pnpm run build && changeset publish`
 
 on:
   workflow_call:

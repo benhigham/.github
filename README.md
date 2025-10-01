@@ -29,7 +29,7 @@ This repository contains comprehensive community health files and reusable workf
 
 ### 🤖 Reusable Workflows
 
-- [x] **CI Workflow** (`ci.yml`) - Comprehensive testing and linting
+- [x] **CI Workflow** (`ci.yml`) - Comprehensive testing and linting with optional matrix testing
 - [x] **Release Workflow** (`release-changesets.yml`) - Automated releases with Changesets
 - [x] **Auto-merge Dependabot** (`auto-merge-dependabot.yml`) - Automatically merge dependency updates
 - [x] **Stale Management** (`stale.yml`) - Auto-close inactive issues and PRs
@@ -37,6 +37,9 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **Sync Labels** (`sync-labels.yml`) - Automatically sync labels when labels.yml changes
 - [x] **First-Time Contributor** (`first-time-contributor.yml`) - Welcome new contributors
 - [x] **CodeQL Security** (`codeql.yml`) - Security scanning and analysis
+- [x] **Dependency Review** (`dependency-review.yml`) - Automated dependency security review in PRs
+- [x] **PR Title Check** (`pr-title-check.yml`) - Enforce conventional commit format in PR titles
+- [x] **Branch Protection Check** (`branch-protection-check.yml`) - Validate branch protection settings
 
 ### 🏷️ Configuration Files
 
@@ -55,13 +58,95 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **DEVELOPMENT.md** - Template for development setup and guidelines
 - [x] **RELEASING.md** - Template for release process documentation
 - [x] **CHANGELOG.md** - Changelog following Keep a Changelog format
-- [x] **LABELS.md** - Comprehensive guide to all standard labels
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the [GitHub Wiki](https://github.com/benhigham/.github/wiki):
+
+- **[Getting Started](https://github.com/benhigham/.github/wiki/Getting-Started)** - 5-minute quickstart guide
+- **[Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference)** - Copy-paste examples for all workflows
+- **[Advanced Usage](https://github.com/benhigham/.github/wiki/Advanced-Usage)** - Matrix testing, complex patterns, and custom configurations
+- **[Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting)** - Common issues and solutions
+- **[Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference)** - Complete guide to all 42 standard labels
+- **[Templates Guide](https://github.com/benhigham/.github/wiki/Templates-Guide)** - How to use ARCHITECTURE.md, DEVELOPMENT.md, RELEASING.md
+- **[Governance](https://github.com/benhigham/.github/wiki/Governance)** - Project structure and decision-making
 
 ## How It Works
 
 GitHub will use these default files for any public repository under my account that doesn't have its own specific version of these files.
 
 [Learn more about GitHub's community health files](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file).
+
+## Choosing the Right Workflows
+
+### For Library/Package Projects (with npm publishing)
+
+**Required:**
+
+- ✅ `ci.yml` - Test and validate your code
+- ✅ `release-changesets.yml` - Automated releases with changelogs
+- ✅ `dependency-review.yml` - Security checks for dependencies
+
+**Recommended:**
+
+- ✅ `auto-merge-dependabot.yml` - Auto-merge safe dependency updates
+- ✅ `codeql.yml` - Security code scanning
+- ✅ `labeler.yml` - Auto-label PRs for better organization
+- ✅ `pr-title-check.yml` - Enforce conventional commits
+- ✅ `stale.yml` - Close inactive issues/PRs
+
+**Optional:**
+
+- ⚪ `first-time-contributor.yml` - Welcome new contributors
+- ⚪ `branch-protection-check.yml` - Validate branch protection settings
+
+### For Application Projects (no npm publishing)
+
+**Required:**
+
+- ✅ `ci.yml` - Test and validate your code
+- ✅ `dependency-review.yml` - Security checks for dependencies
+
+**Recommended:**
+
+- ✅ `auto-merge-dependabot.yml` - Auto-merge safe dependency updates
+- ✅ `codeql.yml` - Security code scanning
+- ✅ `labeler.yml` - Auto-label PRs for better organization
+- ✅ `stale.yml` - Close inactive issues/PRs
+
+**Optional:**
+
+- ⚪ `pr-title-check.yml` - Enforce commit standards (if you care about git history)
+- ⚪ `first-time-contributor.yml` - Welcome new contributors
+- ⚪ `branch-protection-check.yml` - Validate branch protection settings
+
+### For Documentation-Only Projects
+
+**Required:**
+
+- ✅ `labeler.yml` - Auto-label documentation PRs
+
+**Recommended:**
+
+- ✅ `stale.yml` - Close inactive issues/PRs
+- ✅ `first-time-contributor.yml` - Welcome contributors
+
+**Optional:**
+
+- ⚪ `ci.yml` - If you want to lint markdown/run checks
+- ⚪ `auto-merge-dependabot.yml` - If using dependencies
+
+### Quick Selection Guide
+
+| Project Type | CI | Release | Security | Auto-merge | Labels | CodeQL | Stale |
+|--------------|:--:|:-------:|:--------:|:----------:|:------:|:------:|:-----:|
+| **npm Package** | ✅ | ✅ changesets | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Web App** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Library (no publish)** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Docs Site** | ⚪ | ⚪ | ⚪ | ⚪ | ✅ | ⚪ | ✅ |
+| **Small Tool** | ✅ | ⚪ | ⚪ | ✅ | ⚪ | ⚪ | ⚪ |
+
+**Legend:** ✅ Recommended | ⚪ Optional
 
 ## Using Reusable Workflows
 
