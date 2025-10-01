@@ -77,12 +77,12 @@ These labels categorize the **type** of work being done.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `bug` | `#d73a4a` ![](https://via.placeholder.com/100x20/d73a4a/d73a4a.png) | Something isn't working | Use for issues reporting bugs or PRs fixing bugs |
-| `enhancement` | `#a2eeef` ![](https://via.placeholder.com/100x20/a2eeef/a2eeef.png) | New feature or request | Use for feature requests or PRs adding new features |
-| `documentation` | `#0075ca` ![](https://via.placeholder.com/100x20/0075ca/0075ca.png) | Improvements or additions to documentation | Use for documentation updates, fixes, or additions |
-| `refactoring` | `#fbca04` ![](https://via.placeholder.com/100x20/fbca04/fbca04.png) | Code refactoring without changing functionality | Use when restructuring code without changing behavior |
-| `performance` | `#ff6b6b` ![](https://via.placeholder.com/100x20/ff6b6b/ff6b6b.png) | Performance improvements | Use for optimizations and performance enhancements |
-| `testing` | `#1d76db` ![](https://via.placeholder.com/100x20/1d76db/1d76db.png) | Adding or updating tests | Use when adding new tests or improving test coverage |
+| `bug` | ![#d73a4a](https://img.shields.io/badge/-d73a4a-d73a4a?style=flat-square) | Something isn't working | Use for issues reporting bugs or PRs fixing bugs |
+| `enhancement` | ![#a2eeef](https://img.shields.io/badge/-a2eeef-a2eeef?style=flat-square) | New feature or request | Use for feature requests or PRs adding new features |
+| `documentation` | ![#0075ca](https://img.shields.io/badge/-0075ca-0075ca?style=flat-square) | Improvements or additions to documentation | Use for documentation updates, fixes, or additions |
+| `refactoring` | ![#fbca04](https://img.shields.io/badge/-fbca04-fbca04?style=flat-square) | Code refactoring without changing functionality | Use when restructuring code without changing behavior |
+| `performance` | ![#ff6b6b](https://img.shields.io/badge/-ff6b6b-ff6b6b?style=flat-square) | Performance improvements | Use for optimizations and performance enhancements |
+| `testing` | ![#1d76db](https://img.shields.io/badge/-1d76db-1d76db?style=flat-square) | Adding or updating tests | Use when adding new tests or improving test coverage |
 
 ---
 
@@ -92,10 +92,10 @@ These labels indicate the **urgency** or **importance** of an issue or PR.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `priority: critical` | `#b60205` ![](https://via.placeholder.com/100x20/b60205/b60205.png) | Critical priority - needs immediate attention | Production issues, security vulnerabilities, complete blockers |
-| `priority: high` | `#d93f0b` ![](https://via.placeholder.com/100x20/d93f0b/d93f0b.png) | High priority | Important features, significant bugs affecting many users |
-| `priority: medium` | `#fbca04` ![](https://via.placeholder.com/100x20/fbca04/fbca04.png) | Medium priority | Standard features and bug fixes |
-| `priority: low` | `#0e8a16` ![](https://via.placeholder.com/100x20/0e8a16/0e8a16.png) | Low priority | Nice-to-have features, minor improvements |
+| `priority: critical` | `#b60205` ![](https://img.shields.io/badge/-b60205-b60205?style=flat-square) | Critical priority - needs immediate attention | Production issues, security vulnerabilities, complete blockers |
+| `priority: high` | `#d93f0b` ![](https://img.shields.io/badge/-d93f0b-d93f0b?style=flat-square) | High priority | Important features, significant bugs affecting many users |
+| `priority: medium` | `#fbca04` ![](https://img.shields.io/badge/-fbca04-fbca04?style=flat-square) | Medium priority | Standard features and bug fixes |
+| `priority: low` | `#0e8a16` ![](https://img.shields.io/badge/-0e8a16-0e8a16?style=flat-square) | Low priority | Nice-to-have features, minor improvements |
 
 ---
 
@@ -105,11 +105,11 @@ These labels track the **current state** of an issue or PR.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `status: blocked` | `#d73a4a` ![](https://via.placeholder.com/100x20/d73a4a/d73a4a.png) | Blocked by another issue or external dependency | Cannot proceed until blocker is resolved |
-| `status: in progress` | `#fbca04` ![](https://via.placeholder.com/100x20/fbca04/fbca04.png) | Currently being worked on | Someone is actively working on this |
-| `status: needs review` | `#0e8a16` ![](https://via.placeholder.com/100x20/0e8a16/0e8a16.png) | Needs code review | PR is ready for review |
-| `status: needs testing` | `#1d76db` ![](https://via.placeholder.com/100x20/1d76db/1d76db.png) | Needs testing before merge | Code is written but needs QA/testing |
-| `status: ready` | `#0e8a16` ![](https://via.placeholder.com/100x20/0e8a16/0e8a16.png) | Ready to be worked on | Issue is well-defined and ready for implementation |
+| `status: blocked` | `#d73a4a` ![](https://img.shields.io/badge/-d73a4a-d73a4a?style=flat-square) | Blocked by another issue or external dependency | Cannot proceed until blocker is resolved |
+| `status: in progress` | `#fbca04` ![](https://img.shields.io/badge/-fbca04-fbca04?style=flat-square) | Currently being worked on | Someone is actively working on this |
+| `status: needs review` | `#0e8a16` ![](https://img.shields.io/badge/-0e8a16-0e8a16?style=flat-square) | Needs code review | PR is ready for review |
+| `status: needs testing` | `#1d76db` ![](https://img.shields.io/badge/-1d76db-1d76db?style=flat-square) | Needs testing before merge | Code is written but needs QA/testing |
+| `status: ready` | `#0e8a16` ![](https://img.shields.io/badge/-0e8a16-0e8a16?style=flat-square) | Ready to be worked on | Issue is well-defined and ready for implementation |
 
 ---
 
@@ -119,12 +119,12 @@ These labels indicate the **size/complexity** of a PR based on lines changed. Th
 
 | Label | Color | Lines Changed | Description |
 |-------|-------|---------------|-------------|
-| `size: xs` | `#3cbf00` ![](https://via.placeholder.com/100x20/3cbf00/3cbf00.png) | 1-10 | Trivial changes, typo fixes |
-| `size: s` | `#5d9801` ![](https://via.placeholder.com/100x20/5d9801/5d9801.png) | 11-50 | Small changes, minor bug fixes |
-| `size: m` | `#7f7203` ![](https://via.placeholder.com/100x20/7f7203/7f7203.png) | 51-200 | Medium-sized feature or refactor |
-| `size: l` | `#a14c05` ![](https://via.placeholder.com/100x20/a14c05/a14c05.png) | 201-500 | Large feature or significant refactor |
-| `size: xl` | `#c32607` ![](https://via.placeholder.com/100x20/c32607/c32607.png) | 501-1000 | Very large changes |
-| `size: xxl` | `#e50009` ![](https://via.placeholder.com/100x20/e50009/e50009.png) | 1000+ | Extremely large - consider splitting |
+| `size: xs` | `#3cbf00` ![](https://img.shields.io/badge/-3cbf00-3cbf00?style=flat-square) | 1-10 | Trivial changes, typo fixes |
+| `size: s` | `#5d9801` ![](https://img.shields.io/badge/-5d9801-5d9801?style=flat-square) | 11-50 | Small changes, minor bug fixes |
+| `size: m` | `#7f7203` ![](https://img.shields.io/badge/-7f7203-7f7203?style=flat-square) | 51-200 | Medium-sized feature or refactor |
+| `size: l` | `#a14c05` ![](https://img.shields.io/badge/-a14c05-a14c05?style=flat-square) | 201-500 | Large feature or significant refactor |
+| `size: xl` | `#c32607` ![](https://img.shields.io/badge/-c32607-c32607?style=flat-square) | 501-1000 | Very large changes |
+| `size: xxl` | `#e50009` ![](https://img.shields.io/badge/-e50009-e50009?style=flat-square) | 1000+ | Extremely large - consider splitting |
 
 **Note:** PRs labeled `size: xl` or `size: xxl` should ideally be broken down into smaller, more reviewable chunks.
 
@@ -136,10 +136,10 @@ These labels categorize which **part of the codebase** is affected.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `area: ci/cd` | `#f9d0c4` ![](https://via.placeholder.com/100x20/f9d0c4/f9d0c4.png) | Related to CI/CD pipelines | Changes to GitHub Actions, build processes, deployment |
-| `area: security` | `#ee0701` ![](https://via.placeholder.com/100x20/ee0701/ee0701.png) | Related to security | Security fixes, vulnerability patches, security features |
-| `area: api` | `#c5def5` ![](https://via.placeholder.com/100x20/c5def5/c5def5.png) | Related to API | API endpoints, API documentation, API contracts |
-| `area: ui` | `#bfdadc` ![](https://via.placeholder.com/100x20/bfdadc/bfdadc.png) | Related to user interface | UI components, styling, user experience |
+| `area: ci/cd` | `#f9d0c4` ![](https://img.shields.io/badge/-f9d0c4-f9d0c4?style=flat-square) | Related to CI/CD pipelines | Changes to GitHub Actions, build processes, deployment |
+| `area: security` | `#ee0701` ![](https://img.shields.io/badge/-ee0701-ee0701?style=flat-square) | Related to security | Security fixes, vulnerability patches, security features |
+| `area: api` | `#c5def5` ![](https://img.shields.io/badge/-c5def5-c5def5?style=flat-square) | Related to API | API endpoints, API documentation, API contracts |
+| `area: ui` | `#bfdadc` ![](https://img.shields.io/badge/-bfdadc-bfdadc?style=flat-square) | Related to user interface | UI components, styling, user experience |
 
 ---
 
@@ -149,14 +149,14 @@ These labels indicate **dependency-related** changes.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `dependencies` | `#0366d6` ![](https://via.placeholder.com/100x20/0366d6/0366d6.png) | Pull requests that update a dependency file | Any dependency updates |
-| `npm` | `#e99695` ![](https://via.placeholder.com/100x20/e99695/e99695.png) | npm dependency updates | Specifically for npm package updates |
-| `github-actions` | `#000000` ![](https://via.placeholder.com/100x20/000000/000000.png) | GitHub Actions workflow updates | Updates to GitHub Actions versions |
-| `docker` | `#0db7ed` ![](https://via.placeholder.com/100x20/0db7ed/0db7ed.png) | Docker/container dependency updates | Updates to Docker images or container dependencies |
-| `terraform` | `#844fba` ![](https://via.placeholder.com/100x20/844fba/844fba.png) | Terraform dependency updates | Updates to Terraform providers or modules |
-| `devcontainers` | `#2496ed` ![](https://via.placeholder.com/100x20/2496ed/2496ed.png) | Development container dependency updates | Updates to devcontainer features or images |
-| `git-submodules` | `#fbca04` ![](https://via.placeholder.com/100x20/fbca04/fbca04.png) | Git submodule updates | Updates to Git submodule references |
-| `go` | `#00add8` ![](https://via.placeholder.com/100x20/00add8/00add8.png) | Go module dependency updates | Updates to Go module dependencies |
+| `dependencies` | `#0366d6` ![](https://img.shields.io/badge/-0366d6-0366d6?style=flat-square) | Pull requests that update a dependency file | Any dependency updates |
+| `npm` | `#e99695` ![](https://img.shields.io/badge/-e99695-e99695?style=flat-square) | npm dependency updates | Specifically for npm package updates |
+| `github-actions` | `#000000` ![](https://img.shields.io/badge/-000000-000000?style=flat-square) | GitHub Actions workflow updates | Updates to GitHub Actions versions |
+| `docker` | `#0db7ed` ![](https://img.shields.io/badge/-0db7ed-0db7ed?style=flat-square) | Docker/container dependency updates | Updates to Docker images or container dependencies |
+| `terraform` | `#844fba` ![](https://img.shields.io/badge/-844fba-844fba?style=flat-square) | Terraform dependency updates | Updates to Terraform providers or modules |
+| `devcontainers` | `#2496ed` ![](https://img.shields.io/badge/-2496ed-2496ed?style=flat-square) | Development container dependency updates | Updates to devcontainer features or images |
+| `git-submodules` | `#fbca04` ![](https://img.shields.io/badge/-fbca04-fbca04?style=flat-square) | Git submodule updates | Updates to Git submodule references |
+| `go` | `#00add8` ![](https://img.shields.io/badge/-00add8-00add8?style=flat-square) | Go module dependency updates | Updates to Go module dependencies |
 
 ---
 
@@ -166,9 +166,9 @@ These labels mark **special characteristics** of an issue or PR.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `breaking change` | `#d73a4a` ![](https://via.placeholder.com/100x20/d73a4a/d73a4a.png) | Introduces breaking changes | Changes that break backward compatibility |
-| `backport` | `#c5def5` ![](https://via.placeholder.com/100x20/c5def5/c5def5.png) | Should be backported to a previous version | Fixes that need to be applied to older release branches |
-| `chore` | `#fef2c0` ![](https://via.placeholder.com/100x20/fef2c0/fef2c0.png) | Maintenance tasks | Routine maintenance, dependency updates, tooling |
+| `breaking change` | `#d73a4a` ![](https://img.shields.io/badge/-d73a4a-d73a4a?style=flat-square) | Introduces breaking changes | Changes that break backward compatibility |
+| `backport` | `#c5def5` ![](https://img.shields.io/badge/-c5def5-c5def5?style=flat-square) | Should be backported to a previous version | Fixes that need to be applied to older release branches |
+| `chore` | `#fef2c0` ![](https://img.shields.io/badge/-fef2c0-fef2c0?style=flat-square) | Maintenance tasks | Routine maintenance, dependency updates, tooling |
 
 ---
 
@@ -178,12 +178,12 @@ These labels help with **issue management** and **community engagement**.
 
 | Label | Color | Description | When to Use |
 |-------|-------|-------------|-------------|
-| `triage` | `#ededed` ![](https://via.placeholder.com/100x20/ededed/ededed.png) | Needs triage and investigation | New issues that need review and categorization |
-| `duplicate` | `#cfd3d7` ![](https://via.placeholder.com/100x20/cfd3d7/cfd3d7.png) | This issue or pull request already exists | Duplicate of another issue |
-| `invalid` | `#e4e669` ![](https://via.placeholder.com/100x20/e4e669/e4e669.png) | This doesn't seem right | Not a valid issue or out of scope |
-| `wontfix` | `#ffffff` ![](https://via.placeholder.com/100x20/ffffff/ffffff.png) | This will not be worked on | Intentionally not fixing this |
-| `good first issue` | `#7057ff` ![](https://via.placeholder.com/100x20/7057ff/7057ff.png) | Good for newcomers | Suitable for first-time contributors |
-| `help wanted` | `#008672` ![](https://via.placeholder.com/100x20/008672/008672.png) | Extra attention is needed | Looking for community help on this |
+| `triage` | `#ededed` ![](https://img.shields.io/badge/-ededed-ededed?style=flat-square) | Needs triage and investigation | New issues that need review and categorization |
+| `duplicate` | `#cfd3d7` ![](https://img.shields.io/badge/-cfd3d7-cfd3d7?style=flat-square) | This issue or pull request already exists | Duplicate of another issue |
+| `invalid` | `#e4e669` ![](https://img.shields.io/badge/-e4e669-e4e669?style=flat-square) | This doesn't seem right | Not a valid issue or out of scope |
+| `wontfix` | `#ffffff` ![](https://img.shields.io/badge/-ffffff-ffffff?style=flat-square) | This will not be worked on | Intentionally not fixing this |
+| `good first issue` | `#7057ff` ![](https://img.shields.io/badge/-7057ff-7057ff?style=flat-square) | Good for newcomers | Suitable for first-time contributors |
+| `help wanted` | `#008672` ![](https://img.shields.io/badge/-008672-008672?style=flat-square) | Extra attention is needed | Looking for community help on this |
 
 ---
 

@@ -73,7 +73,7 @@ else
     # Pull latest changes
     echo -e "${BLUE}Pulling latest wiki changes...${NC}"
     cd "$WIKI_DIR"
-    git pull origin master
+    git pull origin HEAD
 fi
 
 echo ""

@@ -31,7 +31,7 @@ Pick workflows based on your project type:
 - ✅ `labeler.yml` - Auto-label PRs
 - ✅ `stale.yml` - Close inactive issues
 
-> **See [Repository README](https://github.com/benhigham/.github#choosing-the-right-workflows)** for the complete decision guide.
+> **See the [Workflow Decision Guide](https://github.com/benhigham/.github#choosing-the-right-workflows)** in the repository README for a complete workflow selection decision tree.
 
 ---
 

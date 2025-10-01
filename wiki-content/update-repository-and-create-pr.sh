@@ -34,7 +34,7 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
 fi
 
 # Create feature branch
-BRANCH="wiki-migration-$(date +%Y%m%d-%H%M%S)"
+BRANCH="wiki-migration-$(date +%Y%m%d)"
 echo -e "${BLUE}Creating branch: $BRANCH${NC}"
 git checkout -b "$BRANCH"
 
