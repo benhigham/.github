@@ -14,7 +14,14 @@ jobs:
   ci:
     uses: benhigham/.github/.github/workflows/ci.yml@main
     with:
-      node-version: '20'    
+      node-version: '20'           # Optional: Node.js version
+      pnpm-version: '8'            # Optional: pnpm version
+      run-lint: true               # Run linting
+      run-typecheck: true          # Run type checking
+      run-test: true               # Run tests
+      run-build: false             # Run build (optional)
+```
+
 ---
 
 ## 🔧 Troubleshooting
