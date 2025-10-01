@@ -26,7 +26,6 @@ jobs:
           script: |
             const issue_number = context.issue.number;
             const is_pr = context.eventName === 'pull_request_target';
-            const is_issue = context.eventName === 'issues';
 
             // Get the author
             const author = context.payload.sender.login;
@@ -34,11 +33,9 @@ jobs:
             // Check if this is the author's first contribution
             // Note: Fetching up to 100 items should be sufficient for most repositories.
             // For extremely active repos, this might miss older contributions, but it's a reasonable tradeoff.
-            const { data: contributions } = is_pr
-              ? await github.rest.pulls.list({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  state: 'all',
+            const contributions = is_pr
+              ? await github.rest.search.issuesAndPullRequests({
+                  q: `repo:${context.repo.owner}/${context.repo.repo} is:pr author:${author}`,
                   per_page: 100,
                 })
               : await github.rest.issues.listForRepo({
@@ -49,11 +46,13 @@ jobs:
                   per_page: 100,
                 });
 
+            const data = is_pr ? contributions.data.items : contributions.data;
+
             // Count previous contributions by this author
-            const previousContributions = contributions.filter(item => {
+            const previousContributions = data.filter(item => {
               if (is_pr) {
-                // For PRs, check if authored by the same user and not the current PR
-                return item.user.login === author && item.number !== issue_number;
+                // For PRs, exclude the current PR (already filtered by author in query)
+                return item.number !== issue_number;
               } else {
                 // For issues, exclude the current issue and any pull requests
                 return item.number !== issue_number && !item.pull_request;
@@ -65,21 +64,21 @@ jobs:
               const message = is_pr
                 ? `👋 Thanks for opening your first pull request! We're excited to have you contribute.
 
-            A maintainer will review your PR soon. In the meantime, please make sure:
-            - [ ] Your code follows the project's style guidelines
-            - [ ] You've added tests if applicable
-            - [ ] You've updated documentation if needed
-            - [ ] All CI checks pass
+A maintainer will review your PR soon. In the meantime, please make sure:
+- [ ] Your code follows the project's style guidelines
+- [ ] You've added tests if applicable
+- [ ] You've updated documentation if needed
+- [ ] All CI checks pass
 
-            Feel free to ask questions if you need any help! 🚀`
+Feel free to ask questions if you need any help! 🚀`
                 : `👋 Thanks for opening your first issue! We appreciate you taking the time to report this.
 
-            A maintainer will review your issue and respond as soon as possible. To help us address this quickly, please make sure you've provided:
-            - A clear description of the issue
-            - Steps to reproduce (if applicable)
-            - Any relevant context or screenshots
+A maintainer will review your issue and respond as soon as possible. To help us address this quickly, please make sure you've provided:
+- A clear description of the issue
+- Steps to reproduce (if applicable)
+- Any relevant context or screenshots
 
-            Thanks for contributing to the project! 🙏`;
+Thanks for contributing to the project! 🙏`;
 
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
