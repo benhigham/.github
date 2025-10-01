@@ -32,25 +32,30 @@ jobs:
             const author = context.payload.sender.login;
 
             // Check if this is the author's first contribution
+            // Note: Fetching up to 100 items should be sufficient for most repositories.
+            // For extremely active repos, this might miss older contributions, but it's a reasonable tradeoff.
             const { data: contributions } = is_pr
-              ? await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              ? await github.rest.pulls.list({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  commit_sha: context.payload.pull_request.head.sha,
+                  state: 'all',
+                  per_page: 100,
                 })
               : await github.rest.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   creator: author,
                   state: 'all',
-                  per_page: 5,
+                  per_page: 100,
                 });
 
             // Count previous contributions by this author
             const previousContributions = contributions.filter(item => {
               if (is_pr) {
-                return item.number !== issue_number;
+                // For PRs, check if authored by the same user and not the current PR
+                return item.user.login === author && item.number !== issue_number;
               } else {
+                // For issues, exclude the current issue and any pull requests
                 return item.number !== issue_number && !item.pull_request;
               }
             });
