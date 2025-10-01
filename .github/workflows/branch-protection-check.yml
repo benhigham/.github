@@ -2,7 +2,7 @@ name: Branch Protection Check
 
 on:
   schedule:
-    - cron: '0 0 * * 1' # Weekly on Monday
+    - cron: "0 0 * * 1" # Weekly on Monday
   workflow_dispatch:
 
 permissions:
@@ -24,36 +24,36 @@ jobs:
         with:
           script: |
             const branch = 'main';
-            
+
             try {
               const { data: protection } = await github.rest.repos.getBranchProtection({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 branch: branch
               });
-              
+
               console.log('✅ Branch protection is enabled for', branch);
               console.log('Protection rules:', JSON.stringify(protection, null, 2));
-              
+
               // Check required settings
               const issues = [];
-              
+
               if (!protection.required_pull_request_reviews) {
                 issues.push('❌ Pull request reviews are not required');
               }
-              
+
               if (!protection.enforce_admins?.enabled) {
                 issues.push('⚠️  Rules do not apply to administrators');
               }
-              
+
               if (!protection.required_status_checks) {
                 issues.push('⚠️  No required status checks configured');
               }
-              
+
               if (issues.length > 0) {
                 console.log('\n⚠️  Issues found:');
                 issues.forEach(issue => console.log(issue));
-                
+
                 // Create an issue if problems found
                 await github.rest.issues.create({
                   owner: context.repo.owner,
@@ -65,11 +65,11 @@ jobs:
               } else {
                 console.log('\n✅ All branch protection checks passed!');
               }
-              
+
             } catch (error) {
               if (error.status === 404) {
                 console.error(`❌ No branch protection found for ${branch}`);
-                
+
                 // Create an issue for missing protection
                 await github.rest.issues.create({
                   owner: context.repo.owner,
