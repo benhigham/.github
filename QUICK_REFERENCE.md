@@ -130,6 +130,71 @@ jobs:
 
 ---
 
+## 🔄 Sync Labels
+
+**File**: `.github/workflows/sync-labels.yml`
+
+Automatically syncs repository labels when `.github/labels.yml` changes:
+
+```yaml
+name: Sync Labels
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/labels.yml'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  sync:
+    uses: benhigham/.github/.github/workflows/sync-labels.yml@main
+```
+
+**What it does:**
+
+- Syncs labels from `.github/labels.yml` to the repository
+- Creates missing labels
+- Updates existing labels
+- Removes labels not in the manifest (optional)
+
+---
+
+## 👋 First-Time Contributor Greeter
+
+**File**: `.github/workflows/first-time-contributor.yml`
+
+Welcomes new contributors with a friendly message:
+
+```yaml
+name: Greet First-Time Contributors
+on:
+  pull_request_target:
+    types: [opened]
+  issues:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  greeting:
+    uses: benhigham/.github/.github/workflows/first-time-contributor.yml@main
+```
+
+**Features:**
+
+- Detects first-time contributors
+- Posts welcoming message on first PR
+- Posts helpful message on first issue
+- Provides checklist and resources
+
+---
+
 ## 🔒 CodeQL Security Scanning
 
 **File**: `.github/workflows/codeql.yml`
@@ -169,6 +234,7 @@ steps:
 ```
 
 This action:
+
 - Checks out repository
 - Sets up pnpm
 - Sets up Node.js with caching
@@ -178,7 +244,24 @@ This action:
 
 ## 📋 Label Management
 
-### Sync Labels to Repository
+### Available Label Categories
+
+See [LABELS.md](LABELS.md) for the complete guide to all labels.
+
+- **Type**: bug, enhancement, documentation, refactoring, performance, testing
+- **Priority**: critical, high, medium, low
+- **Status**: blocked, in progress, needs review, needs testing, ready
+- **Size**: xs, s, m, l, xl, xxl (auto-assigned by PR Size Labeler)
+- **Area**: ci/cd, security, api, ui
+- **Dependencies**: npm, github-actions
+- **Special**: breaking change, backport, chore
+- **Triage**: triage, duplicate, invalid, wontfix, good first issue, help wanted
+
+### Sync Labels to This Repository
+
+Labels are automatically synced when `.github/labels.yml` is updated via the Sync Labels workflow.
+
+### Sync Labels to Other Repositories
 
 Using [github-label-sync](https://github.com/Financial-Times/github-label-sync):
 
@@ -187,20 +270,12 @@ Using [github-label-sync](https://github.com/Financial-Times/github-label-sync):
 npm install -g github-label-sync
 
 # Sync labels
-github-label-sync --access-token $GITHUB_TOKEN \
+github-label-sync --access-token $(gh auth token) \
   --labels .github/labels.yml \
-  owner/repo-name
+  benhigham/your-repo-name
 ```
 
-### Label Categories
-
-- **Type**: bug, enhancement, documentation, refactoring, performance, testing
-- **Priority**: critical, high, medium, low
-- **Status**: blocked, in progress, needs review, needs testing, ready
-- **Size**: xs, s, m, l, xl, xxl
-- **Area**: ci/cd, security, api, ui
-- **Dependencies**: npm, github-actions
-- **Special**: breaking change, backport, chore
+Or use GitHub Actions (see README.md for complete examples).
 
 ---
 
@@ -291,11 +366,12 @@ cp .github/CHANGELOG.md ./CHANGELOG.md
 ### Initial Setup
 
 - [ ] Copy workflows you need to your repository
-- [ ] Sync labels using `.github/labels.yml`
+- [ ] Sync labels using `.github/labels.yml` or the sync-labels workflow
 - [ ] Configure `.github/labeler.yml` for your project
 - [ ] Add `NPM_TOKEN` secret (if publishing to npm)
 - [ ] Copy documentation templates
 - [ ] Update README with workflow badges
+- [ ] Set up first-time contributor greeting
 
 ### Per Repository
 
@@ -311,6 +387,7 @@ cp .github/CHANGELOG.md ./CHANGELOG.md
 - [ ] Configure deployment workflows
 - [ ] Add performance testing
 - [ ] Set up notification webhooks
+- [ ] Create custom label categories for your domain
 
 ---
 
@@ -337,5 +414,5 @@ cp .github/CHANGELOG.md ./CHANGELOG.md
 
 ---
 
-**Last Updated**: 2025-01-XX
-**Version**: 2.0.0
+**Last Updated**: 2025-10-01  
+**Version**: 2.1.0

@@ -1,6 +1,6 @@
 version: 2
+
 updates:
-  # Keep GitHub Actions up to date
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
@@ -11,9 +11,8 @@ updates:
       - 'dependencies'
       - 'github-actions'
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: 'chore'
       include: 'scope'
-    open-pull-requests-limit: 10
     groups:
       github-actions:
         patterns:
@@ -22,7 +21,6 @@ updates:
           - 'minor'
           - 'patch'
 
-  # Keep npm packages up to date
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -33,9 +31,8 @@ updates:
       - 'dependencies'
       - 'npm'
     commit-message:
-      prefix: 'chore(deps)'
+      prefix: 'chore'
       include: 'scope'
-    open-pull-requests-limit: 10
     groups:
       development-dependencies:
         dependency-type: 'development'
@@ -47,3 +44,75 @@ updates:
         update-types:
           - 'patch'
     versioning-strategy: increase
+
+  - package-ecosystem: 'docker'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    assignees:
+      - 'benhigham'
+    labels:
+      - 'dependencies'
+      - 'docker'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'terraform'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    assignees:
+      - 'benhigham'
+    labels:
+      - 'dependencies'
+      - 'terraform'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'devcontainers'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    assignees:
+      - 'benhigham'
+    labels:
+      - 'dependencies'
+      - 'devcontainers'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'gitsubmodule'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    assignees:
+      - 'benhigham'
+    labels:
+      - 'dependencies'
+      - 'git-submodules'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+  - package-ecosystem: 'gomod'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    assignees:
+      - 'benhigham'
+    labels:
+      - 'dependencies'
+      - 'go'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    groups:
+      go-dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'

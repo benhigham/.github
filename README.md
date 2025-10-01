@@ -34,11 +34,13 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **Auto-merge Dependabot** (`auto-merge-dependabot.yml`) - Automatically merge dependency updates
 - [x] **Stale Management** (`stale.yml`) - Auto-close inactive issues and PRs
 - [x] **PR Labeler** (`labeler.yml`) - Auto-label PRs based on changed files
+- [x] **Sync Labels** (`sync-labels.yml`) - Automatically sync labels when labels.yml changes
+- [x] **First-Time Contributor** (`first-time-contributor.yml`) - Welcome new contributors
 - [x] **CodeQL Security** (`codeql.yml`) - Security scanning and analysis
 
 ### 🏷️ Configuration Files
 
-- [x] **labels.yml** - Standard label configuration for consistent labeling
+- [x] **labels.yml** - Standard label configuration for consistent labeling (see [LABELS.md](LABELS.md))
 - [x] **labeler.yml** - Auto-labeling rules based on file paths
 - [x] **dependabot.yml** - Enhanced dependency management with grouping
 - [x] **FUNDING.yml** - Funding information
@@ -53,6 +55,7 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **DEVELOPMENT.md** - Template for development setup and guidelines
 - [x] **RELEASING.md** - Template for release process documentation
 - [x] **CHANGELOG.md** - Changelog following Keep a Changelog format
+- [x] **LABELS.md** - Comprehensive guide to all standard labels
 
 ## How It Works
 
@@ -129,10 +132,86 @@ jobs:
 
 ## Label Management
 
-The `labels.yml` file defines a standard set of labels. You can sync these to your repositories using tools like:
+This repository includes a comprehensive label system with automatic syncing capabilities. See [LABELS.md](LABELS.md) for the complete guide.
 
-- [github-label-sync](https://github.com/Financial-Times/github-label-sync)
-- [GitHub CLI with gh-label](https://cli.github.com/manual/gh_label)
+### Available Labels
+
+The repository includes **37 standardized labels** organized into categories:
+
+- **Type Labels**: `bug`, `enhancement`, `documentation`, `refactoring`, `performance`, `testing`
+- **Priority Labels**: `priority: critical`, `priority: high`, `priority: medium`, `priority: low`
+- **Status Labels**: `status: blocked`, `status: in progress`, `status: needs review`, `status: needs testing`, `status: ready`
+- **Size Labels**: `size: xs`, `size: s`, `size: m`, `size: l`, `size: xl`, `size: xxl` (auto-assigned)
+- **Area Labels**: `area: ci/cd`, `area: security`, `area: api`, `area: ui`
+- **Dependency Labels**: `dependencies`, `npm`, `github-actions`
+- **Special Labels**: `breaking change`, `backport`, `chore`
+- **Triage Labels**: `triage`, `duplicate`, `invalid`, `wontfix`, `good first issue`, `help wanted`
+
+### Syncing Labels to This Repository
+
+Labels are automatically synced when `.github/labels.yml` is updated via the [Sync Labels workflow](.github/workflows/sync-labels.yml).
+
+### Syncing Labels to Other Repositories
+
+#### Method 1: Using github-label-sync CLI
+
+```bash
+# Install globally
+npm install -g github-label-sync
+
+# Sync to a repository
+github-label-sync --access-token $(gh auth token) \
+  --labels .github/labels.yml \
+  benhigham/your-repo-name
+```
+
+#### Method 2: Using GitHub Actions
+
+Create a workflow in your target repository:
+
+```yaml
+# .github/workflows/sync-labels.yml
+name: Sync Labels
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Weekly
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout labels config
+        uses: actions/checkout@v4
+        with:
+          repository: benhigham/.github
+          path: .github-templates
+
+      - name: Sync labels
+        uses: micnncim/action-label-syncer@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          manifest: .github-templates/.github/labels.yml
+```
+
+#### Method 3: Using GitHub CLI
+
+```bash
+# Clone this repo to get the labels
+gh repo clone benhigham/.github
+cd .github
+
+# Use gh CLI to sync (requires jq)
+cat .github/labels.yml | yq -r '.[] | [.name, .color, .description] | @tsv' | \
+while IFS=$'\t' read -r name color desc; do
+  gh label create "$name" --color "$color" --description "$desc" --repo benhigham/your-repo || \
+  gh label edit "$name" --color "$color" --description "$desc" --repo benhigham/your-repo
+done
+```
+
+For more details, see the [Label Reference Guide](LABELS.md).
 
 ## Usage
 

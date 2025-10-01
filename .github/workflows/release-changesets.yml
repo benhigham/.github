@@ -42,12 +42,12 @@ on:
       commit-message:
         description: Commit message for the version bump
         type: string
-        default: 'chore(release): bump package versions'
+        default: "chore(release): bump package versions"
         required: false
       pr-title:
         description: Title of the pull request
         type: string
-        default: 'chore(release): create new release'
+        default: "chore(release): create new release"
         required: false
     secrets:
       NPM_TOKEN:
@@ -89,7 +89,7 @@ jobs:
           node-version: ${{ inputs.node-version }}
           node-version-file: package.json
           cache: pnpm
-          cache-dependency-path: '**/pnpm-lock.yaml'
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

@@ -4,89 +4,89 @@
 # Documentation changes
 documentation:
   - changed-files:
-    - any-glob-to-any-file:
-      - '**/*.md'
-      - 'docs/**/*'
-      - '.github/**/*.md'
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**/*'
+          - '.github/**/*.md'
 
 # CI/CD changes
 'area: ci/cd':
   - changed-files:
-    - any-glob-to-any-file:
-      - '.github/workflows/**/*'
-      - '.github/actions/**/*'
-      - '.github/dependabot.yml'
-      - '**/.gitlab-ci.yml'
-      - '**/Dockerfile'
-      - '**/.dockerignore'
-      - '**/docker-compose.yml'
+      - any-glob-to-any-file:
+          - '.github/workflows/**/*'
+          - '.github/actions/**/*'
+          - '.github/dependabot.yml'
+          - '**/.gitlab-ci.yml'
+          - '**/Dockerfile'
+          - '**/.dockerignore'
+          - '**/docker-compose.yml'
 
 # Dependencies
 dependencies:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'package.json'
-      - 'package-lock.json'
-      - 'pnpm-lock.yaml'
-      - 'yarn.lock'
-      - 'npm-shrinkwrap.json'
+      - any-glob-to-any-file:
+          - 'package.json'
+          - 'package-lock.json'
+          - 'pnpm-lock.yaml'
+          - 'yarn.lock'
+          - 'npm-shrinkwrap.json'
 
 # Testing
 testing:
   - changed-files:
-    - any-glob-to-any-file:
-      - '**/*.test.*'
-      - '**/*.spec.*'
-      - '**/__tests__/**/*'
-      - '**/__mocks__/**/*'
-      - 'tests/**/*'
-      - 'test/**/*'
+      - any-glob-to-any-file:
+          - '**/*.test.*'
+          - '**/*.spec.*'
+          - '**/__tests__/**/*'
+          - '**/__mocks__/**/*'
+          - 'tests/**/*'
+          - 'test/**/*'
 
 # Configuration files
 chore:
   - changed-files:
-    - any-glob-to-any-file:
-      - '.*rc'
-      - '.*rc.js'
-      - '.*rc.json'
-      - '.*rc.yml'
-      - '.*rc.yaml'
-      - '.*.config.js'
-      - '.*.config.ts'
-      - 'tsconfig.json'
-      - 'tsconfig.*.json'
-      - '.editorconfig'
-      - '.gitignore'
-      - '.gitattributes'
-      - '.npmignore'
-      - '.nvmrc'
+      - any-glob-to-any-file:
+          - '.*rc'
+          - '.*rc.js'
+          - '.*rc.json'
+          - '.*rc.yml'
+          - '.*rc.yaml'
+          - '.*.config.js'
+          - '.*.config.ts'
+          - 'tsconfig.json'
+          - 'tsconfig.*.json'
+          - '.editorconfig'
+          - '.gitignore'
+          - '.gitattributes'
+          - '.npmignore'
+          - '.nvmrc'
 
 # Security
 'area: security':
   - changed-files:
-    - any-glob-to-any-file:
-      - 'SECURITY.md'
-      - '.github/SECURITY.md'
-      - '**/security/**/*'
+      - any-glob-to-any-file:
+          - 'SECURITY.md'
+          - '.github/SECURITY.md'
+          - '**/security/**/*'
 
 # API changes
 'area: api':
   - changed-files:
-    - any-glob-to-any-file:
-      - '**/api/**/*'
-      - '**/routes/**/*'
-      - '**/controllers/**/*'
-      - '**/endpoints/**/*'
+      - any-glob-to-any-file:
+          - '**/api/**/*'
+          - '**/routes/**/*'
+          - '**/controllers/**/*'
+          - '**/endpoints/**/*'
 
 # UI changes
 'area: ui':
   - changed-files:
-    - any-glob-to-any-file:
-      - '**/components/**/*'
-      - '**/pages/**/*'
-      - '**/views/**/*'
-      - '**/*.css'
-      - '**/*.scss'
-      - '**/*.sass'
-      - '**/*.less'
-      - '**/*.styled.*'
+      - any-glob-to-any-file:
+          - '**/components/**/*'
+          - '**/pages/**/*'
+          - '**/views/**/*'
+          - '**/*.css'
+          - '**/*.scss'
+          - '**/*.sass'
+          - '**/*.less'
+          - '**/*.styled.*'
