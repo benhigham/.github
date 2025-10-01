@@ -10,6 +10,10 @@ permissions:
   pull-requests: write
   issues: write
 
+concurrency:
+  group: greeting-${{ github.workflow }}-${{ github.event.number }}
+  cancel-in-progress: false
+
 jobs:
   greeting:
     name: Greet First-Time Contributors

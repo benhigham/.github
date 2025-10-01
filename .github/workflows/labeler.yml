@@ -18,6 +18,10 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: labeler-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   label-pr-size:
     name: Label PR by size

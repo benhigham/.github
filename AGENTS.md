@@ -71,7 +71,7 @@ This repository serves as a **centralized template and automation hub** for GitH
 ├── PULL_REQUEST_TEMPLATE/     # PR markdown templates
 ├── DISCUSSION_TEMPLATE/       # Discussion form templates (YAML)
 ├── dependabot.yml             # Dependabot configuration
-├── labels.yml                 # Label definitions (37 labels)
+├── labels.yml                 # Label definitions (42 labels)
 ├── labeler.yml                # Path-based PR labeling rules
 └── FUNDING.yml                # Funding info
 ```
@@ -126,7 +126,7 @@ jobs:
 
 **Label Configuration (labels.yml):**
 
-- 37 standard labels across 8 categories
+- 42 standard labels across 8 categories
 - Colors must be hex without `#`
 - Always include description
 - Categories: type, priority, status, size, area, dependencies, special, triage

@@ -1,5 +1,7 @@
 # Quick Reference: Reusable Workflows
 
+> **Note**: All Node.js workflows internally use the custom `setup-node-pnpm` action for consistent environment setup. You don't need to call this action directly - it's automatically used by the workflows.
+
 ## 🔄 CI Workflow
 
 **File**: `.github/workflows/ci.yml`

@@ -65,6 +65,10 @@ permissions:
   issues: write
   pull-requests: write
 
+concurrency:
+  group: stale-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   stale:
     name: Mark and close stale issues/PRs
