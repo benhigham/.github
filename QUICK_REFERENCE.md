@@ -225,14 +225,9 @@ If you're still stuck:
 5. **Open an issue** - If you think there's a bug in the workflow
 
 ---
+```
 
 ## 🔗 Useful Links
-      upload-coverage: false       # Upload coverage reports
-      lint-command: 'pnpm run lint'
-      typecheck-command: 'pnpm run typecheck'
-      test-command: 'pnpm run test'
-      build-command: 'pnpm run build'
-```
 
 **Note**: Use `node-version-matrix` to test across multiple Node.js versions. If specified, it overrides `node-version` for the test job.
 
