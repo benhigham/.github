@@ -29,7 +29,7 @@ This repository contains comprehensive community health files and reusable workf
 
 ### 🤖 Reusable Workflows
 
-- [x] **CI Workflow** (`ci.yml`) - Comprehensive testing and linting
+- [x] **CI Workflow** (`ci.yml`) - Comprehensive testing and linting with optional matrix testing
 - [x] **Release Workflow** (`release-changesets.yml`) - Automated releases with Changesets
 - [x] **Auto-merge Dependabot** (`auto-merge-dependabot.yml`) - Automatically merge dependency updates
 - [x] **Stale Management** (`stale.yml`) - Auto-close inactive issues and PRs
@@ -37,6 +37,9 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **Sync Labels** (`sync-labels.yml`) - Automatically sync labels when labels.yml changes
 - [x] **First-Time Contributor** (`first-time-contributor.yml`) - Welcome new contributors
 - [x] **CodeQL Security** (`codeql.yml`) - Security scanning and analysis
+- [x] **Dependency Review** (`dependency-review.yml`) - Automated dependency security review in PRs
+- [x] **Release Drafter** (`release-drafter.yml`) - Auto-generate release notes and PR descriptions
+- [x] **Branch Protection Check** (`branch-protection-check.yml`) - Validate branch protection settings
 
 ### 🏷️ Configuration Files
 
