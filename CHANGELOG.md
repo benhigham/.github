@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Replaced deprecated `actions/first-interaction@v1` with `actions/github-script@v7` in first-time contributor workflow for better maintenance and flexibility
 - Enhanced Dependabot configuration with five additional package ecosystems:
   - Docker image updates monitoring
   - Terraform dependency tracking
