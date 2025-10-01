@@ -219,13 +219,7 @@ If you're still stuck:
 
 ---
 
-## 🔗 Useful Links   # Optional: Node.js version
-      node-version-matrix: '["18", "20", "22"]'  # Optional: Test multiple versions
-      pnpm-version: '8'            # Optional: pnpm version
-      run-lint: true               # Run linting
-      run-typecheck: true          # Run type checking
-      run-test: true               # Run tests
-      run-build: false             # Run build (optional)
+## 🔗 Useful Links
       upload-coverage: false       # Upload coverage reports
       lint-command: 'pnpm run lint'
       typecheck-command: 'pnpm run typecheck'
@@ -601,7 +595,7 @@ cp .github/CHANGELOG.md ./CHANGELOG.md
 
 ---
 
-## � Dependency Review Workflow
+## 🔍 Dependency Review Workflow
 
 **File**: `.github/workflows/dependency-review.yml`
 
@@ -634,7 +628,7 @@ jobs:
 
 ---
 
-## ️ Branch Protection Check Workflow
+## 🛡️ Branch Protection Check Workflow
 
 **File**: `.github/workflows/branch-protection-check.yml`
 
@@ -661,7 +655,7 @@ jobs:
 
 ---
 
-## �🔗 Useful Links
+## 🔗 Useful Links
 
 - [Reusable Workflows Docs](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)
