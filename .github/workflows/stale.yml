@@ -1,3 +1,5 @@
+# Automatically marks and closes stale issues and PRs after configured periods of inactivity.
+# Highly configurable with exemptions, custom messages, and separate timeouts for issues vs PRs.
 name: Stale Issues and PRs
 
 on:

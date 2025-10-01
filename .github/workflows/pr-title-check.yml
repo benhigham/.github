@@ -1,0 +1,93 @@
+# Validates pull request titles follow conventional commit format.
+# Helps maintain consistent changelog and works well with Changesets.
+name: PR Title Check
+
+on:
+  workflow_call:
+    inputs:
+      pattern:
+        description: |
+          Regex pattern for valid PR titles.
+          Default enforces conventional commits: type(scope): description
+        type: string
+        default: '^(feat|fix|docs|chore|refactor|test|perf|ci|build|style)(\(.+\))?: .+'
+        required: false
+      require-scope:
+        description: 'Whether to require a scope in the commit type'
+        type: boolean
+        default: false
+        required: false
+
+permissions:
+  pull-requests: write
+
+concurrency:
+  group: pr-title-check-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-title:
+    name: Validate PR Title
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check PR title format
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            const requireScope = ${{ inputs.require-scope }};
+            
+            // Adjust pattern if scope is required
+            let pattern = '${{ inputs.pattern }}';
+            if (requireScope) {
+              pattern = '^(feat|fix|docs|chore|refactor|test|perf|ci|build|style)\\(.+\\): .+';
+            }
+            
+            const regex = new RegExp(pattern);
+            
+            if (!regex.test(title)) {
+              const scopeNote = requireScope 
+                ? '\n\n**Note:** A scope is required for this repository.' 
+                : '\n\n**Note:** Scope is optional but recommended.';
+              
+              const comment = `❌ **PR Title Format Check Failed**
+            
+            Your PR title does not follow the conventional commit format.
+            
+            **Current title:** \`${title}\`
+            
+            **Expected format:** \`type(scope): description\`
+            
+            **Valid types:**
+            - \`feat\` - New features
+            - \`fix\` - Bug fixes
+            - \`docs\` - Documentation changes
+            - \`chore\` - Maintenance tasks
+            - \`refactor\` - Code refactoring
+            - \`test\` - Adding or updating tests
+            - \`perf\` - Performance improvements
+            - \`ci\` - CI/CD changes
+            - \`build\` - Build system changes
+            - \`style\` - Code style changes (formatting, etc.)
+            ${scopeNote}
+            
+            **Examples:**
+            - \`feat(auth): add social login support\`
+            - \`fix(api): handle null response from server\`
+            - \`docs: update installation instructions\`
+            - \`chore(deps): update dependencies\`
+            
+            Please update your PR title to match this format.`;
+            
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: comment
+              });
+              
+              core.setFailed('PR title does not follow conventional commit format');
+            } else {
+              console.log(`✅ PR title is valid: ${title}`);
+            }

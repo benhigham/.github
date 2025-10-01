@@ -1,3 +1,5 @@
+# Automatically approves and merges Dependabot PRs based on semantic versioning rules.
+# Supports configurable merge methods and granular control over patch, minor, and major updates.
 name: Auto-merge Dependabot PRs
 
 on:
@@ -65,22 +67,8 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enable auto-merge for patch updates
-        if: steps.check.outputs.matched == 'true' && steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable auto-merge for minor updates
-        if: steps.check.outputs.matched == 'true' && steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable auto-merge for major updates
-        if: steps.check.outputs.matched == 'true' && steps.metadata.outputs.update-type == 'version-update:semver-major'
+      - name: Enable auto-merge
+        if: steps.check.outputs.matched == 'true'
         run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}

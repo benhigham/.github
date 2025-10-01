@@ -1,3 +1,6 @@
+# Comprehensive CI workflow with linting, type checking, testing, and building.
+# Supports Node.js version matrix testing and optional coverage upload.
+# All steps are optional and can be configured individually.
 name: CI
 
 on:
