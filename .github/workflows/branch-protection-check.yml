@@ -1,0 +1,84 @@
+name: Branch Protection Check
+
+on:
+  schedule:
+    - cron: '0 0 * * 1' # Weekly on Monday
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: branch-protection-check-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check Branch Protection
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check branch protection rules
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = 'main';
+            
+            try {
+              const { data: protection } = await github.rest.repos.getBranchProtection({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                branch: branch
+              });
+              
+              console.log('✅ Branch protection is enabled for', branch);
+              console.log('Protection rules:', JSON.stringify(protection, null, 2));
+              
+              // Check required settings
+              const issues = [];
+              
+              if (!protection.required_pull_request_reviews) {
+                issues.push('❌ Pull request reviews are not required');
+              }
+              
+              if (!protection.enforce_admins?.enabled) {
+                issues.push('⚠️  Rules do not apply to administrators');
+              }
+              
+              if (!protection.required_status_checks) {
+                issues.push('⚠️  No required status checks configured');
+              }
+              
+              if (issues.length > 0) {
+                console.log('\n⚠️  Issues found:');
+                issues.forEach(issue => console.log(issue));
+                
+                // Create an issue if problems found
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `Branch Protection Configuration Issues for ${branch}`,
+                  body: `## Branch Protection Check Results\n\nThe following issues were found with branch protection for \`${branch}\`:\n\n${issues.map(i => `- ${i}`).join('\n')}\n\n**Recommendations:**\n- Enable pull request reviews\n- Apply rules to administrators\n- Configure required status checks\n\n---\n*Automated check run on ${new Date().toISOString()}*`,
+                  labels: ['security', 'chore']
+                });
+              } else {
+                console.log('\n✅ All branch protection checks passed!');
+              }
+              
+            } catch (error) {
+              if (error.status === 404) {
+                console.error(`❌ No branch protection found for ${branch}`);
+                
+                // Create an issue for missing protection
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `Branch Protection Not Configured for ${branch}`,
+                  body: `## ⚠️  Branch Protection Missing\n\nBranch protection is not configured for \`${branch}\`.\n\n**Recommended settings:**\n- Require pull request reviews\n- Require status checks to pass\n- Enforce rules for administrators\n- Require linear history\n\n---\n*Automated check run on ${new Date().toISOString()}*`,
+                  labels: ['security', 'priority: high']
+                });
+              } else {
+                throw error;
+              }
+            }

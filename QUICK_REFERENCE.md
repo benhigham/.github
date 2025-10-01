@@ -15,6 +15,7 @@ jobs:
     uses: benhigham/.github/.github/workflows/ci.yml@main
     with:
       node-version: '20'           # Optional: Node.js version
+      node-version-matrix: '["18", "20", "22"]'  # Optional: Test multiple versions
       pnpm-version: '8'            # Optional: pnpm version
       run-lint: true               # Run linting
       run-typecheck: true          # Run type checking
@@ -26,6 +27,8 @@ jobs:
       test-command: 'pnpm run test'
       build-command: 'pnpm run build'
 ```
+
+**Note**: Use `node-version-matrix` to test across multiple Node.js versions. If specified, it overrides `node-version` for the test job.
 
 ---
 
@@ -393,7 +396,93 @@ cp .github/CHANGELOG.md ./CHANGELOG.md
 
 ---
 
-## 🔗 Useful Links
+## � Dependency Review Workflow
+
+**File**: `.github/workflows/dependency-review.yml`
+
+Automatically reviews dependencies for security vulnerabilities in PRs:
+
+```yaml
+name: Dependency Review
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    uses: benhigham/.github/.github/workflows/dependency-review.yml@main
+```
+
+**Features:**
+
+- Reviews dependencies for known vulnerabilities
+- Fails on moderate or higher severity issues
+- Posts summary comments in PRs
+- Runs automatically on all pull requests
+
+---
+
+## 📝 Release Drafter Workflow
+
+**File**: `.github/workflows/release-drafter.yml`
+
+Auto-generates release notes and maintains a draft release:
+
+```yaml
+name: Release Drafter
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  draft:
+    uses: benhigham/.github/.github/workflows/release-drafter.yml@main
+```
+
+**Features:**
+
+- Auto-generates release notes from PR titles and labels
+- Categorizes changes by type (features, bugs, maintenance, docs, security)
+- Suggests semantic version bumps based on labels
+- Creates/updates draft releases automatically
+
+**Configuration**: `.github/release-drafter.yml`
+
+---
+
+## 🛡️ Branch Protection Check Workflow
+
+**File**: `.github/workflows/branch-protection-check.yml`
+
+Validates branch protection settings weekly:
+
+```yaml
+name: Branch Protection Check
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Monday
+  workflow_dispatch:
+
+jobs:
+  check:
+    uses: benhigham/.github/.github/workflows/branch-protection-check.yml@main
+```
+
+**Features:**
+
+- Checks if branch protection is enabled
+- Validates required settings (PR reviews, status checks, etc.)
+- Creates issues if configuration problems are found
+- Runs weekly or manually via workflow_dispatch
+
+---
+
+## �🔗 Useful Links
 
 - [Reusable Workflows Docs](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
 - [GitHub Actions Marketplace](https://github.com/marketplace?type=actions)

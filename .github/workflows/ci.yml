@@ -9,6 +9,12 @@ on:
           If not specified, the version will be read from package.json.
         type: string
         required: false
+      node-version-matrix:
+        description: |
+          JSON array of Node.js versions to test against (e.g. '["18", "20", "22"]')
+          If specified, overrides node-version and runs tests across multiple versions.
+        type: string
+        required: false
       pnpm-version:
         description: |
           The version of pnpm to use (supports the Semantic Versioning Specification, e.g. 8, 10.7.0, latest)
@@ -105,15 +111,19 @@ jobs:
         run: ${{ inputs.typecheck-command }}
 
   test:
-    name: Test
+    name: Test${{ inputs.node-version-matrix && format(' (Node {0})', matrix.node-version) || '' }}
     if: inputs.run-test
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ${{ inputs.node-version-matrix && fromJSON(inputs.node-version-matrix) || fromJSON(format('["{0}"]', inputs.node-version || 'default')) }}
     steps:
       - name: Setup Node.js with pnpm
         uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
-          node-version: ${{ inputs.node-version }}
+          node-version: ${{ matrix.node-version != 'default' && matrix.node-version || inputs.node-version }}
           pnpm-version: ${{ inputs.pnpm-version }}
 
       - name: Run tests
@@ -123,7 +133,7 @@ jobs:
         if: inputs.upload-coverage && always()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage-report
+          name: coverage-report${{ inputs.node-version-matrix && format('-node-{0}', matrix.node-version) || '' }}
           path: ${{ inputs.coverage-path }}
           retention-days: 30
 

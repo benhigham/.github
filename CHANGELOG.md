@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Dependency Review workflow for automated security review of dependencies in PRs
+- Release Drafter workflow for auto-generating release notes and PR descriptions
+- Branch Protection Checker workflow to validate branch protection settings weekly
+- Node.js version matrix testing support in CI workflow (test across multiple Node versions)
 - First-time contributor greeter workflow for welcoming new contributors
 - Label sync workflow for automated label management from configuration file
 - LABELS.md documentation with comprehensive label definitions and usage guidelines
@@ -22,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Replaced deprecated `actions/first-interaction@v1` with `actions/github-script@v7` in first-time contributor workflow for better maintenance and flexibility
+- Enhanced CI workflow with optional Node.js version matrix testing capability
 - Enhanced Dependabot configuration with five additional package ecosystems:
   - Docker image updates monitoring
   - Terraform dependency tracking
