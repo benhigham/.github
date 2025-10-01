@@ -54,14 +54,41 @@ jobs:
                 console.log('\n⚠️  Issues found:');
                 issues.forEach(issue => console.log(issue));
 
-                // Create an issue if problems found
-                await github.rest.issues.create({
+                // Check for existing open issues before creating new one
+                const { data: existingIssues } = await github.rest.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  title: `Branch Protection Configuration Issues for ${branch}`,
-                  body: `## Branch Protection Check Results\n\nThe following issues were found with branch protection for \`${branch}\`:\n\n${issues.map(i => `- ${i}`).join('\n')}\n\n**Recommendations:**\n- Enable pull request reviews\n- Apply rules to administrators\n- Configure required status checks\n\n---\n*Automated check run on ${new Date().toISOString()}*`,
-                  labels: ['security', 'chore']
+                  state: 'open',
+                  labels: 'security,branch-protection',
+                  per_page: 10
                 });
+
+                const existingIssue = existingIssues.find(issue => 
+                  issue.title.includes('Branch Protection Configuration Issues')
+                );
+
+                const issueBody = `## Branch Protection Check Results\n\nThe following issues were found with branch protection for \`${branch}\`:\n\n${issues.map(i => `- ${i}`).join('\n')}\n\n**Recommendations:**\n- Enable pull request reviews\n- Apply rules to administrators\n- Configure required status checks\n\n---\n*Automated check run on ${new Date().toISOString()}*`;
+
+                if (existingIssue) {
+                  // Update existing issue
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: existingIssue.number,
+                    body: `## 🔄 Updated Check Results\n\n${issueBody}`
+                  });
+                  console.log(`Updated existing issue #${existingIssue.number}`);
+                } else {
+                  // Create new issue
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `Branch Protection Configuration Issues for ${branch}`,
+                    body: issueBody,
+                    labels: ['security', 'branch-protection', 'chore']
+                  });
+                  console.log('Created new issue');
+                }
               } else {
                 console.log('\n✅ All branch protection checks passed!');
               }
@@ -70,14 +97,41 @@ jobs:
               if (error.status === 404) {
                 console.error(`❌ No branch protection found for ${branch}`);
 
-                // Create an issue for missing protection
-                await github.rest.issues.create({
+                // Check for existing open issues before creating new one
+                const { data: existingIssues } = await github.rest.issues.listForRepo({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  title: `Branch Protection Not Configured for ${branch}`,
-                  body: `## ⚠️  Branch Protection Missing\n\nBranch protection is not configured for \`${branch}\`.\n\n**Recommended settings:**\n- Require pull request reviews\n- Require status checks to pass\n- Enforce rules for administrators\n- Require linear history\n\n---\n*Automated check run on ${new Date().toISOString()}*`,
-                  labels: ['security', 'priority: high']
+                  state: 'open',
+                  labels: 'security,branch-protection',
+                  per_page: 10
                 });
+
+                const existingIssue = existingIssues.find(issue => 
+                  issue.title.includes('Branch Protection Not Configured')
+                );
+
+                const issueBody = `## ⚠️  Branch Protection Missing\n\nBranch protection is not configured for \`${branch}\`.\n\n**Recommended settings:**\n- Require pull request reviews\n- Require status checks to pass\n- Enforce rules for administrators\n- Require linear history\n\n---\n*Automated check run on ${new Date().toISOString()}*`;
+
+                if (existingIssue) {
+                  // Update existing issue
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: existingIssue.number,
+                    body: `## 🔄 Still Missing\n\n${issueBody}`
+                  });
+                  console.log(`Updated existing issue #${existingIssue.number}`);
+                } else {
+                  // Create new issue
+                  await github.rest.issues.create({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    title: `Branch Protection Not Configured for ${branch}`,
+                    body: issueBody,
+                    labels: ['security', 'branch-protection', 'priority: high']
+                  });
+                  console.log('Created new issue');
+                }
               } else {
                 throw error;
               }

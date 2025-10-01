@@ -1,3 +1,5 @@
+# Automatically labels pull requests based on size (lines changed) and file paths.
+# Supports enabling/disabling size and path-based labeling independently.
 name: PR Labeler
 
 on:

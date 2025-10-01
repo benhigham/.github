@@ -1,3 +1,5 @@
+# Automatically approves and merges Dependabot PRs based on semantic versioning rules.
+# Supports configurable merge methods and granular control over patch, minor, and major updates.
 name: Auto-merge Dependabot PRs
 
 on:
@@ -56,28 +58,11 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enable auto-merge for patch updates
+      - name: Enable auto-merge
         if: |
-          inputs.auto-merge-patch &&
-          steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable auto-merge for minor updates
-        if: |
-          inputs.auto-merge-minor &&
-          steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Enable auto-merge for major updates
-        if: |
-          inputs.auto-merge-major &&
-          steps.metadata.outputs.update-type == 'version-update:semver-major'
+          (inputs.auto-merge-patch && steps.metadata.outputs.update-type == 'version-update:semver-patch') ||
+          (inputs.auto-merge-minor && steps.metadata.outputs.update-type == 'version-update:semver-minor') ||
+          (inputs.auto-merge-major && steps.metadata.outputs.update-type == 'version-update:semver-major')
         run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}

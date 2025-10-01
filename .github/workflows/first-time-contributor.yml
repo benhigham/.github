@@ -43,6 +43,7 @@ jobs:
                   repo: context.repo.repo,
                   creator: author,
                   state: 'all',
+                  per_page: 5,
                 });
 
             // Count previous contributions by this author

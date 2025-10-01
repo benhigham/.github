@@ -38,7 +38,7 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **First-Time Contributor** (`first-time-contributor.yml`) - Welcome new contributors
 - [x] **CodeQL Security** (`codeql.yml`) - Security scanning and analysis
 - [x] **Dependency Review** (`dependency-review.yml`) - Automated dependency security review in PRs
-- [x] **Release Drafter** (`release-drafter.yml`) - Auto-generate release notes and PR descriptions
+- [x] **PR Title Check** (`pr-title-check.yml`) - Enforce conventional commit format in PR titles
 - [x] **Branch Protection Check** (`branch-protection-check.yml`) - Validate branch protection settings
 
 ### 🏷️ Configuration Files
@@ -65,6 +65,77 @@ This repository contains comprehensive community health files and reusable workf
 GitHub will use these default files for any public repository under my account that doesn't have its own specific version of these files.
 
 [Learn more about GitHub's community health files](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file).
+
+## Choosing the Right Workflows
+
+### For Library/Package Projects (with npm publishing)
+
+**Required:**
+
+- ✅ `ci.yml` - Test and validate your code
+- ✅ `release-changesets.yml` - Automated releases with changelogs
+- ✅ `dependency-review.yml` - Security checks for dependencies
+
+**Recommended:**
+
+- ✅ `auto-merge-dependabot.yml` - Auto-merge safe dependency updates
+- ✅ `codeql.yml` - Security code scanning
+- ✅ `labeler.yml` - Auto-label PRs for better organization
+- ✅ `pr-title-check.yml` - Enforce conventional commits
+- ✅ `stale.yml` - Close inactive issues/PRs
+
+**Optional:**
+
+- ⚪ `first-time-contributor.yml` - Welcome new contributors
+- ⚪ `branch-protection-check.yml` - Validate branch protection settings
+
+### For Application Projects (no npm publishing)
+
+**Required:**
+
+- ✅ `ci.yml` - Test and validate your code
+- ✅ `dependency-review.yml` - Security checks for dependencies
+
+**Recommended:**
+
+- ✅ `auto-merge-dependabot.yml` - Auto-merge safe dependency updates
+- ✅ `codeql.yml` - Security code scanning
+- ✅ `labeler.yml` - Auto-label PRs for better organization
+- ✅ `stale.yml` - Close inactive issues/PRs
+
+**Optional:**
+
+- ⚪ `pr-title-check.yml` - Enforce commit standards (if you care about git history)
+- ⚪ `first-time-contributor.yml` - Welcome new contributors
+- ⚪ `branch-protection-check.yml` - Validate branch protection settings
+
+### For Documentation-Only Projects
+
+**Required:**
+
+- ✅ `labeler.yml` - Auto-label documentation PRs
+
+**Recommended:**
+
+- ✅ `stale.yml` - Close inactive issues/PRs
+- ✅ `first-time-contributor.yml` - Welcome contributors
+
+**Optional:**
+
+- ⚪ `ci.yml` - If you want to lint markdown/run checks
+- ⚪ `auto-merge-dependabot.yml` - If using dependencies
+
+### Quick Selection Guide
+
+| Project Type | CI | Release | Security | Auto-merge | Labels | CodeQL | Stale |
+|--------------|:--:|:-------:|:--------:|:----------:|:------:|:------:|:-----:|
+| **npm Package** | ✅ | ✅ changesets | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Web App** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Library (no publish)** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Docs Site** | ⚪ | ⚪ | ⚪ | ⚪ | ✅ | ⚪ | ✅ |
+| **Small Tool** | ✅ | ⚪ | ⚪ | ✅ | ⚪ | ⚪ | ⚪ |
+
+**Legend:** ✅ Recommended | ⚪ Optional
 
 ## Using Reusable Workflows
 
