@@ -126,7 +126,7 @@ These labels mark **special characteristics** of an issue or PR.
 |-------|-------|-------------|-------------|
 | `breaking change` | ![#d73a4a](https://via.placeholder.com/15/d73a4a/000000?text=+) `#d73a4a` | Introduces breaking changes | Changes that break backward compatibility |
 | `security` | ![#ee0701](https://via.placeholder.com/15/ee0701/000000?text=+) `#ee0701` | Security-related issues or improvements | Security vulnerabilities, hardening, audits |
-| `branch-protection` | ![#0e8a16](https://via.placeholder.com/15/0e8a16/000000?text=+) `#0e8a16` | Related to branch protection configuration | Branch protection rule changes or issues |
+| `branch-protection` | ![#ee0701](https://via.placeholder.com/15/ee0701/000000?text=+) `#ee0701` | Related to branch protection configuration | Branch protection rule changes or issues |
 | `backport` | ![#c5def5](https://via.placeholder.com/15/c5def5/000000?text=+) `#c5def5` | Should be backported to a previous version | Fixes that need to be applied to older release branches |
 | `chore` | ![#fef2c0](https://via.placeholder.com/15/fef2c0/000000?text=+) `#fef2c0` | Maintenance tasks | Routine maintenance, dependency updates, tooling |
 | `stale` | ![#ededed](https://via.placeholder.com/15/ededed/000000?text=+) `#ededed` | Automatically applied to inactive issues and PRs | Applied by the stale workflow after configured inactivity period |
@@ -235,7 +235,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout labels config
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: benhigham/.github
           path: .github-templates

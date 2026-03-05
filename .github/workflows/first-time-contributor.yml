@@ -1,3 +1,4 @@
+# Welcomes first-time contributors with a friendly message on their first PR or issue.
 name: First-Time Contributor Greeter
 
 on:
@@ -29,35 +30,28 @@ jobs:
             const is_pr = context.eventName === 'pull_request_target';
 
             if (!issue_number) {
-              console.log('Could not determine issue/PR number from context, skipping');
+              core.warning('Could not determine issue/PR number from context, skipping');
+              return;
+            }
+
+            if (!context.payload.sender) {
+              core.setFailed('Event payload is missing sender information');
               return;
             }
 
             const author = context.payload.sender.login;
 
             try {
-              // Check if this is the author's first contribution.
-              // For PRs, use search API total_count to avoid fetching items.
-              // For issues, fetch 2 items — enough to determine if there are previous contributions.
-              let isFirstTime;
-              if (is_pr) {
-                const { data } = await github.rest.search.issuesAndPullRequests({
-                  q: `repo:${owner}/${repo} is:pr author:${author}`,
-                  per_page: 1,
-                });
-                // total_count includes the current PR, so first-time means exactly 1
-                isFirstTime = data.total_count <= 1;
-              } else {
-                const { data } = await github.rest.issues.listForRepo({
-                  owner,
-                  repo,
-                  creator: author,
-                  state: 'all',
-                  per_page: 2,
-                });
-                const previous = data.filter(item => item.number !== issue_number && !item.pull_request);
-                isFirstTime = previous.length === 0;
-              }
+              // Use the search API for both PRs and issues for consistent detection.
+              // total_count includes the current PR/issue, so first-time means exactly 1.
+              const q = is_pr
+                ? `repo:${owner}/${repo} is:pr author:${author}`
+                : `repo:${owner}/${repo} is:issue author:${author}`;
+              const { data } = await github.rest.search.issuesAndPullRequests({
+                q,
+                per_page: 1,
+              });
+              const isFirstTime = data.total_count <= 1;
 
               if (isFirstTime) {
                 const message = is_pr
@@ -96,7 +90,7 @@ jobs:
               }
             } catch (error) {
               if (error.status === 403) {
-                core.warning(`Insufficient permissions to check/greet ${author}: ${error.message}`);
+                core.setFailed(`Insufficient permissions to check/greet ${author}: ${error.message}`);
               } else {
                 core.setFailed(`Failed to check/greet contributor ${author}: ${error.message}`);
               }

@@ -1,6 +1,6 @@
 # Comprehensive CI workflow with linting, type checking, testing, and building.
 # Supports Node.js version matrix testing and optional coverage upload.
-# All steps are optional and can be configured individually.
+# Each step can be enabled or disabled individually via inputs.
 name: CI
 
 on:
@@ -142,7 +142,7 @@ jobs:
         with:
           name: coverage-report${{ inputs.node-version-matrix && format('-node-{0}', matrix.node-version) || '' }}
           path: ${{ inputs.coverage-path }}
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 30
 
   build:

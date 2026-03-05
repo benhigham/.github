@@ -1,5 +1,5 @@
 # Automatically approves and merges Dependabot PRs based on semantic versioning rules.
-# Supports configurable merge methods and granular control over patch, minor, and major updates.
+# Supports configurable merge methods and granular control over patch, minor, and major updates (major disabled by default).
 name: Auto-merge Dependabot PRs
 
 on:
@@ -60,16 +60,6 @@ jobs:
           (inputs.auto-merge-major && steps.metadata.outputs.update-type == 'version-update:semver-major')
         run: echo "matched=true" >> "$GITHUB_OUTPUT"
 
-      - name: Validate merge method
-        if: steps.check.outputs.matched == 'true'
-        run: |
-          case "$MERGE_METHOD" in
-            merge|squash|rebase) ;;
-            *) echo "::error::Invalid merge method '$MERGE_METHOD'. Must be one of: merge, squash, rebase"; exit 1 ;;
-          esac
-        env:
-          MERGE_METHOD: ${{ inputs.merge-method }}
-
       - name: Approve Dependabot PR
         id: approve
         if: steps.check.outputs.matched == 'true'
@@ -80,7 +70,7 @@ jobs:
 
       - name: Enable auto-merge
         if: steps.check.outputs.matched == 'true' && steps.approve.outcome == 'success'
-        run: gh pr merge --auto --"$MERGE_METHOD" "$PR_URL"
+        run: gh pr merge --auto "--${MERGE_METHOD}" "$PR_URL"
         env:
           MERGE_METHOD: ${{ inputs.merge-method }}
           PR_URL: ${{ github.event.pull_request.html_url }}

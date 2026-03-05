@@ -1,3 +1,4 @@
+# Syncs repository labels from labels.yml whenever the manifest changes.
 name: Sync Labels
 
 on:
@@ -12,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: sync-labels-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

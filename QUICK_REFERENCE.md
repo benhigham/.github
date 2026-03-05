@@ -56,7 +56,7 @@ Error: The operation was canceled.
 
 **Solution:**
 
-- Increase `timeout-minutes` in your workflow call
+- The test job has a 15-minute timeout set in the upstream workflow; contact the workflow maintainer to adjust it
 - Optimize your tests (split into smaller suites, remove unnecessary waits)
 - Check for infinite loops or hanging promises
 
@@ -218,7 +218,7 @@ Error: Build failed
 
 **Solution:**
 
-- Set `build-mode` input to `manual` and add your own build step, or use `autobuild`
+- Use `build-mode: autobuild` (recommended); `manual` mode is not supported by the reusable workflow since it has no step between CodeQL init and analyze for custom build commands
 - Ensure all build dependencies are available
 - Check that the build environment matches your local setup
 
@@ -588,17 +588,14 @@ Or use GitHub Actions (see README.md for complete examples).
 
 ## 🔧 Complete Example
 
+> **Note**: This simplified example omits per-job permissions for brevity. In production, scope permissions per job rather than at the workflow level (e.g., `security-events: write` only on the security job).
+
 ```yaml
 name: Complete CI/CD
 on:
   pull_request:
   push:
     branches: [main]
-
-permissions:
-  contents: write
-  pull-requests: write
-  security-events: write
 
 jobs:
   # Run CI checks

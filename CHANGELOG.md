@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Add Dependency Review reusable workflow with configurable security thresholds
 - Consolidate auto-merge workflow steps from 3 duplicate steps into 1 with composite conditional
 - Optimize first-time contributor detection to use `total_count` instead of fetching all items
 - Replace deprecated `actions/first-interaction@v3` with `actions/github-script@v7` in first-time contributor workflow
@@ -39,9 +38,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update QUICK_REFERENCE.md with new workflows, enhanced documentation, and troubleshooting guide
 - Update README.md with workflow decision tree, new workflows, and usage guidelines
 - Refactor all workflows to use the custom `setup-node-pnpm` action
-- Add timeout constraints to all workflows for better resource management
+- Apply timeout constraints to all workflows for better resource management
 - Update label documentation to reflect 45 total labels (increased from 42)
-- Add concurrency groups to workflows for optimal resource usage
+- Configure concurrency groups for all workflows for optimal resource usage
 - Complete CONTRIBUTING.md with development setup, testing, and validation guidance
 - Upload coverage reports only on successful test runs (changed from uploading regardless of test outcome)
 

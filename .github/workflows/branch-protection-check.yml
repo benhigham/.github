@@ -44,40 +44,46 @@ jobs:
             const branch = process.env.INPUT_BRANCH || 'main';
             console.log(`Checking branch protection for: ${branch} (source: ${process.env.INPUT_BRANCH ? 'input' : 'default'})`);
 
+            function buildIssueBody(heading, description, items) {
+              return [
+                `## ${heading}\n`,
+                `${description}\n`,
+                ...items,
+                `\n---`,
+                `*Automated check run on ${new Date().toISOString()}*`,
+              ].join('\n');
+            }
+
             async function findOrCreateIssue(titleFragment, issueBody, labels) {
-              try {
-                const { data: existingIssues } = await github.rest.issues.listForRepo({
+              const { data: existingIssues } = await github.rest.issues.listForRepo({
+                owner,
+                repo,
+                state: 'open',
+                labels: labels.join(','),
+                per_page: 100
+              });
+
+              const existingIssue = existingIssues.find(issue =>
+                issue.title.includes(titleFragment)
+              );
+
+              if (existingIssue) {
+                await github.rest.issues.createComment({
                   owner,
                   repo,
-                  state: 'open',
-                  labels: labels,
-                  per_page: 100
+                  issue_number: existingIssue.number,
+                  body: `## Updated Check Results\n\n${issueBody}`
                 });
-
-                const existingIssue = existingIssues.find(issue =>
-                  issue.title.includes(titleFragment)
-                );
-
-                if (existingIssue) {
-                  await github.rest.issues.createComment({
-                    owner,
-                    repo,
-                    issue_number: existingIssue.number,
-                    body: `## 🔄 Updated Check Results\n\n${issueBody}`
-                  });
-                  console.log(`Updated existing issue #${existingIssue.number}`);
-                } else {
-                  await github.rest.issues.create({
-                    owner,
-                    repo,
-                    title: `${titleFragment} for ${branch}`,
-                    body: issueBody,
-                    labels: labels
-                  });
-                  console.log('Created new issue');
-                }
-              } catch (issueError) {
-                core.error(`Failed to create/update issue "${titleFragment}": ${issueError.message} (status: ${issueError.status || 'unknown'})`);
+                console.log(`Updated existing issue #${existingIssue.number}`);
+              } else {
+                await github.rest.issues.create({
+                  owner,
+                  repo,
+                  title: `${titleFragment} for ${branch}`,
+                  body: issueBody,
+                  labels: labels
+                });
+                console.log('Created new issue');
               }
             }
 
@@ -95,21 +101,26 @@ jobs:
               }
               if (error.status !== 404) throw error;
 
-              console.error(`❌ No branch protection found for ${branch}`);
-              const issueBody = [
-                `## Branch Protection Missing\n`,
-                `Branch protection is not configured for \`${branch}\`.\n`,
-                `**Recommended settings:**`,
-                `- Require pull request reviews`,
-                `- Require status checks to pass`,
-                `- Enforce rules for administrators`,
-                `- Require linear history`,
-                `\n---`,
-                `*Automated check run on ${new Date().toISOString()}*`,
-              ].join('\n');
-
-              await findOrCreateIssue('Branch Protection Not Configured', issueBody, ['security', 'branch-protection', 'priority: high']);
+              console.error(`No branch protection found for ${branch}`);
               core.setFailed(`Branch protection is not configured for ${branch}`);
+
+              const issueBody = buildIssueBody(
+                'Branch Protection Missing',
+                `Branch protection is not configured for \`${branch}\`.`,
+                [
+                  '**Recommended settings:**',
+                  '- Require pull request reviews',
+                  '- Require status checks to pass',
+                  '- Enforce rules for administrators',
+                  '- Require linear history',
+                ],
+              );
+
+              try {
+                await findOrCreateIssue('Branch Protection Not Configured', issueBody, ['security', 'branch-protection']);
+              } catch (issueError) {
+                core.error(`Additionally, failed to create alert issue: ${issueError.message} (status: ${issueError.status || 'unknown'})`);
+              }
               return;
             }
 
@@ -130,20 +141,25 @@ jobs:
               console.log('\nIssues found:');
               issues.forEach(issue => console.log(`- ${issue}`));
 
-              const issueBody = [
-                `## Branch Protection Check Results\n`,
-                `The following issues were found with branch protection for \`${branch}\`:\n`,
-                issues.map(i => `- ${i}`).join('\n'),
-                `\n**Recommendations:**`,
-                `- Enable pull request reviews`,
-                `- Apply rules to administrators`,
-                `- Configure required status checks`,
-                `\n---`,
-                `*Automated check run on ${new Date().toISOString()}*`,
-              ].join('\n');
-
-              await findOrCreateIssue('Branch Protection Configuration Issues', issueBody, ['security', 'branch-protection', 'chore']);
               core.setFailed(`Branch protection issues found for ${branch}: ${issues.join('; ')}`);
+
+              const issueBody = buildIssueBody(
+                'Branch Protection Check Results',
+                `The following issues were found with branch protection for \`${branch}\`:`,
+                [
+                  issues.map(i => `- ${i}`).join('\n'),
+                  '\n**Recommendations:**',
+                  '- Enable pull request reviews',
+                  '- Apply rules to administrators',
+                  '- Configure required status checks',
+                ],
+              );
+
+              try {
+                await findOrCreateIssue('Branch Protection Configuration Issues', issueBody, ['security', 'branch-protection', 'chore']);
+              } catch (issueError) {
+                core.error(`Additionally, failed to create alert issue: ${issueError.message} (status: ${issueError.status || 'unknown'})`);
+              }
             } else {
               console.log('\nAll branch protection checks passed!');
             }

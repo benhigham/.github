@@ -268,7 +268,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout labels config
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: benhigham/.github
           path: .github-templates
