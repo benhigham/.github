@@ -7,7 +7,7 @@ on:
     inputs:
       node-version:
         description: |
-          The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 18.x, ^20.10.0, >=21)
+          The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 24.x, ^24.10.0, >=22)
           If not specified, the version will be read from package.json.
         type: string
         required: false
