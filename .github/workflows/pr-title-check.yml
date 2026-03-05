@@ -24,7 +24,7 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: pr-title-check-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -54,85 +54,98 @@ jobs:
               }
             }
 
-            const regex = new RegExp(pattern);
+            let regex;
+            try {
+              regex = new RegExp(pattern);
+            } catch (regexError) {
+              core.setFailed(`Invalid regex pattern "${pattern}": ${regexError.message}. Check the 'pattern' input to this workflow.`);
+              return;
+            }
+
+            // Find existing bot comment (used in both pass and fail paths)
+            let botComment;
+            try {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: context.payload.pull_request.number,
+              });
+              botComment = comments.find(c =>
+                c.user.type === 'Bot' && c.body.includes('PR Title Format Check Failed')
+              );
+            } catch (commentError) {
+              core.warning(`Failed to list PR comments: ${commentError.message}`);
+            }
 
             if (!regex.test(title)) {
               const scopeNote = requireScope
                 ? '\n\n**Note:** A scope is required for this repository.'
                 : '\n\n**Note:** Scope is optional but recommended.';
 
-              const comment = `❌ **PR Title Format Check Failed**
+              const comment = [
+                '❌ **PR Title Format Check Failed**',
+                '',
+                'Your PR title does not follow the conventional commit format.',
+                '',
+                `**Current title:** \`${title}\``,
+                '',
+                '**Expected format:** `type(scope): description`',
+                '',
+                '**Valid types:**',
+                '- `feat` - New features',
+                '- `fix` - Bug fixes',
+                '- `docs` - Documentation changes',
+                '- `chore` - Maintenance tasks',
+                '- `refactor` - Code refactoring',
+                '- `test` - Adding or updating tests',
+                '- `perf` - Performance improvements',
+                '- `ci` - CI/CD changes',
+                '- `build` - Build system changes',
+                '- `style` - Code style changes (formatting, etc.)',
+                scopeNote,
+                '',
+                '**Examples:**',
+                '- `feat(auth): add social login support`',
+                '- `fix(api): handle null response from server`',
+                '- `docs: update installation instructions`',
+                '- `chore(deps): update dependencies`',
+                '',
+                'Please update your PR title to match this format.',
+              ].join('\n');
 
-            Your PR title does not follow the conventional commit format.
-
-            **Current title:** \`${title}\`
-
-            **Expected format:** \`type(scope): description\`
-
-            **Valid types:**
-            - \`feat\` - New features
-            - \`fix\` - Bug fixes
-            - \`docs\` - Documentation changes
-            - \`chore\` - Maintenance tasks
-            - \`refactor\` - Code refactoring
-            - \`test\` - Adding or updating tests
-            - \`perf\` - Performance improvements
-            - \`ci\` - CI/CD changes
-            - \`build\` - Build system changes
-            - \`style\` - Code style changes (formatting, etc.)
-            ${scopeNote}
-
-            **Examples:**
-            - \`feat(auth): add social login support\`
-            - \`fix(api): handle null response from server\`
-            - \`docs: update installation instructions\`
-            - \`chore(deps): update dependencies\`
-
-            Please update your PR title to match this format.`;
-
-              // Find existing bot comment to update instead of creating duplicates
-              const { data: comments } = await github.rest.issues.listComments({
-                owner,
-                repo,
-                issue_number: context.payload.pull_request.number,
-              });
-              const botComment = comments.find(c =>
-                c.user.type === 'Bot' && c.body.includes('PR Title Format Check Failed')
-              );
-
-              if (botComment) {
-                await github.rest.issues.updateComment({
-                  owner,
-                  repo,
-                  comment_id: botComment.id,
-                  body: comment,
-                });
-              } else {
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: context.payload.pull_request.number,
-                  body: comment,
-                });
+              try {
+                if (botComment) {
+                  await github.rest.issues.updateComment({
+                    owner,
+                    repo,
+                    comment_id: botComment.id,
+                    body: comment,
+                  });
+                } else {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: context.payload.pull_request.number,
+                    body: comment,
+                  });
+                }
+              } catch (commentError) {
+                core.warning(`Failed to post failure comment: ${commentError.message}`);
               }
 
               core.setFailed('PR title does not follow conventional commit format');
             } else {
               // Clean up any previous failure comment
-              const { data: comments } = await github.rest.issues.listComments({
-                owner,
-                repo,
-                issue_number: context.payload.pull_request.number,
-              });
-              const botComment = comments.find(c =>
-                c.user.type === 'Bot' && c.body.includes('PR Title Format Check Failed')
-              );
               if (botComment) {
-                await github.rest.issues.deleteComment({
-                  owner,
-                  repo,
-                  comment_id: botComment.id,
-                });
+                try {
+                  await github.rest.issues.deleteComment({
+                    owner,
+                    repo,
+                    comment_id: botComment.id,
+                  });
+                } catch (cleanupError) {
+                  core.warning(`Failed to clean up previous comment: ${cleanupError.message}`);
+                }
               }
 
               console.log(`PR title is valid: ${title}`);

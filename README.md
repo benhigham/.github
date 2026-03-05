@@ -229,7 +229,7 @@ The repository includes **45 standardized labels** organized into categories:
 - **Size Labels**: `size: xs`, `size: s`, `size: m`, `size: l`, `size: xl`, `size: xxl` (auto-assigned)
 - **Area Labels**: `area: ci/cd`, `area: security`, `area: api`, `area: ui`
 - **Dependency Labels**: `dependencies`, `npm`, `github-actions`, `docker`, `terraform`, `devcontainers`, `git-submodules`, `go`
-- **Special Labels**: `breaking change`, `backport`, `chore`
+- **Special Labels**: `breaking change`, `security`, `branch-protection`, `backport`, `chore`, `stale`
 - **Triage Labels**: `triage`, `duplicate`, `invalid`, `wontfix`, `good first issue`, `help wanted`
 
 ### Syncing Labels to This Repository

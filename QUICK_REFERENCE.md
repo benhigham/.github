@@ -218,7 +218,7 @@ Error: Build failed
 
 **Solution:**
 
-- Customize `build-command` input with correct build steps
+- Set `build-mode` input to `manual` and add your own build step, or use `autobuild`
 - Ensure all build dependencies are available
 - Check that the build environment matches your local setup
 
@@ -381,7 +381,7 @@ jobs:
 - Syncs labels from `.github/labels.yml` to the repository
 - Creates missing labels
 - Updates existing labels
-- Removes labels not in the manifest (optional)
+- Removes labels not in the manifest
 
 ---
 
@@ -431,6 +431,102 @@ jobs:
 
 ---
 
+## 🔍 Dependency Review Workflow
+
+**File**: `.github/workflows/dependency-review.yml`
+
+Automatically reviews dependencies for security vulnerabilities in PRs:
+
+```yaml
+name: Dependency Review
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    uses: benhigham/.github/.github/workflows/dependency-review.yml@main
+    with:
+      fail-on-severity: moderate  # low, moderate, high, critical
+      comment-summary-in-pr: always  # always, on-failure, never
+```
+
+**Features:**
+
+- Reviews dependencies for known vulnerabilities
+- Configurable severity threshold
+- Optional license allowlist/denylist
+- Posts summary comments in PRs
+- Runs automatically on all pull requests
+
+---
+
+## 🛡️ Branch Protection Check Workflow
+
+**File**: `.github/workflows/branch-protection-check.yml`
+
+Validates branch protection settings and creates issues if configuration problems are found:
+
+```yaml
+name: Branch Protection Check
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Monday
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    uses: benhigham/.github/.github/workflows/branch-protection-check.yml@main
+```
+
+**Features:**
+
+- Checks if branch protection is enabled
+- Validates required settings (PR reviews, status checks, etc.)
+- Creates issues if configuration problems are found
+- Runs weekly or manually via workflow_dispatch
+
+---
+
+## ✅ PR Title Check
+
+**File**: `.github/workflows/pr-title-check.yml`
+
+Validates PR titles follow conventional commit format:
+
+```yaml
+name: PR Title Check
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  title-check:
+    uses: benhigham/.github/.github/workflows/pr-title-check.yml@main
+    with:
+      require-scope: false          # Whether scope is mandatory
+```
+
+**Features:**
+
+- Enforces conventional commit format in PR titles
+- Configurable regex pattern for custom validation
+- Optional scope requirement
+- Posts helpful comment with format guide on failure
+- Updates existing comments instead of creating duplicates
+
+---
+
 ## 🎯 Setup Action
 
 **File**: `.github/actions/setup-node-pnpm/action.yml`
@@ -465,7 +561,7 @@ See [LABELS.md](LABELS.md) for the complete guide to all labels.
 - **Size**: xs, s, m, l, xl, xxl (auto-assigned by PR Size Labeler)
 - **Area**: ci/cd, security, api, ui
 - **Dependencies**: dependencies, npm, github-actions, docker, terraform, devcontainers, git-submodules, go
-- **Special**: breaking change, backport, chore
+- **Special**: breaking change, security, branch-protection, backport, chore, stale
 - **Triage**: triage, duplicate, invalid, wontfix, good first issue, help wanted
 
 ### Sync Labels to This Repository
@@ -599,102 +695,6 @@ cp .github/CHANGELOG.md ./CHANGELOG.md
 - [ ] Add performance testing
 - [ ] Set up notification webhooks
 - [ ] Create custom label categories for your domain
-
----
-
-## 🔍 Dependency Review Workflow
-
-**File**: `.github/workflows/dependency-review.yml`
-
-Automatically reviews dependencies for security vulnerabilities in PRs:
-
-```yaml
-name: Dependency Review
-on:
-  pull_request:
-
-permissions:
-  contents: read
-  pull-requests: write
-
-jobs:
-  review:
-    uses: benhigham/.github/.github/workflows/dependency-review.yml@main
-    with:
-      fail-on-severity: moderate  # low, moderate, high, critical
-      comment-summary-in-pr: always  # always, on-failure, never
-```
-
-**Features:**
-
-- Reviews dependencies for known vulnerabilities
-- Configurable severity threshold
-- Optional license allowlist/denylist
-- Posts summary comments in PRs
-- Runs automatically on all pull requests
-
----
-
-## 🛡️ Branch Protection Check Workflow
-
-**File**: `.github/workflows/branch-protection-check.yml`
-
-Validates branch protection settings weekly:
-
-```yaml
-name: Branch Protection Check
-on:
-  schedule:
-    - cron: '0 0 * * 1'  # Weekly on Monday
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  issues: write
-
-jobs:
-  check:
-    uses: benhigham/.github/.github/workflows/branch-protection-check.yml@main
-```
-
-**Features:**
-
-- Checks if branch protection is enabled
-- Validates required settings (PR reviews, status checks, etc.)
-- Creates issues if configuration problems are found
-- Runs weekly or manually via workflow_dispatch
-
----
-
-## ✅ PR Title Check
-
-**File**: `.github/workflows/pr-title-check.yml`
-
-Validates PR titles follow conventional commit format:
-
-```yaml
-name: PR Title Check
-on:
-  pull_request:
-    types: [opened, edited, synchronize]
-
-permissions:
-  pull-requests: write
-
-jobs:
-  title-check:
-    uses: benhigham/.github/.github/workflows/pr-title-check.yml@main
-    with:
-      require-scope: false          # Whether scope is mandatory
-```
-
-**Features:**
-
-- Enforces conventional commit format in PR titles
-- Configurable regex pattern for custom validation
-- Optional scope requirement
-- Posts helpful comment with format guide on failure
-- Updates existing comments instead of creating duplicates
 
 ---
 

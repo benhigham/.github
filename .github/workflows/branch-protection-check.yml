@@ -25,7 +25,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: branch-protection-check-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -42,37 +42,42 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const branch = process.env.INPUT_BRANCH || 'main';
+            console.log(`Checking branch protection for: ${branch} (source: ${process.env.INPUT_BRANCH ? 'input' : 'default'})`);
 
             async function findOrCreateIssue(titleFragment, issueBody, labels) {
-              const { data: existingIssues } = await github.rest.issues.listForRepo({
-                owner,
-                repo,
-                state: 'open',
-                labels: labels,
-                per_page: 10
-              });
-
-              const existingIssue = existingIssues.find(issue =>
-                issue.title.includes(titleFragment)
-              );
-
-              if (existingIssue) {
-                await github.rest.issues.createComment({
+              try {
+                const { data: existingIssues } = await github.rest.issues.listForRepo({
                   owner,
                   repo,
-                  issue_number: existingIssue.number,
-                  body: `## 🔄 Updated Check Results\n\n${issueBody}`
+                  state: 'open',
+                  labels: labels,
+                  per_page: 100
                 });
-                console.log(`Updated existing issue #${existingIssue.number}`);
-              } else {
-                await github.rest.issues.create({
-                  owner,
-                  repo,
-                  title: `${titleFragment} for ${branch}`,
-                  body: issueBody,
-                  labels: labels
-                });
-                console.log('Created new issue');
+
+                const existingIssue = existingIssues.find(issue =>
+                  issue.title.includes(titleFragment)
+                );
+
+                if (existingIssue) {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: existingIssue.number,
+                    body: `## 🔄 Updated Check Results\n\n${issueBody}`
+                  });
+                  console.log(`Updated existing issue #${existingIssue.number}`);
+                } else {
+                  await github.rest.issues.create({
+                    owner,
+                    repo,
+                    title: `${titleFragment} for ${branch}`,
+                    body: issueBody,
+                    labels: labels
+                  });
+                  console.log('Created new issue');
+                }
+              } catch (issueError) {
+                core.error(`Failed to create/update issue "${titleFragment}": ${issueError.message} (status: ${issueError.status || 'unknown'})`);
               }
             }
 
@@ -84,6 +89,10 @@ jobs:
                 branch: branch
               }));
             } catch (error) {
+              if (error.status === 403) {
+                core.setFailed(`Insufficient permissions to read branch protection for ${branch}. Ensure the token has admin access.`);
+                return;
+              }
               if (error.status !== 404) throw error;
 
               console.error(`❌ No branch protection found for ${branch}`);

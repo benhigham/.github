@@ -1,5 +1,5 @@
 # Security code scanning with CodeQL for multiple programming languages.
-# Configurable languages, queries, and build commands for compiled languages.
+# Configurable languages, queries, and build modes for compiled languages.
 name: CodeQL Security Scanning
 
 on:

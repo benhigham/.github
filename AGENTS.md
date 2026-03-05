@@ -223,7 +223,7 @@ chore: bump actions/checkout to v5
 
 **Special Labels**:
 
-- `breaking change`, `backport`, `chore`
+- `breaking change`, `security`, `branch-protection`, `backport`, `chore`, `stale`
 
 **Triage Labels**:
 
@@ -249,7 +249,7 @@ on:
     secrets: # Only if needed (e.g., NPM_TOKEN)
 
 concurrency:  # Prevent parallel runs
-  group: workflow-name-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true|false
 
 permissions:  # Minimal required permissions

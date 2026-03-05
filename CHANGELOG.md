@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- PR Title Check workflow for enforcing conventional commit format in pull request titles
+- Add PR Title Check workflow for enforcing conventional commit format in pull request titles
 - Workflow decision tree in README.md for choosing appropriate workflows by project type
 - Troubleshooting guide in QUICK_REFERENCE.md with solutions for common CI, release, and workflow issues
 - Missing labels to labels.yml:
@@ -21,9 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dependency Review workflow with configurable inputs (fail-on-severity, license checking)
 - Branch Protection Check workflow to validate branch protection settings weekly
 - Node.js version matrix testing support in CI workflow (test across multiple Node versions)
-- First-time contributor greeter workflow for welcoming new contributors
-- Label sync workflow for automated label management from configuration file
-- LABELS.md documentation with comprehensive label definitions and usage guidelines
 - Five new dependency labels for comprehensive Dependabot coverage:
   - `docker` - Docker/container dependency updates
   - `terraform` - Terraform dependency updates
@@ -33,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Convert dependency-review.yml from standalone to reusable workflow with configurable security thresholds
+- Add Dependency Review reusable workflow with configurable security thresholds
 - Consolidate auto-merge workflow steps from 3 duplicate steps into 1 with composite conditional
 - Optimize first-time contributor detection to use `total_count` instead of fetching all items
 - Replace deprecated `actions/first-interaction@v3` with `actions/github-script@v7` in first-time contributor workflow
@@ -46,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update label documentation to reflect 45 total labels (increased from 42)
 - Add concurrency groups to workflows for optimal resource usage
 - Complete CONTRIBUTING.md with development setup, testing, and validation guidance
+- Upload coverage reports only on successful test runs (changed from uploading regardless of test outcome)
+
+### Removed
+
 - Remove stale planning documents (ANALYSIS.md, TASKS.md)
 
 ## [2.0.0] - 2025-10-01
