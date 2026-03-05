@@ -11,7 +11,7 @@ on:
         default: true
         required: false
       merge-method:
-        description: The merge method to use (merge, squash, rebase)
+        description: 'The merge method to use. Valid values: merge, squash, rebase'
         type: string
         default: squash
         required: false

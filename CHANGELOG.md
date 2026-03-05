@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Missing labels to labels.yml:
   - `security` - Security-related issues or improvements
   - `branch-protection` - Related to branch protection configuration
+  - `stale` - Automatically applied to inactive issues and PRs
 - Workflow descriptions as comments to all reusable workflows for better discoverability
 - Duplicate issue detection in branch-protection-check.yml to prevent issue spam
 - Dependency Review workflow with configurable inputs (fail-on-severity, license checking)
@@ -54,15 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated README.md with workflow decision tree, new workflows, and usage guidelines
 - Refactored all workflows to use the custom `setup-node-pnpm` action
 - Added timeout constraints to all workflows for better resource management
-- Updated label documentation to reflect 44 total labels (increased from 42)
+- Updated label documentation to reflect 45 total labels (increased from 42)
 - Added concurrency groups to workflows for optimal resource usage
-
-### Removed
-
-- Release Drafter workflow and configuration (conflicts with Changesets approach)
-  - Deleted `.github/workflows/release-drafter.yml`
-  - Deleted `.github/release-drafter.yml`
-  - Removed references from README.md and QUICK_REFERENCE.md
 
 ### Fixed
 
@@ -72,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dependency review workflow now reusable with proper configuration options
 - Completed CONTRIBUTING.md with comprehensive development setup, testing, and validation guidance
 
-## [2.0.0] - 2024-09-30
+## [2.0.0] - 2025-09-30
 
 ### Added
 

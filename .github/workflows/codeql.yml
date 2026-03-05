@@ -7,10 +7,11 @@ on:
     inputs:
       languages:
         description: |
-          Comma-separated list of languages to analyze.
-          Supported values: cpp, csharp, go, java, javascript, python, ruby, swift
+          Languages to analyze. Either a single language name (e.g. 'javascript')
+          or a JSON array for multiple languages (e.g. '["javascript", "python"]').
+          Supported: cpp, csharp, go, java, javascript, python, ruby, swift
         type: string
-        default: javascript
+        default: 'javascript'
         required: false
       queries:
         description: |
@@ -40,7 +41,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ${{ fromJSON(format('["{0}"]', inputs.languages)) }}
+        language: ${{ startsWith(inputs.languages, '[') && fromJSON(inputs.languages) || fromJSON(format('["{0}"]', inputs.languages)) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5

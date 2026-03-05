@@ -64,8 +64,6 @@ jobs:
       pull-requests: write # to create the pull request (changesets/action)
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    outputs:
-      cache-hit: ${{ steps.setup-node-pnpm.outputs.cache-hit }}
     steps:
       - name: Setup Node.js with pnpm
         id: setup-node-pnpm

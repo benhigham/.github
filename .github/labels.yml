@@ -184,3 +184,7 @@
 - name: 'chore'
   color: 'fef2c0'
   description: 'Maintenance tasks'
+
+- name: 'stale'
+  color: 'ededed'
+  description: 'Automatically applied to inactive issues and PRs'

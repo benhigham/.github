@@ -63,7 +63,10 @@ This repository serves as a **centralized template and automation hub** for GitH
 │   ├── labeler.yml
 │   ├── sync-labels.yml
 │   ├── first-time-contributor.yml
-│   └── codeql.yml
+│   ├── codeql.yml
+│   ├── dependency-review.yml
+│   ├── pr-title-check.yml
+│   └── branch-protection-check.yml
 ├── actions/                    # Custom composite actions
 │   └── setup-node-pnpm/
 │       └── action.yml
@@ -71,7 +74,7 @@ This repository serves as a **centralized template and automation hub** for GitH
 ├── PULL_REQUEST_TEMPLATE/     # PR markdown templates
 ├── DISCUSSION_TEMPLATE/       # Discussion form templates (YAML)
 ├── dependabot.yml             # Dependabot configuration
-├── labels.yml                 # Label definitions (42 labels)
+├── labels.yml                 # Label definitions (45 labels)
 ├── labeler.yml                # Path-based PR labeling rules
 └── FUNDING.yml                # Funding info
 ```
@@ -126,7 +129,7 @@ jobs:
 
 **Label Configuration (labels.yml):**
 
-- 42 standard labels across 8 categories
+- 45 standard labels across 8 categories
 - Colors must be hex without `#`
 - Always include description
 - Categories: type, priority, status, size, area, dependencies, special, triage

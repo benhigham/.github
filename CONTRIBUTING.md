@@ -96,12 +96,16 @@ jobs:
 ### Project Structure
 
 ```
-.github/
-├── workflows/          # Reusable workflow definitions
-├── actions/            # Custom composite actions
-├── ISSUE_TEMPLATE/     # Issue form templates
-├── PULL_REQUEST_TEMPLATE/  # PR templates
-└── DISCUSSION_TEMPLATE/    # Discussion templates
+├── AGENTS.md               # AI assistant guidance (full structure)
+├── CHANGELOG.md            # Project changelog
+├── QUICK_REFERENCE.md      # Quick workflow reference
+├── README.md               # Project overview
+└── .github/
+    ├── workflows/          # Reusable workflow definitions
+    ├── actions/            # Custom composite actions
+    ├── ISSUE_TEMPLATE/     # Issue form templates
+    ├── PULL_REQUEST_TEMPLATE/  # PR templates
+    └── DISCUSSION_TEMPLATE/    # Discussion templates
 ```
 
 See [AGENTS.md](AGENTS.md) for comprehensive AI coding assistant guidance.

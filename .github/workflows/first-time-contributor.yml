@@ -24,70 +24,80 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            const { owner, repo } = context.repo;
             const issue_number = context.issue.number;
             const is_pr = context.eventName === 'pull_request_target';
 
-            // Get the author
+            if (!issue_number) {
+              console.log('Could not determine issue/PR number from context, skipping');
+              return;
+            }
+
             const author = context.payload.sender.login;
 
-            // Check if this is the author's first contribution
-            // Note: Fetching up to 100 items should be sufficient for most repositories.
-            // For extremely active repos, this might miss older contributions, but it's a reasonable tradeoff.
-            const contributions = is_pr
-              ? await github.rest.search.issuesAndPullRequests({
-                  q: `repo:${context.repo.owner}/${context.repo.repo} is:pr author:${author}`,
-                  per_page: 100,
-                })
-              : await github.rest.issues.listForRepo({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  creator: author,
-                  state: 'all',
-                  per_page: 100,
-                });
+            try {
+              // Check if this is the author's first contribution
+              // Note: Fetching up to 100 items is sufficient for most repositories.
+              // For extremely active repos, this might miss older contributions.
+              const contributions = is_pr
+                ? await github.rest.search.issuesAndPullRequests({
+                    q: `repo:${owner}/${repo} is:pr author:${author}`,
+                    per_page: 100,
+                  })
+                : await github.rest.issues.listForRepo({
+                    owner,
+                    repo,
+                    creator: author,
+                    state: 'all',
+                    per_page: 100,
+                  });
 
-            const data = is_pr ? contributions.data.items : contributions.data;
+              const data = is_pr ? contributions.data.items : contributions.data;
 
-            // Count previous contributions by this author
-            const previousContributions = data.filter(item => {
-              if (is_pr) {
-                // For PRs, exclude the current PR (already filtered by author in query)
-                return item.number !== issue_number;
-              } else {
-                // For issues, exclude the current issue and any pull requests
-                return item.number !== issue_number && !item.pull_request;
+              if (data.length >= 100) {
+                console.log(`Warning: hit 100-item limit for ${author}, first-time check may be inaccurate`);
               }
-            });
 
-            // Only greet if this is their first contribution
-            if (previousContributions.length === 0) {
-              const message = is_pr
-                ? `👋 Thanks for opening your first pull request! We're excited to have you contribute.
-
-A maintainer will review your PR soon. In the meantime, please make sure:
-- [ ] Your code follows the project's style guidelines
-- [ ] You've added tests if applicable
-- [ ] You've updated documentation if needed
-- [ ] All CI checks pass
-
-Feel free to ask questions if you need any help! 🚀`
-                : `👋 Thanks for opening your first issue! We appreciate you taking the time to report this.
-
-A maintainer will review your issue and respond as soon as possible. To help us address this quickly, please make sure you've provided:
-- A clear description of the issue
-- Steps to reproduce (if applicable)
-- Any relevant context or screenshots
-
-Thanks for contributing to the project! 🙏`;
-
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: issue_number,
-                body: message
+              const previousContributions = data.filter(item => {
+                if (is_pr) {
+                  return item.number !== issue_number;
+                } else {
+                  return item.number !== issue_number && !item.pull_request;
+                }
               });
 
-              console.log(`Greeted first-time contributor: ${author}`);
-            } else {
-              console.log(`Not a first-time contributor: ${author} (${previousContributions.length} previous contributions)`);
+              if (previousContributions.length === 0) {
+                const message = is_pr
+                  ? `👋 Thanks for opening your first pull request! We're excited to have you contribute.
+
+            A maintainer will review your PR soon. In the meantime, please make sure:
+            - [ ] Your code follows the project's style guidelines
+            - [ ] You've added tests if applicable
+            - [ ] You've updated documentation if needed
+            - [ ] All CI checks pass
+
+            Feel free to ask questions if you need any help! 🚀`
+                  : `👋 Thanks for opening your first issue! We appreciate you taking the time to report this.
+
+            A maintainer will review your issue and respond as soon as possible. To help us address this quickly, please make sure you've provided:
+            - A clear description of the issue
+            - Steps to reproduce (if applicable)
+            - Any relevant context or screenshots
+
+            Thanks for contributing to the project! 🙏`;
+
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: issue_number,
+                  body: message
+                });
+
+                console.log(`Greeted first-time contributor: ${author}`);
+              } else {
+                console.log(`Not a first-time contributor: ${author} (${previousContributions.length} previous contributions)`);
+              }
+            } catch (error) {
+              console.error(`Error checking contributor status: ${error.message}`);
+              core.warning(`Failed to check/greet contributor ${author}: ${error.message}`);
             }

@@ -67,7 +67,7 @@ Comprehensive documentation is available in the [GitHub Wiki](https://github.com
 - **[Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference)** - Copy-paste examples for all workflows
 - **[Advanced Usage](https://github.com/benhigham/.github/wiki/Advanced-Usage)** - Matrix testing, complex patterns, and custom configurations
 - **[Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting)** - Common issues and solutions
-- **[Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference)** - Complete guide to all 42 standard labels
+- **[Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference)** - Complete guide to all 45 standard labels
 - **[Templates Guide](https://github.com/benhigham/.github/wiki/Templates-Guide)** - How to use ARCHITECTURE.md, DEVELOPMENT.md, RELEASING.md
 - **[Governance](https://github.com/benhigham/.github/wiki/Governance)** - Project structure and decision-making
 
@@ -221,7 +221,7 @@ This repository includes a comprehensive label system with automatic syncing cap
 
 ### Available Labels
 
-The repository includes **42 standardized labels** organized into categories:
+The repository includes **45 standardized labels** organized into categories:
 
 - **Type Labels**: `bug`, `enhancement`, `documentation`, `refactoring`, `performance`, `testing`
 - **Priority Labels**: `priority: critical`, `priority: high`, `priority: medium`, `priority: low`

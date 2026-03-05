@@ -22,6 +22,8 @@ jobs:
       run-build: false             # Run build (optional)
 ```
 
+> **Tip**: Use `node-version-matrix` (e.g. `'["18", "20", "22"]'`) to test across multiple Node.js versions. This only affects the test job; other jobs use `node-version`.
+
 ---
 
 ## 🔧 Troubleshooting
@@ -225,13 +227,6 @@ If you're still stuck:
 5. **Open an issue** - If you think there's a bug in the workflow
 
 ---
-```
-
-## 🔗 Useful Links
-
-**Note**: Use `node-version-matrix` to test across multiple Node.js versions. If specified, it overrides `node-version` for the test job.
-
----
 
 ## 📦 Release Workflow
 
@@ -419,7 +414,7 @@ jobs:
   security:
     uses: benhigham/.github/.github/workflows/codeql.yml@main
     with:
-      languages: 'javascript'      # Comma-separated: javascript,python,go
+      languages: '["javascript"]'   # JSON array, e.g. '["javascript","python"]'
       queries: 'security-and-quality'  # default, security-extended, security-and-quality
       build-mode: 'autobuild'      # none, autobuild, manual
 ```
@@ -459,7 +454,7 @@ See [LABELS.md](LABELS.md) for the complete guide to all labels.
 - **Status**: blocked, in progress, needs review, needs testing, ready
 - **Size**: xs, s, m, l, xl, xxl (auto-assigned by PR Size Labeler)
 - **Area**: ci/cd, security, api, ui
-- **Dependencies**: npm, github-actions
+- **Dependencies**: dependencies, npm, github-actions, docker, terraform, devcontainers, git-submodules, go
 - **Special**: breaking change, backport, chore
 - **Triage**: triage, duplicate, invalid, wontfix, good first issue, help wanted
 
@@ -512,7 +507,7 @@ jobs:
   security:
     uses: benhigham/.github/.github/workflows/codeql.yml@main
     with:
-      languages: 'javascript'
+      languages: '["javascript"]'
 
   # Label PRs
   label:
@@ -643,6 +638,10 @@ on:
     - cron: '0 0 * * 1'  # Weekly on Monday
   workflow_dispatch:
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   check:
     uses: benhigham/.github/.github/workflows/branch-protection-check.yml@main
@@ -654,6 +653,38 @@ jobs:
 - Validates required settings (PR reviews, status checks, etc.)
 - Creates issues if configuration problems are found
 - Runs weekly or manually via workflow_dispatch
+
+---
+
+## ✅ PR Title Check
+
+**File**: `.github/workflows/pr-title-check.yml`
+
+Validates PR titles follow conventional commit format:
+
+```yaml
+name: PR Title Check
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  title-check:
+    uses: benhigham/.github/.github/workflows/pr-title-check.yml@main
+    with:
+      require-scope: false          # Whether scope is mandatory
+```
+
+**Features:**
+
+- Enforces conventional commit format in PR titles
+- Configurable regex pattern for custom validation
+- Optional scope requirement
+- Posts helpful comment with format guide on failure
+- Updates existing comments instead of creating duplicates
 
 ---
 
@@ -678,7 +709,3 @@ jobs:
 7. **Set appropriate timeouts to prevent hanging jobs**
 8. **Cache dependencies to speed up workflows**
 
----
-
-**Last Updated**: 2025-10-01  
-**Version**: 2.1.0

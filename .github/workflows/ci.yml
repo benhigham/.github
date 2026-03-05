@@ -15,7 +15,7 @@ on:
       node-version-matrix:
         description: |
           JSON array of Node.js versions to test against (e.g. '["18", "20", "22"]')
-          If specified, overrides node-version and runs tests across multiple versions.
+          If specified, the test job runs across these versions instead of node-version. Other jobs are unaffected.
         type: string
         required: false
       pnpm-version:
@@ -121,6 +121,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # When no matrix is provided, create a single-element array.
+        # 'default' is a sentinel: setup-node-pnpm falls back to package.json when node-version is empty.
         node-version: ${{ inputs.node-version-matrix && fromJSON(inputs.node-version-matrix) || fromJSON(format('["{0}"]', inputs.node-version || 'default')) }}
     steps:
       - name: Setup Node.js with pnpm
@@ -134,11 +136,12 @@ jobs:
         run: ${{ inputs.test-command }}
 
       - name: Upload coverage reports
-        if: inputs.upload-coverage && always()
+        if: inputs.upload-coverage && success()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report${{ inputs.node-version-matrix && format('-node-{0}', matrix.node-version) || '' }}
           path: ${{ inputs.coverage-path }}
+          if-no-files-found: warn
           retention-days: 30
 
   build:
