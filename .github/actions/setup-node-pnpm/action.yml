@@ -4,7 +4,7 @@ description: This action sets up a Node.js environment with pnpm and caches the 
 inputs:
   node-version:
     description: |
-      The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 18.x, ^20.10.0, >=21)
+      The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 24.x, ^24.10.0, >=22)
       If not specified, the version will be read from package.json.
     required: false
   pnpm-version:
@@ -28,7 +28,7 @@ runs:
   using: 'composite'
   steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: ${{ inputs.fetch-depth }}
 

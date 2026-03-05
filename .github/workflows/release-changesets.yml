@@ -1,20 +1,13 @@
+# Automated release workflow using Changesets for version management and npm publishing.
+# Supports optional build steps and NPM provenance. Creates version bump PRs and publishes packages when merged.
 name: Release changesets
-description: |
-  This workflow creates a new release using `changesets`. It will:
-  - Bump the version of the packages based on the changesets
-  - Create a pull request for the new version to be released
-  - Publish the packages to npm
-  If your repository requires a build step:
-  - Use the `needs-build` input to specify whether to run the build step before publishing (uses `pnpm run build`)
-  - Use the `publish-command` input to specify the command to run, e.g. `pnpm run build && pnpm run release`
-  - Use the `release` script in package.json to specify the command to run, e.g. `pnpm run build && changeset publish`
 
 on:
   workflow_call:
     inputs:
       node-version:
         description: |
-          The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 18.x, ^20.10.0, >=21)
+          The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 24.x, ^24.10.0, >=22)
           If not specified, the version will be read from package.json.
         type: string
         required: false
@@ -54,7 +47,7 @@ on:
         required: true
 
 concurrency:
-  group: release-${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
 permissions: {}
@@ -70,11 +63,8 @@ jobs:
       pull-requests: write # to create the pull request (changesets/action)
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    outputs:
-      cache-hit: ${{ steps.setup-node-pnpm.outputs.cache-hit }}
     steps:
       - name: Setup Node.js with pnpm
-        id: setup-node-pnpm
         uses: benhigham/.github/.github/actions/setup-node-pnpm@main
         with:
           node-version: ${{ inputs.node-version }}
