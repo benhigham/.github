@@ -51,6 +51,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Approve Dependabot PR
+        if: |
+          (inputs.auto-merge-patch && steps.metadata.outputs.update-type == 'version-update:semver-patch') ||
+          (inputs.auto-merge-minor && steps.metadata.outputs.update-type == 'version-update:semver-minor') ||
+          (inputs.auto-merge-major && steps.metadata.outputs.update-type == 'version-update:semver-major')
         run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
@@ -82,3 +86,13 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Warn — no merge condition matched
+        if: |
+          !(
+            (inputs.auto-merge-patch && steps.metadata.outputs.update-type == 'version-update:semver-patch') ||
+            (inputs.auto-merge-minor && steps.metadata.outputs.update-type == 'version-update:semver-minor') ||
+            (inputs.auto-merge-major && steps.metadata.outputs.update-type == 'version-update:semver-major')
+          )
+        run: |
+          echo "::warning::No auto-merge condition matched. update-type=${{ steps.metadata.outputs.update-type }}. PR left unapproved and without auto-merge; manual review required."
