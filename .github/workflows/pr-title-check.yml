@@ -70,8 +70,8 @@ jobs:
 
             // Find existing bot comment (used in both pass and fail paths).
             // If listing fails, skip comment management and rely on core.setFailed() only.
+            const COMMENT_MARKER = '<!-- pr-title-check -->';
             let botComment = null;
-            let canManageComments = true;
             try {
               const { data: comments } = await github.rest.issues.listComments({
                 owner,
@@ -79,10 +79,9 @@ jobs:
                 issue_number: context.payload.pull_request.number,
               });
               botComment = comments.find(c =>
-                c.user.type === 'Bot' && c.body.includes('PR Title Format Check Failed')
+                c.user.login === 'github-actions[bot]' && c.body.includes(COMMENT_MARKER)
               ) || null;
             } catch (commentError) {
-              canManageComments = false;
               core.warning(`Failed to list PR comments: ${commentError.message}. Skipping comment management.`);
             }
 
@@ -92,6 +91,7 @@ jobs:
                 : '\n\n**Note:** Scope is optional but recommended.';
 
               const comment = [
+                COMMENT_MARKER,
                 '**PR Title Format Check Failed**',
                 '',
                 'Your PR title does not follow the conventional commit format.',
@@ -122,32 +122,30 @@ jobs:
                 'Please update your PR title to match this format.',
               ].join('\n');
 
-              if (canManageComments) {
-                try {
-                  if (botComment) {
-                    await github.rest.issues.updateComment({
-                      owner,
-                      repo,
-                      comment_id: botComment.id,
-                      body: comment,
-                    });
-                  } else {
-                    await github.rest.issues.createComment({
-                      owner,
-                      repo,
-                      issue_number: context.payload.pull_request.number,
-                      body: comment,
-                    });
-                  }
-                } catch (commentError) {
-                  core.warning(`Failed to post failure comment: ${commentError.message}`);
+              try {
+                if (botComment) {
+                  await github.rest.issues.updateComment({
+                    owner,
+                    repo,
+                    comment_id: botComment.id,
+                    body: comment,
+                  });
+                } else {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: context.payload.pull_request.number,
+                    body: comment,
+                  });
                 }
+              } catch (commentError) {
+                core.warning(`Failed to post failure comment: ${commentError.message}`);
               }
 
               core.setFailed('PR title does not follow conventional commit format');
             } else {
               // Clean up any previous failure comment
-              if (canManageComments && botComment) {
+              if (botComment) {
                 try {
                   await github.rest.issues.deleteComment({
                     owner,

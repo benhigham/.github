@@ -1,5 +1,6 @@
-# Validates branch protection settings weekly and creates issues if configuration problems are found.
+# Validates branch protection settings and creates issues if configuration problems are found.
 # Checks for required settings like PR reviews, status checks, and other security configurations.
+# Runs weekly by default, or on demand via workflow_dispatch/workflow_call.
 name: Branch Protection Check
 
 on:
@@ -55,13 +56,19 @@ jobs:
             }
 
             async function findOrCreateIssue(titleFragment, issueBody, labels) {
-              const { data: existingIssues } = await github.rest.issues.listForRepo({
-                owner,
-                repo,
-                state: 'open',
-                labels: labels.join(','),
-                per_page: 100
-              });
+              let existingIssues;
+              try {
+                ({ data: existingIssues } = await github.rest.issues.listForRepo({
+                  owner,
+                  repo,
+                  state: 'open',
+                  labels: labels.join(','),
+                  per_page: 100
+                }));
+              } catch (listError) {
+                core.error(`Failed to list existing issues: ${listError.message} (status: ${listError.status || 'unknown'})`);
+                return;
+              }
 
               const existingIssue = existingIssues.find(issue =>
                 issue.title.includes(titleFragment)
@@ -119,7 +126,7 @@ jobs:
               try {
                 await findOrCreateIssue('Branch Protection Not Configured', issueBody, ['security', 'branch-protection']);
               } catch (issueError) {
-                core.error(`Additionally, failed to create alert issue: ${issueError.message} (status: ${issueError.status || 'unknown'})`);
+                core.error(`Additionally, failed to manage alert issue: ${issueError.message} (status: ${issueError.status || 'unknown'})`);
               }
               return;
             }
@@ -158,7 +165,7 @@ jobs:
               try {
                 await findOrCreateIssue('Branch Protection Configuration Issues', issueBody, ['security', 'branch-protection', 'chore']);
               } catch (issueError) {
-                core.error(`Additionally, failed to create alert issue: ${issueError.message} (status: ${issueError.status || 'unknown'})`);
+                core.error(`Additionally, failed to manage alert issue: ${issueError.message} (status: ${issueError.status || 'unknown'})`);
               }
             } else {
               console.log('\nAll branch protection checks passed!');

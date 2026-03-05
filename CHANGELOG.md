@@ -10,18 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add PR Title Check workflow for enforcing conventional commit format in pull request titles
-- Workflow decision tree in README.md for choosing appropriate workflows by project type
-- Troubleshooting guide in QUICK_REFERENCE.md with solutions for common CI, release, and workflow issues
-- Missing labels to labels.yml:
+- Add workflow decision tree in README.md for choosing appropriate workflows by project type
+- Add troubleshooting guide in QUICK_REFERENCE.md with solutions for common CI, release, and workflow issues
+- Add missing labels to labels.yml:
   - `security` - Security-related issues or improvements
   - `branch-protection` - Related to branch protection configuration
   - `stale` - Automatically applied to inactive issues and PRs
-- Workflow description comments to all reusable workflows for better discoverability
-- Duplicate issue detection in branch-protection-check.yml to prevent issue spam
-- Dependency Review workflow with configurable inputs (fail-on-severity, license checking)
-- Branch Protection Check workflow to validate branch protection settings weekly
-- Node.js version matrix testing support in CI workflow (test across multiple Node versions)
-- Five new dependency labels for comprehensive Dependabot coverage:
+- Add workflow description comments to all reusable workflows for better discoverability
+- Add duplicate issue detection in branch-protection-check.yml to prevent issue spam
+- Add Dependency Review workflow with configurable inputs (fail-on-severity, license checking)
+- Add Branch Protection Check workflow to validate branch protection settings weekly
+- Add Node.js version matrix testing support in CI workflow (test across multiple Node versions)
+- Add five new dependency labels for comprehensive Dependabot coverage:
   - `docker` - Docker/container dependency updates
   - `terraform` - Terraform dependency updates
   - `devcontainers` - Development container dependency updates
@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove stale planning documents (ANALYSIS.md, TASKS.md)
 
-## [2.0.0] - 2025-10-01
+## [2.0.0] - 2024-09-30
 
 ### Added
 

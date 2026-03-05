@@ -1,5 +1,5 @@
 # Automated release workflow using Changesets for version management and npm publishing.
-# Supports optional build steps, NPM provenance, and automatic changelog generation.
+# Supports optional build steps and NPM provenance. Uses Changesets for versioning, changelog updates, and npm publishing.
 # Creates version bump PRs and publishes packages when merged.
 name: Release changesets
 

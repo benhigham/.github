@@ -158,7 +158,7 @@ jobs:
 - Categories: Added, Changed, Deprecated, Removed, Fixed, Security
 - Only document consumer-facing changes (not internal refactoring)
 - Use present tense: "Add feature" not "Added feature"
-- Be specific with version numbers and dates: `[2.0.0] - 2024-09-30`
+- Be specific with version numbers and dates: `[X.Y.Z] - YYYY-MM-DD`
 - Consumer-focused, not developer-focused
 
 ### Commit Messages

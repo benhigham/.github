@@ -1,5 +1,5 @@
 # Automatically approves and merges Dependabot PRs based on semantic versioning rules.
-# Supports configurable merge methods and granular control over patch, minor, and major updates (major disabled by default).
+# Supports configurable merge methods. Patch and minor auto-merge enabled by default; major updates require manual review.
 name: Auto-merge Dependabot PRs
 
 on:
@@ -46,11 +46,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Validate merge-method input
+        env:
+          MERGE_METHOD: ${{ inputs.merge-method }}
+        run: |
+          case "$MERGE_METHOD" in
+            merge|squash|rebase) ;;
+            *) echo "::error::Invalid merge-method '$MERGE_METHOD'. Must be one of: merge, squash, rebase"; exit 1 ;;
+          esac
+
       - name: Get Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify metadata extraction
+        if: steps.metadata.outputs.update-type == ''
+        run: |
+          echo "::error::Failed to extract Dependabot metadata — update-type is empty. The dependabot/fetch-metadata action may have failed silently."
+          exit 1
 
       - name: Check merge conditions
         id: check

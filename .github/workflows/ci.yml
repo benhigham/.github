@@ -83,6 +83,28 @@ permissions:
   contents: read
 
 jobs:
+  validate:
+    name: Validate Inputs
+    if: inputs.node-version-matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Validate node-version-matrix JSON
+        uses: actions/github-script@v7
+        env:
+          INPUT_MATRIX: ${{ inputs.node-version-matrix }}
+        with:
+          script: |
+            const raw = process.env.INPUT_MATRIX;
+            try {
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed) || parsed.length === 0) {
+                core.setFailed('node-version-matrix must be a non-empty JSON array (e.g. \'["18","20","22"]\')');
+              }
+            } catch (e) {
+              core.setFailed(`node-version-matrix is not valid JSON: ${e.message}. Expected a JSON array (e.g. '["18","20","22"]').`);
+            }
+
   lint:
     name: Lint
     if: inputs.run-lint
@@ -115,7 +137,8 @@ jobs:
 
   test:
     name: Test${{ inputs.node-version-matrix && format(' (Node {0})', matrix.node-version) || '' }}
-    if: inputs.run-test
+    needs: validate
+    if: ${{ !cancelled() && !failure() && inputs.run-test }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:

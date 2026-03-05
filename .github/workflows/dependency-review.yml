@@ -1,5 +1,6 @@
 # Automatically reviews dependencies for security vulnerabilities in pull requests.
 # Configurable severity thresholds, license checking, and PR comment settings.
+# NOTE: This workflow must be called from a pull_request event context.
 name: Dependency Review
 
 on:

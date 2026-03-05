@@ -79,72 +79,13 @@ GitHub will use these default files for any public repository under my account t
 
 ## Choosing the Right Workflows
 
-### For Library/Package Projects (with npm publishing)
-
-**Required:**
-
-- ✅ `ci.yml` - Test and validate your code
-- ✅ `release-changesets.yml` - Automated releases with changelogs
-- ✅ `dependency-review.yml` - Security checks for dependencies
-
-**Recommended:**
-
-- ✅ `auto-merge-dependabot.yml` - Auto-merge safe dependency updates
-- ✅ `codeql.yml` - Security code scanning
-- ✅ `labeler.yml` - Auto-label PRs for better organization
-- ✅ `pr-title-check.yml` - Enforce conventional commits
-- ✅ `stale.yml` - Close inactive issues/PRs
-
-**Optional:**
-
-- ⚪ `first-time-contributor.yml` - Welcome new contributors
-- ⚪ `branch-protection-check.yml` - Validate branch protection settings
-
-### For Application Projects (no npm publishing)
-
-**Required:**
-
-- ✅ `ci.yml` - Test and validate your code
-- ✅ `dependency-review.yml` - Security checks for dependencies
-
-**Recommended:**
-
-- ✅ `auto-merge-dependabot.yml` - Auto-merge safe dependency updates
-- ✅ `codeql.yml` - Security code scanning
-- ✅ `labeler.yml` - Auto-label PRs for better organization
-- ✅ `stale.yml` - Close inactive issues/PRs
-
-**Optional:**
-
-- ⚪ `pr-title-check.yml` - Enforce commit standards (if you care about git history)
-- ⚪ `first-time-contributor.yml` - Welcome new contributors
-- ⚪ `branch-protection-check.yml` - Validate branch protection settings
-
-### For Documentation-Only Projects
-
-**Required:**
-
-- ✅ `labeler.yml` - Auto-label documentation PRs
-
-**Recommended:**
-
-- ✅ `stale.yml` - Close inactive issues/PRs
-- ✅ `first-time-contributor.yml` - Welcome contributors
-
-**Optional:**
-
-- ⚪ `ci.yml` - If you want to lint markdown/run checks
-- ⚪ `auto-merge-dependabot.yml` - If using dependencies
-
-### Quick Selection Guide
-
-| Project Type | CI | Release | Security | Auto-merge | Labels | CodeQL | Stale |
-|--------------|:--:|:-------:|:--------:|:----------:|:------:|:------:|:-----:|
-| **npm Package** | ✅ | ✅ changesets | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Web App** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Library (no publish)** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Docs Site** | ⚪ | ⚪ | ⚪ | ⚪ | ✅ | ⚪ | ✅ |
-| **Small Tool** | ✅ | ⚪ | ⚪ | ✅ | ⚪ | ⚪ | ⚪ |
+| Project Type | CI | Release | Security | Auto-merge | Labels | CodeQL | Stale | PR Title | Branch Protection |
+|--------------|:--:|:-------:|:--------:|:----------:|:------:|:------:|:-----:|:--------:|:-----------------:|
+| **npm Package** | ✅ | ✅ changesets | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚪ |
+| **Web App** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚪ | ⚪ |
+| **Library (no publish)** | ✅ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ | ⚪ | ⚪ |
+| **Docs Site** | ⚪ | ⚪ | ⚪ | ⚪ | ✅ | ⚪ | ✅ | ⚪ | ⚪ |
+| **Small Tool** | ✅ | ⚪ | ⚪ | ✅ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
 
 **Legend:** ✅ Recommended | ⚪ Optional
 
