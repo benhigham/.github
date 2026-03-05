@@ -50,35 +50,44 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check merge conditions
+        id: check
+        if: |
+          (inputs.auto-merge-patch && steps.metadata.outputs.update-type == 'version-update:semver-patch') ||
+          (inputs.auto-merge-minor && steps.metadata.outputs.update-type == 'version-update:semver-minor') ||
+          (inputs.auto-merge-major && steps.metadata.outputs.update-type == 'version-update:semver-major')
+        run: echo "matched=true" >> "$GITHUB_OUTPUT"
+
       - name: Approve Dependabot PR
+        if: steps.check.outputs.matched == 'true'
         run: gh pr review --approve "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable auto-merge for patch updates
-        if: |
-          inputs.auto-merge-patch &&
-          steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        if: steps.check.outputs.matched == 'true' && steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable auto-merge for minor updates
-        if: |
-          inputs.auto-merge-minor &&
-          steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        if: steps.check.outputs.matched == 'true' && steps.metadata.outputs.update-type == 'version-update:semver-minor'
         run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Enable auto-merge for major updates
-        if: |
-          inputs.auto-merge-major &&
-          steps.metadata.outputs.update-type == 'version-update:semver-major'
+        if: steps.check.outputs.matched == 'true' && steps.metadata.outputs.update-type == 'version-update:semver-major'
         run: gh pr merge --auto --${{ inputs.merge-method }} "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail — no merge condition matched
+        if: steps.check.outputs.matched != 'true'
+        run: |
+          echo "::error::No auto-merge condition matched. update-type=${{ steps.metadata.outputs.update-type }}. PR left unapproved and without auto-merge; manual review required."
+          exit 1
