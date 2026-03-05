@@ -1,18 +1,3 @@
-<!--
-NOTICE: Consider using one of our specialized templates for your PR:
-- Bug fix: ?template=bug_fix.md
-- New feature: ?template=feature.md
-- Documentation: ?template=documentation.md
-- Dependency update: ?template=dependency_update.md
-- Performance: ?template=performance.md
-- Refactoring: ?template=refactoring.md
-- Testing: ?template=testing.md
-- CI/CD pipeline: ?template=ci_pipeline.md
-
-To use a custom template, add "?template=TEMPLATE_NAME.md" to the end of the PR creation URL.
-Example: https://github.com/benhigham/repo-name/compare/main...branch-name?template=bug_fix.md
--->
-
 ## Related Issue
 <!-- Link to the related issue -->
 

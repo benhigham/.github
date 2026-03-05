@@ -9,7 +9,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 - **Community health files** — inherited by repos without their own (CODE_OF_CONDUCT, SECURITY, SUPPORT, etc.)
 - **Reusable workflows** — called by other repos via `workflow_call`
 - **Shared actions** — composite actions for common setup tasks
-- **Templates** — issue, PR, and discussion templates; documentation templates to copy
+- **Templates** — issue and PR templates
 
 ## What's Here
 
@@ -20,8 +20,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
     release-changesets.yml     # Reusable: versioning and npm publishing via Changesets
     auto-merge-dependabot.yml  # Reusable: approve and merge Dependabot PRs by semver
   ISSUE_TEMPLATE/              # Issue form templates
-  PULL_REQUEST_TEMPLATE/       # PR templates by change type
-  DISCUSSION_TEMPLATE/         # Discussion form templates
+  pull_request_template.md     # Default PR template
   dependabot.yml               # Dependabot config (npm, github-actions, docker, terraform, etc.)
   FUNDING.yml
 ```
@@ -40,7 +39,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 
 - Use `workflow_call` for reusable workflows
 - Always include `timeout-minutes` on jobs
-- Use concurrency groups: `${{ github.workflow }}-${{ github.ref }}`
+- Use concurrency groups: `${{ github.workflow }}-${{ github.ref }}` (or PR number for PR-triggered workflows)
 - Minimal permissions (declare only what's needed)
 - kebab-case for input names
 - Use environment variables (not `${{ inputs }}`) in `github-script` blocks to prevent injection

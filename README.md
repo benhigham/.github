@@ -8,8 +8,7 @@ GitHub uses these as defaults for any public repository that doesn't have its ow
 
 - `CODE_OF_CONDUCT.md`, `SECURITY.md`, `SUPPORT.md`, `GOVERNANCE.md`, `LICENSE.md`
 - `.github/ISSUE_TEMPLATE/` — bug reports, feature requests, codebase improvements
-- `.github/PULL_REQUEST_TEMPLATE/` — templates by change type
-- `.github/DISCUSSION_TEMPLATE/` — announcements, ideas, Q&A, show and tell
+- `.github/pull_request_template.md` — default PR template
 - `.github/dependabot.yml` — dependency updates with grouping and auto-assign
 - `.github/FUNDING.yml`
 

@@ -91,8 +91,16 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Fail — approval failed
+        if: steps.check.outputs.matched == 'true' && steps.approve.outcome == 'failure'
+        run: |
+          echo "::error::PR approval failed. Check the 'Approve Dependabot PR' step logs for details."
+          exit 1
+
       - name: Fail — no merge condition matched
         if: steps.check.outputs.matched != 'true'
+        env:
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
         run: |
-          echo "::error::No auto-merge condition matched. update-type=${{ steps.metadata.outputs.update-type }}. PR left unapproved and without auto-merge; manual review required."
+          echo "::error::No auto-merge condition matched. update-type=${UPDATE_TYPE}. PR left unapproved and without auto-merge; manual review required."
           exit 1
