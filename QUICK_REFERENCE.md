@@ -14,12 +14,18 @@ jobs:
   ci:
     uses: benhigham/.github/.github/workflows/ci.yml@main
     with:
-      node-version: '20'           # Optional: Node.js version
-      pnpm-version: '8'            # Optional: pnpm version
+      node-version: '20'           # Optional: Node.js version (reads package.json if omitted)
+      pnpm-version: '8'            # Optional: pnpm version (reads package.json if omitted)
       run-lint: true               # Run linting
       run-typecheck: true          # Run type checking
       run-test: true               # Run tests
       run-build: false             # Run build (optional)
+      # lint-command: 'pnpm run lint'         # Override default lint command
+      # typecheck-command: 'pnpm run typecheck' # Override default typecheck command
+      # test-command: 'pnpm run test'         # Override default test command
+      # build-command: 'pnpm run build'       # Override default build command
+      # upload-coverage: false                # Upload coverage reports as artifacts
+      # coverage-path: 'coverage'            # Path to coverage reports
 ```
 
 > **Tip**: Use `node-version-matrix` (e.g. `'["18", "20", "22"]'`) to test across multiple Node.js versions. This only affects the test job; other jobs use `node-version`.
@@ -335,9 +341,12 @@ jobs:
 
 **File**: `.github/workflows/sync-labels.yml`
 
+> **Note**: This is a standalone workflow — copy it into your repository rather than calling it with `uses:`.
+
 Automatically syncs repository labels when `.github/labels.yml` changes:
 
 ```yaml
+# Copy this workflow into your repository's .github/workflows/ directory
 name: Sync Labels
 on:
   push:
@@ -352,7 +361,19 @@ permissions:
 
 jobs:
   sync:
-    uses: benhigham/.github/.github/workflows/sync-labels.yml@main
+    name: Sync Repository Labels
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Sync labels
+        uses: micnncim/action-label-syncer@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          manifest: .github/labels.yml
 ```
 
 **What it does:**
@@ -368,28 +389,17 @@ jobs:
 
 **File**: `.github/workflows/first-time-contributor.yml`
 
-Welcomes new contributors with a friendly message:
+> **Note**: This is a standalone workflow — copy it into your repository rather than calling it with `uses:`.
 
-```yaml
-name: Greet First-Time Contributors
-on:
-  pull_request_target:
-    types: [opened]
-  issues:
-    types: [opened]
+Welcomes new contributors with a friendly message. Copy the workflow from this repository's `.github/workflows/first-time-contributor.yml` into your own repository.
 
-permissions:
-  pull-requests: write
-  issues: write
+**Triggers**: `pull_request_target` (opened) and `issues` (opened)
 
-jobs:
-  greeting:
-    uses: benhigham/.github/.github/workflows/first-time-contributor.yml@main
-```
+**Permissions required**: `pull-requests: write`, `issues: write`
 
 **Features:**
 
-- Detects first-time contributors
+- Detects first-time contributors via GitHub API
 - Posts welcoming message on first PR
 - Posts helpful message on first issue
 - Provides checklist and resources
@@ -414,7 +424,7 @@ jobs:
   security:
     uses: benhigham/.github/.github/workflows/codeql.yml@main
     with:
-      languages: '["javascript"]'   # JSON array, e.g. '["javascript","python"]'
+      languages: 'javascript'         # Single language, or JSON array: '["javascript","python"]'
       queries: 'security-and-quality'  # default, security-extended, security-and-quality
       build-mode: 'autobuild'      # none, autobuild, manual
 ```
@@ -507,7 +517,7 @@ jobs:
   security:
     uses: benhigham/.github/.github/workflows/codeql.yml@main
     with:
-      languages: '["javascript"]'
+      languages: 'javascript'
 
   # Label PRs
   label:

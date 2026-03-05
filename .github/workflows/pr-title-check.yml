@@ -47,7 +47,11 @@ jobs:
             // When require-scope is true, make the optional scope group mandatory
             let pattern = process.env.INPUT_PATTERN;
             if (requireScope) {
+              const original = pattern;
               pattern = pattern.replace('(\\(.+\\))?', '(\\(.+\\))');
+              if (pattern === original) {
+                core.warning('require-scope is true but the pattern does not contain the default scope group — scope requirement has no effect with custom patterns');
+              }
             }
 
             const regex = new RegExp(pattern);
@@ -114,5 +118,22 @@ jobs:
 
               core.setFailed('PR title does not follow conventional commit format');
             } else {
-              console.log(`✅ PR title is valid: ${title}`);
+              // Clean up any previous failure comment
+              const { data: comments } = await github.rest.issues.listComments({
+                owner,
+                repo,
+                issue_number: context.payload.pull_request.number,
+              });
+              const botComment = comments.find(c =>
+                c.user.type === 'Bot' && c.body.includes('PR Title Format Check Failed')
+              );
+              if (botComment) {
+                await github.rest.issues.deleteComment({
+                  owner,
+                  repo,
+                  comment_id: botComment.id,
+                });
+              }
+
+              console.log(`PR title is valid: ${title}`);
             }

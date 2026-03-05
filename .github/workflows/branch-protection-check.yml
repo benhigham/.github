@@ -6,6 +6,12 @@ on:
   schedule:
     - cron: "0 0 * * 1" # Weekly on Monday
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to check protection for'
+        type: string
+        default: 'main'
+        required: false
   workflow_call:
     inputs:
       branch:
@@ -19,7 +25,7 @@ permissions:
   issues: write
 
 concurrency:
-  group: branch-protection-check
+  group: branch-protection-check-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -70,80 +76,65 @@ jobs:
               }
             }
 
+            let protection;
             try {
-              const { data: protection } = await github.rest.repos.getBranchProtection({
+              ({ data: protection } = await github.rest.repos.getBranchProtection({
                 owner,
                 repo,
                 branch: branch
-              });
-
-              console.log('✅ Branch protection is enabled for', branch);
-              console.log('Protection rules:', JSON.stringify(protection, null, 2));
-
-              const issues = [];
-
-              if (!protection.required_pull_request_reviews) {
-                issues.push('❌ Pull request reviews are not required');
-              }
-
-              if (!protection.enforce_admins?.enabled) {
-                issues.push('⚠️  Rules do not apply to administrators');
-              }
-
-              if (!protection.required_status_checks) {
-                issues.push('⚠️  No required status checks configured');
-              }
-
-              if (issues.length > 0) {
-                console.log('\n⚠️  Issues found:');
-                issues.forEach(issue => console.log(issue));
-
-                const issueBody = [
-                  `## Branch Protection Check Results\n`,
-                  `The following issues were found with branch protection for \`${branch}\`:\n`,
-                  issues.map(i => `- ${i}`).join('\n'),
-                  `\n**Recommendations:**`,
-                  `- Enable pull request reviews`,
-                  `- Apply rules to administrators`,
-                  `- Configure required status checks`,
-                  `\n---`,
-                  `*Automated check run on ${new Date().toISOString()}*`,
-                ].join('\n');
-
-                try {
-                  await findOrCreateIssue('Branch Protection Configuration Issues', issueBody, ['security', 'branch-protection', 'chore']);
-                } catch (issueError) {
-                  console.error(`Failed to create/update issue: ${issueError.message}`);
-                  core.setFailed(`Branch protection issues found for ${branch} AND issue creation failed: ${issueError.message}`);
-                }
-              } else {
-                console.log('\n✅ All branch protection checks passed!');
-              }
-
+              }));
             } catch (error) {
-              if (error.status === 404) {
-                console.error(`❌ No branch protection found for ${branch}`);
+              if (error.status !== 404) throw error;
 
-                const issueBody = [
-                  `## ⚠️  Branch Protection Missing\n`,
-                  `Branch protection is not configured for \`${branch}\`.\n`,
-                  `**Recommended settings:**`,
-                  `- Require pull request reviews`,
-                  `- Require status checks to pass`,
-                  `- Enforce rules for administrators`,
-                  `- Require linear history`,
-                  `\n---`,
-                  `*Automated check run on ${new Date().toISOString()}*`,
-                ].join('\n');
+              console.error(`❌ No branch protection found for ${branch}`);
+              const issueBody = [
+                `## Branch Protection Missing\n`,
+                `Branch protection is not configured for \`${branch}\`.\n`,
+                `**Recommended settings:**`,
+                `- Require pull request reviews`,
+                `- Require status checks to pass`,
+                `- Enforce rules for administrators`,
+                `- Require linear history`,
+                `\n---`,
+                `*Automated check run on ${new Date().toISOString()}*`,
+              ].join('\n');
 
-                try {
-                  await findOrCreateIssue('Branch Protection Not Configured', issueBody, ['security', 'branch-protection', 'priority: high']);
-                } catch (issueError) {
-                  console.error(`Failed to create/update issue: ${issueError.message}`);
-                  console.error('Branch protection finding:', issueBody);
-                  core.setFailed(`Branch protection is missing for ${branch} AND issue creation failed: ${issueError.message}`);
-                }
-              } else {
-                throw error;
-              }
+              await findOrCreateIssue('Branch Protection Not Configured', issueBody, ['security', 'branch-protection', 'priority: high']);
+              core.setFailed(`Branch protection is not configured for ${branch}`);
+              return;
+            }
+
+            console.log('Branch protection is enabled for', branch);
+
+            const issues = [];
+            if (!protection.required_pull_request_reviews) {
+              issues.push('Pull request reviews are not required');
+            }
+            if (!protection.enforce_admins?.enabled) {
+              issues.push('Rules do not apply to administrators');
+            }
+            if (!protection.required_status_checks) {
+              issues.push('No required status checks configured');
+            }
+
+            if (issues.length > 0) {
+              console.log('\nIssues found:');
+              issues.forEach(issue => console.log(`- ${issue}`));
+
+              const issueBody = [
+                `## Branch Protection Check Results\n`,
+                `The following issues were found with branch protection for \`${branch}\`:\n`,
+                issues.map(i => `- ${i}`).join('\n'),
+                `\n**Recommendations:**`,
+                `- Enable pull request reviews`,
+                `- Apply rules to administrators`,
+                `- Configure required status checks`,
+                `\n---`,
+                `*Automated check run on ${new Date().toISOString()}*`,
+              ].join('\n');
+
+              await findOrCreateIssue('Branch Protection Configuration Issues', issueBody, ['security', 'branch-protection', 'chore']);
+              core.setFailed(`Branch protection issues found for ${branch}: ${issues.join('; ')}`);
+            } else {
+              console.log('\nAll branch protection checks passed!');
             }

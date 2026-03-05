@@ -34,12 +34,17 @@ This repository contains comprehensive community health files and reusable workf
 - [x] **Auto-merge Dependabot** (`auto-merge-dependabot.yml`) - Automatically merge dependency updates
 - [x] **Stale Management** (`stale.yml`) - Auto-close inactive issues and PRs
 - [x] **PR Labeler** (`labeler.yml`) - Auto-label PRs based on changed files
-- [x] **Sync Labels** (`sync-labels.yml`) - Automatically sync labels when labels.yml changes
-- [x] **First-Time Contributor** (`first-time-contributor.yml`) - Welcome new contributors
 - [x] **CodeQL Security** (`codeql.yml`) - Security scanning and analysis
 - [x] **Dependency Review** (`dependency-review.yml`) - Automated dependency security review in PRs
 - [x] **PR Title Check** (`pr-title-check.yml`) - Enforce conventional commit format in PR titles
 - [x] **Branch Protection Check** (`branch-protection-check.yml`) - Validate branch protection settings
+
+### 🔧 Standalone Workflows
+
+These workflows run directly in this repository and are meant to be copied into consuming repositories:
+
+- [x] **Sync Labels** (`sync-labels.yml`) - Automatically sync labels when labels.yml changes
+- [x] **First-Time Contributor** (`first-time-contributor.yml`) - Welcome new contributors
 
 ### 🏷️ Configuration Files
 
@@ -61,15 +66,10 @@ This repository contains comprehensive community health files and reusable workf
 
 ## 📚 Documentation
 
-Comprehensive documentation is available in the [GitHub Wiki](https://github.com/benhigham/.github/wiki):
-
-- **[Getting Started](https://github.com/benhigham/.github/wiki/Getting-Started)** - 5-minute quickstart guide
-- **[Quick Reference](https://github.com/benhigham/.github/wiki/Quick-Reference)** - Copy-paste examples for all workflows
-- **[Advanced Usage](https://github.com/benhigham/.github/wiki/Advanced-Usage)** - Matrix testing, complex patterns, and custom configurations
-- **[Troubleshooting](https://github.com/benhigham/.github/wiki/Troubleshooting)** - Common issues and solutions
-- **[Labels Reference](https://github.com/benhigham/.github/wiki/Labels-Reference)** - Complete guide to all 45 standard labels
-- **[Templates Guide](https://github.com/benhigham/.github/wiki/Templates-Guide)** - How to use ARCHITECTURE.md, DEVELOPMENT.md, RELEASING.md
-- **[Governance](https://github.com/benhigham/.github/wiki/Governance)** - Project structure and decision-making
+- **[Quick Reference](QUICK_REFERENCE.md)** - Copy-paste examples for all workflows
+- **[Labels Reference](LABELS.md)** - Complete guide to all 45 standard labels
+- **[Contributing](CONTRIBUTING.md)** - How to contribute to this project
+- **[Changelog](CHANGELOG.md)** - All notable changes
 
 ## How It Works
 

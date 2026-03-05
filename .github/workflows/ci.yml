@@ -121,8 +121,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # When no matrix is provided, create a single-element array.
-        # 'default' is a sentinel: setup-node-pnpm falls back to package.json when node-version is empty.
+        # When no matrix is provided, create a single-element array with a 'default' sentinel.
+        # When node-version is 'default', the step below passes inputs.node-version instead (which
+        # may be empty, causing setup-node-pnpm to read the version from package.json).
         node-version: ${{ inputs.node-version-matrix && fromJSON(inputs.node-version-matrix) || fromJSON(format('["{0}"]', inputs.node-version || 'default')) }}
     steps:
       - name: Setup Node.js with pnpm
