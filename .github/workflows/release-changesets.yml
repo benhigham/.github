@@ -6,12 +6,6 @@ name: Release changesets
 on:
   workflow_call:
     inputs:
-      node-version:
-        description: The version of Node.js to use. If not specified, read from package.json.
-        type: string
-      pnpm-version:
-        description: The version of pnpm to use (>= 10.7.0 for OIDC). If not specified, read from package.json.
-        type: string
       needs-build:
         description: Whether to run the build step before publishing
         type: boolean
@@ -56,13 +50,10 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: ${{ inputs.pnpm-version }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ inputs.node-version }}
           node-version-file: package.json
           cache: pnpm
           cache-dependency-path: '**/pnpm-lock.yaml'
