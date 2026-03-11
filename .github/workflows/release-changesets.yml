@@ -1,5 +1,6 @@
 # Automated release workflow using Changesets for version management and npm publishing.
-# Supports optional build steps and NPM provenance. Creates version bump PRs and publishes packages when merged.
+# Uses OIDC (Trusted Publishers) for npm authentication — no NPM_TOKEN required.
+# Creates version bump PRs and publishes packages when merged.
 name: Release changesets
 
 on:
@@ -8,6 +9,7 @@ on:
       node-version:
         description: |
           The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 24.x, ^24.10.0, >=22)
+          Must be >= 22 for OIDC npm provenance support.
           If not specified, the version will be read from package.json.
         type: string
         required: false
@@ -42,32 +44,44 @@ on:
         type: string
         default: "chore(release): create new release"
         required: false
-    secrets:
-      NPM_TOKEN:
-        required: true
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: release-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
-permissions: {}
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
+  pull-requests: write
 
 jobs:
   release:
     name: Create release
-    permissions:
-      attestations: write # to persist npm provenance attestations (npm publish)
-      contents: write # to push branches/tags and create GitHub Releases (changesets/action)
-      id-token: write # to mint OIDC token for npm provenance generation (npm publish)
-      pull-requests: write # to create and update the version PR (changesets/action)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Setup Node.js with pnpm
-        uses: benhigham/.github/.github/actions/setup-node-pnpm@main
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ inputs.pnpm-version }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ inputs.node-version }}
-          pnpm-version: ${{ inputs.pnpm-version }}
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build packages
         if: inputs.needs-build
@@ -83,5 +97,4 @@ jobs:
           title: ${{ inputs.pr-title }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
