@@ -1,5 +1,8 @@
 # Automatically approves and merges Dependabot PRs based on semantic versioning rules.
 # Supports configurable merge methods. Patch and minor auto-merge enabled by default; major updates require manual review.
+#
+# Note: The concurrency group uses the caller's workflow name (not this reusable workflow's name),
+# so each caller gets its own concurrency scope.
 name: Auto-merge Dependabot PRs
 
 on:
@@ -74,6 +77,17 @@ jobs:
           (inputs.auto-merge-minor && steps.metadata.outputs.update-type == 'version-update:semver-minor') ||
           (inputs.auto-merge-major && steps.metadata.outputs.update-type == 'version-update:semver-major')
         run: echo "matched=true" >> "$GITHUB_OUTPUT"
+
+      - name: Verify auto-merge is enabled
+        if: steps.check.outputs.matched == 'true'
+        run: |
+          AUTO_MERGE=$(gh api "repos/${{ github.repository }}" --jq '.allow_auto_merge')
+          if [ "$AUTO_MERGE" != "true" ]; then
+            echo "::error::Auto-merge is not enabled for this repository. Enable it in Settings > General > Pull Requests > Allow auto-merge."
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Approve Dependabot PR
         id: approve
