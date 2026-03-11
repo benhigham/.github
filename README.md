@@ -24,14 +24,18 @@ on:
   push:
     branches: [main]
 
+permissions:
+  attestations: write
+  contents: write
+  id-token: write
+  pull-requests: write
+
 jobs:
   release:
     uses: benhigham/.github/.github/workflows/release-changesets.yml@main
     with:
       node-version: '24'
       needs-build: true
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
 ### Auto-merge Dependabot
@@ -56,7 +60,7 @@ jobs:
 
 ### setup-node-pnpm
 
-Sets up Node.js and pnpm with dependency caching. Used internally by the release workflow; can also be used directly:
+Sets up Node.js and pnpm with dependency caching:
 
 ```yaml
 - uses: benhigham/.github/.github/actions/setup-node-pnpm@main
