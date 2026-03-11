@@ -1,22 +1,16 @@
 # Automated release workflow using Changesets for version management and npm publishing.
-# Uses npm Trusted Publishers (OIDC) for authentication — requires each package to be
-# registered as a trusted publisher on npmjs.com.
-# Creates version bump PRs and publishes packages when merged.
+# Uses npm Trusted Publishers (OIDC) for authentication via pnpm's native support (>= 10.7.0).
+# Requires each package to be registered as a trusted publisher on npmjs.com.
 name: Release changesets
 
 on:
   workflow_call:
     inputs:
       node-version:
-        description: |
-          The version of Node.js to use (supports the Semantic Versioning Specification, e.g. 24.x, ^24.10.0, >=22)
-          If not specified, the version will be read from package.json.
+        description: The version of Node.js to use. If not specified, read from package.json.
         type: string
       pnpm-version:
-        description: |
-          The version of pnpm to use (supports the Semantic Versioning Specification, e.g. 8, 10.7.0, latest)
-          Must be >= 10.7.0 for OIDC Trusted Publishing support.
-          If not specified, the version will be read from package.json.
+        description: The version of pnpm to use (>= 10.7.0 for OIDC). If not specified, read from package.json.
         type: string
       needs-build:
         description: Whether to run the build step before publishing
@@ -44,10 +38,10 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  attestations: write  # npm provenance attestations
-  contents: write      # push tags/branches, create GitHub Releases (changesets/action)
-  id-token: write      # OIDC token for npm Trusted Publishers (pnpm >= 10.7.0 handles exchange)
-  pull-requests: write # create/update version PR (changesets/action)
+  attestations: write
+  contents: write
+  id-token: write
+  pull-requests: write
 
 jobs:
   release:
@@ -65,9 +59,6 @@ jobs:
         with:
           version: ${{ inputs.pnpm-version }}
 
-      # Do NOT set registry-url here. It creates .npmrc with ${NODE_AUTH_TOKEN}
-      # which can interfere with pnpm's native OIDC token exchange.
-      # pnpm defaults to https://registry.npmjs.org/ and handles OIDC natively.
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
