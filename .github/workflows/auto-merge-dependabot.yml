@@ -81,7 +81,10 @@ jobs:
       - name: Verify auto-merge is enabled
         if: steps.check.outputs.matched == 'true'
         run: |
-          AUTO_MERGE=$(gh api "repos/${{ github.repository }}" --jq '.allow_auto_merge')
+          if ! AUTO_MERGE=$(gh api "repos/${{ github.repository }}" --jq '.allow_auto_merge' 2>&1); then
+            echo "::error::Failed to query repository settings via GitHub API. Response: ${AUTO_MERGE}"
+            exit 1
+          fi
           if [ "$AUTO_MERGE" != "true" ]; then
             echo "::error::Auto-merge is not enabled for this repository. Enable it in Settings > General > Pull Requests > Allow auto-merge."
             exit 1
