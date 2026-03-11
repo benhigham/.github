@@ -56,11 +56,10 @@ jobs:
   release:
     name: Create release
     permissions:
-      attestations: write # to create attestations (changesets/action)
-      contents: write # to create the release (changesets/action)
-      id-token: write # for npm provenance verification (changesets/action)
-      issues: write # to post issue comments (changesets/action)
-      pull-requests: write # to create the pull request (changesets/action)
+      attestations: write # to persist npm provenance attestations (npm publish)
+      contents: write # to push branches/tags and create GitHub Releases (changesets/action)
+      id-token: write # to mint OIDC token for npm provenance generation (npm publish)
+      pull-requests: write # to create and update the version PR (changesets/action)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
