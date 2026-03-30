@@ -1,12 +1,16 @@
+# Security Review
+
 Perform a security-focused review of the current PR.
 
 Read CLAUDE.md for project context.
 
-Gather context:
+## Context
+
 - !`gh pr diff`
 - !`gh pr view --json title,body,changedFiles`
 
-OWASP-aligned review checklist:
+## OWASP-Aligned Review Checklist
+
 - **Injection:** SQL, XSS, command injection, template injection
 - **Authentication/Authorisation:** Access control changes, session handling
 - **Data exposure:** Secrets in code, PII handling, error messages leaking internals
@@ -17,4 +21,5 @@ OWASP-aligned review checklist:
 
 Rate each finding: CRITICAL / HIGH / MEDIUM / LOW / INFO
 
-Post findings as inline comments with severity tags. Post a summary comment with overall security assessment.
+Post findings as inline comments with severity tags. Post a summary comment with
+overall security assessment.
