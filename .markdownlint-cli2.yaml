@@ -1,0 +1,11 @@
+config:
+  MD013:
+    line_length: 120
+  MD033:
+    allowed_elements:
+      - "details"
+      - "summary"
+
+ignores:
+  # Legal text — do not reformat
+  - "LICENSE.md"

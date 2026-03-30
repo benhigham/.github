@@ -1,6 +1,8 @@
 # benhigham/.github
 
-Default [community health files](https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file) and reusable GitHub Actions workflows for all repositories under my account.
+Default [community health files][chf] and reusable GitHub Actions workflows for all repositories under my account.
+
+[chf]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
 
 ## Community Health Files
 
@@ -34,7 +36,7 @@ jobs:
   release:
     uses: benhigham/.github/.github/workflows/release-changesets.yml@main
     with:
-      node-version: '24'
+      node-version: "24"
       needs-build: true
 ```
 
@@ -54,16 +56,4 @@ jobs:
       auto-merge-patch: true
       auto-merge-minor: true
       merge-method: squash
-```
-
-## Shared Actions
-
-### setup-node-pnpm
-
-Sets up Node.js and pnpm with dependency caching:
-
-```yaml
-- uses: benhigham/.github/.github/actions/setup-node-pnpm@main
-  with:
-    node-version: '24'
 ```

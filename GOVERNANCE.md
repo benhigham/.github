@@ -1,10 +1,12 @@
 # Project Governance
 
-This document outlines the governance model for this project. As an individual maintainer, I've created this document to provide transparency around decision-making processes and to establish a foundation for sustainable project development.
+This document outlines the governance model for this project. As an individual maintainer, I've created this document to
+provide transparency around decision-making processes and to establish a foundation for sustainable project development.
 
 ## Project Vision
 
-This project aims to provide a repository of reusable templates, workflows and documentation for the GitHub platform. The vision is to grow the assets over time to cover more languages, workflows, and applications.
+This project aims to provide a repository of reusable templates, workflows and documentation for the GitHub platform.
+The vision is to grow the assets over time to cover more languages, workflows, and applications.
 
 ## Current Governance
 
@@ -69,11 +71,13 @@ To ensure project sustainability:
   3. Evaluate candidates based on technical skills, understanding of project goals, and community engagement
   4. Provide a transition period where new maintainers work alongside me before full handover
   5. Transfer repository ownership and administrative rights through GitHub's built-in mechanisms
-  6. In case of sudden unavailability, contributors with significant involvement may request ownership transfer through GitHub's abandoned repository process
+  6. In case of sudden unavailability, contributors with significant involvement may request ownership transfer through
+     GitHub's abandoned repository process
 
 ## Code of Conduct
 
-All community interactions are governed by our [Code of Conduct](./CODE_OF_CONDUCT.md). I am responsible for enforcement and addressing code of conduct violations.
+All community interactions are governed by our [Code of Conduct](./CODE_OF_CONDUCT.md). I am responsible for
+enforcement and addressing code of conduct violations.
 
 ## Communication Channels
 

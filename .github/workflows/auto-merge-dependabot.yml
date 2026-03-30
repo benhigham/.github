@@ -1,5 +1,6 @@
 # Automatically approves and merges Dependabot PRs based on semantic versioning rules.
-# Supports configurable merge methods. Patch and minor auto-merge enabled by default; major updates require manual review.
+# Supports configurable merge methods. Patch and minor auto-merge enabled by default; major updates require manual
+# review.
 #
 # Note: The concurrency group uses the caller's workflow name (not this reusable workflow's name),
 # so each caller gets its own concurrency scope.
@@ -14,7 +15,7 @@ on:
         default: true
         required: false
       merge-method:
-        description: 'The merge method to use. Valid values: merge, squash, rebase'
+        description: "The merge method to use. Valid values: merge, squash, rebase"
         type: string
         default: squash
         required: false
@@ -67,7 +68,8 @@ jobs:
       - name: Verify metadata extraction
         if: steps.metadata.outputs.update-type == ''
         run: |
-          echo "::error::Failed to extract Dependabot metadata — update-type is empty. The dependabot/fetch-metadata action may have failed silently."
+          echo "::error::Failed to extract Dependabot metadata — update-type is empty." \
+            "The dependabot/fetch-metadata action may have failed silently."
           exit 1
 
       - name: Check merge conditions
@@ -86,7 +88,8 @@ jobs:
             exit 1
           fi
           if [ "$AUTO_MERGE" != "true" ]; then
-            echo "::error::Auto-merge is not enabled for this repository. Enable it in Settings > General > Pull Requests > Allow auto-merge."
+            echo "::error::Auto-merge is not enabled for this repository." \
+              "Enable it in Settings > General > Pull Requests > Allow auto-merge."
             exit 1
           fi
         env:
@@ -119,5 +122,6 @@ jobs:
         env:
           UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
         run: |
-          echo "::error::No auto-merge condition matched. update-type=${UPDATE_TYPE}. PR left unapproved and without auto-merge; manual review required."
+          echo "::error::No auto-merge condition matched. update-type=${UPDATE_TYPE}." \
+            "PR left unapproved and without auto-merge; manual review required."
           exit 1

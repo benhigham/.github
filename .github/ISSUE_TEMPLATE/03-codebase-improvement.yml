@@ -39,7 +39,9 @@ body:
     id: benefits
     attributes:
       label: Benefits
-      description: What are the benefits of this improvement? (e.g., better performance, cleaner code, better maintainability)
+      description: >-
+        What are the benefits of this improvement?
+        (e.g., better performance, cleaner code, better maintainability)
     validations:
       required: true
 
@@ -106,7 +108,8 @@ body:
     id: additional-information
     attributes:
       label: Additional Information
-      description: Provide any additional context, code examples, links to resources, or other information that might be helpful
+      description: >-
+        Provide any additional context, code examples, links to resources, or other information that might be helpful
     validations:
       required: false
 

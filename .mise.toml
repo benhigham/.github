@@ -1,0 +1,38 @@
+[tools]
+actionlint = "latest"
+lefthook = "latest"
+"npm:markdownlint-cli2" = "latest"
+"npm:prettier" = "latest"
+"pipx:yamllint" = "latest"
+
+[tasks.lint]
+description = "Run all linters"
+depends = ["lint:actions", "lint:yaml", "lint:markdown"]
+
+[tasks."lint:actions"]
+description = "Lint GitHub Actions workflows"
+run = "actionlint"
+
+[tasks."lint:yaml"]
+description = "Lint YAML files"
+run = "yamllint --strict ."
+
+[tasks."lint:markdown"]
+description = "Lint Markdown files"
+run = "markdownlint-cli2 '**/*.md'"
+
+[tasks.fmt]
+description = "Format YAML and Markdown files"
+run = "prettier --write '**/*.{yml,yaml,md}'"
+
+[tasks."fmt:check"]
+description = "Check formatting (no writes)"
+run = "prettier --check '**/*.{yml,yaml,md}'"
+
+[tasks."fix:markdown"]
+description = "Auto-fix Markdown lint violations"
+run = "markdownlint-cli2 --fix '**/*.md'"
+
+[tasks.check]
+description = "Run all checks (format + lint)"
+depends = ["fmt:check", "lint"]

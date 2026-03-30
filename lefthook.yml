@@ -1,0 +1,24 @@
+pre-commit:
+  commands:
+    prettier:
+      priority: 1
+      glob: "{*.{yml,yaml,md},**/*.{yml,yaml,md}}"
+      run: prettier --write {staged_files}
+      stage_fixed: true
+      fail_text: "Prettier failed. Run 'mise install' to install required tools."
+    actionlint:
+      priority: 2
+      glob: ".github/workflows/*.yml"
+      run: actionlint {staged_files}
+      fail_text: "actionlint failed. Run 'mise install' to install required tools."
+    yamllint:
+      priority: 2
+      glob: "{*.{yml,yaml},**/*.{yml,yaml}}"
+      run: yamllint --strict {staged_files}
+      fail_text: "yamllint failed. Run 'mise install' to install required tools."
+    markdownlint:
+      priority: 2
+      glob: "{*.md,**/*.md}"
+      run: markdownlint-cli2 --fix {staged_files}
+      stage_fixed: true
+      fail_text: "markdownlint failed. Run 'mise install' to install required tools."
