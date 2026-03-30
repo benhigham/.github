@@ -16,6 +16,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 ```text
 .github/
   workflows/
+    lint.yml                   # Lint and format check on PRs and pushes to main
     release-changesets.yml     # Reusable: versioning and npm publishing via Changesets
     auto-merge-dependabot.yml  # Reusable: approve and merge Dependabot PRs by semver
   ISSUE_TEMPLATE/              # Issue form templates
@@ -31,6 +32,19 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 - **pnpm** as the package manager (not npm or yarn)
 - **Changesets** for versioning and releases
 - **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, etc.)
+- **mise** as the tool manager and task runner
+- **lefthook** for git hooks (pre-commit linting and formatting)
+
+## Code Quality
+
+- `mise run check` — run all checks (format + lint)
+- `mise run fmt` — auto-format YAML and Markdown
+- `mise run lint` — run all linters
+- `mise run lint:actions` — actionlint only
+- `mise run lint:yaml` — yamllint only
+- `mise run lint:markdown` — markdownlint-cli2 only
+
+Lefthook runs formatting and linting automatically on pre-commit.
 
 ## Conventions
 
@@ -60,5 +74,5 @@ breaking changes affect all repos without their own versions.
 
 ### Files Local to This Repo
 
-`README.md`, `AGENTS.md`, workflow definitions, and the setup-node-pnpm action. Other repos call workflows explicitly;
+`README.md`, `AGENTS.md`, and workflow definitions. Other repos call workflows explicitly;
 changes here require consumers to update their references if inputs change.
