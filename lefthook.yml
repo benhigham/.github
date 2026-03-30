@@ -2,7 +2,7 @@ pre-commit:
   commands:
     prettier:
       priority: 1
-      glob: "**/*.{yml,yaml,md}"
+      glob: "{*.{yml,yaml,md},**/*.{yml,yaml,md}}"
       run: prettier --write {staged_files}
       stage_fixed: true
     actionlint:
@@ -11,10 +11,10 @@ pre-commit:
       run: actionlint {staged_files}
     yamllint:
       priority: 2
-      glob: "**/*.{yml,yaml}"
+      glob: "{*.{yml,yaml},**/*.{yml,yaml}}"
       run: yamllint {staged_files}
     markdownlint:
       priority: 2
-      glob: "**/*.md"
+      glob: "{*.md,**/*.md}"
       run: markdownlint-cli2 --fix {staged_files}
       stage_fixed: true
