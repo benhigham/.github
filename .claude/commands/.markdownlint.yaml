@@ -1,0 +1,7 @@
+# Command files are prompts, not documents — the first line is an instruction,
+# not a heading.
+MD041: false
+
+# Inherit root line-length setting
+MD013:
+  line_length: 120

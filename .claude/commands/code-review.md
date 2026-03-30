@@ -1,5 +1,3 @@
-# Code Review
-
 Review the current PR for code quality, security, and convention adherence.
 
 Read CLAUDE.md for project conventions.

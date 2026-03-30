@@ -1,5 +1,3 @@
-# Release Notes
-
 Generate release notes for the latest release (or tag $ARGUMENTS if specified).
 
 ## Context

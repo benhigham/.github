@@ -1,5 +1,3 @@
-# Documentation Sync
-
 Check if documentation is still accurate after the changes in this PR. $ARGUMENTS
 
 ## Context

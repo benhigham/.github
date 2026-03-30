@@ -1,5 +1,3 @@
-# Test Generation
-
 Find source files changed in this PR that lack adequate test coverage. $ARGUMENTS
 
 ## Context

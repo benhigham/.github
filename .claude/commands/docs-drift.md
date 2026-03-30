@@ -1,5 +1,3 @@
-# Documentation Drift
-
 Verify all documentation is current and accurate. $ARGUMENTS
 
 ## Steps

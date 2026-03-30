@@ -1,5 +1,3 @@
-# Security Review
-
 Perform a security-focused review of the current PR.
 
 Read CLAUDE.md for project context.

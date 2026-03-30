@@ -1,5 +1,3 @@
-# Triage
-
 Triage the current issue (or issue $ARGUMENTS if specified).
 
 ## Context

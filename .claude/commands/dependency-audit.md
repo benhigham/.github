@@ -1,5 +1,3 @@
-# Dependency Audit
-
 Audit project dependencies for security vulnerabilities and maintenance concerns.
 
 ## Context

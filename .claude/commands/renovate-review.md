@@ -1,5 +1,3 @@
-# Renovate Review
-
 Review this Renovate dependency update PR.
 
 $ARGUMENTS

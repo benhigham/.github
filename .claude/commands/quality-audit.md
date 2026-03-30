@@ -1,5 +1,3 @@
-# Quality Audit
-
 Perform a comprehensive code quality audit of this repository.
 
 Read CLAUDE.md for project conventions.
