@@ -24,7 +24,8 @@ body:
     attributes:
       label: Description
       description: |
-        Describe in detail what's happening, the context in which the bug occurs, and any troubleshooting steps you've already taken.
+        Describe in detail what's happening, the context in which the bug occurs, and any troubleshooting steps
+        you've already taken.
     validations:
       required: true
 
