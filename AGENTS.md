@@ -121,7 +121,11 @@ directly — the former is event-driven (no prompt needed), the latter uses diff
 ```yaml
 - uses: benhigham/.github/.github/actions/setup-node-pnpm@<sha>
   with:
-    node-version: "24" # optional, default '24'
+    # Zero-config: reads Node version from package.json by default
+    # Override with node-version for an explicit version:
+    # node-version: '24'
+    # Or point to a different file:
+    # node-version-file: '.nvmrc'
     install: "true" # optional, default 'true' — runs pnpm install --frozen-lockfile
 ```
 

@@ -72,8 +72,7 @@ See `AGENTS.md` for the full input reference.
   uses: actions/checkout@...
 
 - uses: benhigham/.github/.github/actions/setup-node-pnpm@<sha>
-  with:
-    node-version: "24"
+  # Zero-config: reads Node version from package.json by default
 ```
 
 ### setup-terraform

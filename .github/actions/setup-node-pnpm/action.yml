@@ -4,9 +4,13 @@ description: "Installs pnpm, sets up Node.js with dependency caching, and option
 
 inputs:
   node-version:
-    description: "Node.js version to use"
+    description: "Explicit Node.js version (takes precedence over node-version-file)"
     required: false
-    default: "24"
+    default: ""
+  node-version-file:
+    description: "File to read Node.js version from (e.g. package.json, .nvmrc, .node-version)"
+    required: false
+    default: "package.json"
   install:
     description: "Run pnpm install --frozen-lockfile after setup"
     required: false
@@ -19,9 +23,17 @@ runs:
       uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
 
     - name: Setup Node.js
+      if: inputs.node-version != ''
       uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
       with:
         node-version: ${{ inputs.node-version }}
+        cache: pnpm
+
+    - name: Setup Node.js from file
+      if: inputs.node-version == ''
+      uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
         cache: pnpm
 
     - name: Install dependencies

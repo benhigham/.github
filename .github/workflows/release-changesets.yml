@@ -48,18 +48,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: package.json
-          cache: pnpm
-          cache-dependency-path: "**/pnpm-lock.yaml"
-
-      - name: Install dependencies
-        run: pnpm install
+      - name: Setup Node.js + pnpm
+        uses: benhigham/.github/.github/actions/setup-node-pnpm@main
 
       - name: Build packages
         if: inputs.needs-build
