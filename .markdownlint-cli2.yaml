@@ -9,3 +9,5 @@ config:
 ignores:
   # Legal text — do not reformat
   - "LICENSE.md"
+  # Claude Code command files are prompt templates, not documentation
+  - ".claude/commands/**"
