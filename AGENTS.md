@@ -17,7 +17,6 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
   workflows/
     lint.yml                   # Lint and format check on PRs and pushes to main
     release-changesets.yml     # Reusable: versioning and npm publishing via Changesets
-    auto-merge-dependabot.yml  # Reusable: approve and merge Dependabot PRs by semver
   ISSUE_TEMPLATE/              # Issue form templates
   pull_request_template.md     # Default PR template
   dependabot.yml               # Dependabot config (npm, github-actions, docker, terraform, etc.)

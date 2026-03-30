@@ -39,21 +39,3 @@ jobs:
       node-version: "24"
       needs-build: true
 ```
-
-### Auto-merge Dependabot
-
-Automatically approves and merges Dependabot PRs based on semver rules.
-
-```yaml
-name: Auto-merge Dependabot
-on:
-  pull_request:
-
-jobs:
-  auto-merge:
-    uses: benhigham/.github/.github/workflows/auto-merge-dependabot.yml@main
-    with:
-      auto-merge-patch: true
-      auto-merge-minor: true
-      merge-method: squash
-```
