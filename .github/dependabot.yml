@@ -1,118 +1,118 @@
 version: 2
 
 updates:
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'github-actions'
+      - "dependencies"
+      - "github-actions"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
     groups:
       github-actions:
         patterns:
-          - '*'
+          - "*"
         update-types:
-          - 'minor'
-          - 'patch'
+          - "minor"
+          - "patch"
 
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'npm'
+      - "dependencies"
+      - "npm"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
     groups:
       development-dependencies:
-        dependency-type: 'development'
+        dependency-type: "development"
         update-types:
-          - 'minor'
-          - 'patch'
+          - "minor"
+          - "patch"
       production-dependencies:
-        dependency-type: 'production'
+        dependency-type: "production"
         update-types:
-          - 'patch'
+          - "patch"
     versioning-strategy: increase
 
-  - package-ecosystem: 'docker'
-    directory: '/'
+  - package-ecosystem: "docker"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'docker'
+      - "dependencies"
+      - "docker"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
 
-  - package-ecosystem: 'terraform'
-    directory: '/'
+  - package-ecosystem: "terraform"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'terraform'
+      - "dependencies"
+      - "terraform"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
 
-  - package-ecosystem: 'devcontainers'
-    directory: '/'
+  - package-ecosystem: "devcontainers"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'devcontainers'
+      - "dependencies"
+      - "devcontainers"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
 
-  - package-ecosystem: 'gitsubmodule'
-    directory: '/'
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'git-submodules'
+      - "dependencies"
+      - "git-submodules"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
 
-  - package-ecosystem: 'gomod'
-    directory: '/'
+  - package-ecosystem: "gomod"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     assignees:
-      - 'benhigham'
+      - "benhigham"
     labels:
-      - 'dependencies'
-      - 'go'
+      - "dependencies"
+      - "go"
     commit-message:
-      prefix: 'chore'
-      include: 'scope'
+      prefix: "chore"
+      include: "scope"
     groups:
       go-dependencies:
         patterns:
-          - '*'
+          - "*"
         update-types:
-          - 'minor'
-          - 'patch'
+          - "minor"
+          - "patch"

@@ -15,7 +15,6 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 
 ```text
 .github/
-  actions/setup-node-pnpm/    # Composite action: checkout + pnpm + Node.js + install
   workflows/
     release-changesets.yml     # Reusable: versioning and npm publishing via Changesets
     auto-merge-dependabot.yml  # Reusable: approve and merge Dependabot PRs by semver

@@ -1,11 +1,15 @@
 ## Related Issue
+
 <!-- Link to the related issue -->
 
 ## Description
+
 <!-- Describe the changes in this PR -->
 
 ## Type of Change
+
 <!-- Mark the appropriate option with an [x] -->
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Documentation update
@@ -17,6 +21,7 @@
 - [ ] Other (please describe):
 
 ## Testing
+
 <!-- Describe the testing done -->
 
 ## Checklist

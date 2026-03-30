@@ -15,6 +15,7 @@
 ### Task 1: mise setup
 
 **Files:**
+
 - Create: `.mise.toml`
 
 - [ ] **Step 1: Create `.mise.toml`**
@@ -82,6 +83,7 @@ git commit -m "chore: add mise config with linting and formatting tools"
 ### Task 2: Prettier setup and formatting pass
 
 **Files:**
+
 - Create: `.prettierrc.yaml`
 - Create: `.prettierignore`
 
@@ -133,6 +135,7 @@ git commit -m "style: format existing files with prettier"
 ### Task 3: yamllint setup
 
 **Files:**
+
 - Create: `.yamllint.yml`
 
 - [ ] **Step 1: Create `.yamllint.yml`**
@@ -158,6 +161,7 @@ Expected: Either clean output (no violations) or a list of violations to fix. Si
 - [ ] **Step 3: Fix any yamllint violations**
 
 yamllint has no auto-fix mode. Manually fix any reported violations. Common fixes:
+
 - Lines over 120 chars: break long strings or expressions across lines
 - Missing newline at end of file: add trailing newline (prettier should have handled this)
 - Comments spacing: ensure a space after `#`
@@ -186,6 +190,7 @@ git commit -m "style: fix yamllint violations in existing files"
 ### Task 4: markdownlint setup
 
 **Files:**
+
 - Create: `.markdownlint-cli2.yaml`
 
 - [ ] **Step 1: Create `.markdownlint-cli2.yaml`**
@@ -253,6 +258,7 @@ git commit -m "style: fix markdownlint violations in existing files"
 ### Task 5: actionlint verification
 
 **Files:**
+
 - None created (actionlint uses no config file by default)
 
 - [ ] **Step 1: Run actionlint on existing workflows**
@@ -263,6 +269,7 @@ Expected: actionlint checks `.github/workflows/release-changesets.yml` and `.git
 - [ ] **Step 2: Fix any actionlint violations**
 
 Fix any reported issues in the workflow files. Common actionlint findings:
+
 - Unknown action versions
 - Type mismatches in expressions
 - Missing permissions
@@ -285,6 +292,7 @@ git commit -m "fix: resolve actionlint violations in existing workflows"
 ### Task 6: lefthook setup
 
 **Files:**
+
 - Create: `lefthook.yml`
 
 - [ ] **Step 1: Create `lefthook.yml`**
@@ -336,6 +344,7 @@ Note: This commit itself will trigger the pre-commit hook, which validates the s
 ### Task 7: CI workflow
 
 **Files:**
+
 - Create: `.github/workflows/lint.yml`
 
 - [ ] **Step 1: Create `.github/workflows/lint.yml`**
@@ -396,6 +405,7 @@ git commit -m "ci: add lint workflow for PRs and pushes to main"
 ### Task 8: Update AGENTS.md
 
 **Files:**
+
 - Modify: `AGENTS.md`
 
 - [ ] **Step 1: Add lint workflow to the directory tree**
@@ -494,6 +504,7 @@ docs: update AGENTS.md with code quality tooling
 Make a trivial change to a Markdown file (e.g., add a trailing space), stage it, and attempt a commit. Verify that lefthook's pre-commit hook runs prettier (which removes the trailing space) and the commit succeeds with the auto-fixed file.
 
 Run:
+
 ```bash
 echo "test  " >> README.md
 git add README.md

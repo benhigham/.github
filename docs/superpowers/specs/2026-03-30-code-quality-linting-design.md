@@ -32,12 +32,12 @@ lefthook.yml                # Git hook config
 
 All managed and version-pinned by mise.
 
-| Tool | Purpose | Auto-fix? |
-|------|---------|-----------|
-| actionlint | Validate GitHub Actions workflow syntax, expressions, action references | No (read-only) |
-| yamllint | YAML style and syntax linting | No (read-only) |
-| markdownlint-cli2 | Markdown linting with rule enforcement | Yes (`--fix`) |
-| prettier | Opinionated formatter for YAML and Markdown | Yes (`--write`) |
+| Tool              | Purpose                                                                 | Auto-fix?       |
+| ----------------- | ----------------------------------------------------------------------- | --------------- |
+| actionlint        | Validate GitHub Actions workflow syntax, expressions, action references | No (read-only)  |
+| yamllint          | YAML style and syntax linting                                           | No (read-only)  |
+| markdownlint-cli2 | Markdown linting with rule enforcement                                  | Yes (`--fix`)   |
+| prettier          | Opinionated formatter for YAML and Markdown                             | Yes (`--write`) |
 
 ## mise configuration (`.mise.toml`)
 
@@ -139,6 +139,7 @@ rules:
 ```
 
 Key overrides:
+
 - **line-length: 120** — workflow expressions and long descriptions exceed 80 chars. 120 is a reasonable ceiling.
 - **truthy check-keys: false** — GitHub Actions uses `on:` as a top-level key, which yamllint flags as a truthy value. Disabling key checking avoids false positives while still catching truthy values in other positions.
 
@@ -157,6 +158,7 @@ config:
 ```
 
 Key overrides:
+
 - **MD013 (line length): 120** — matches yamllint for consistency.
 - **MD033 (inline HTML):** Allow `<details>` and `<summary>` elements, which are commonly used in GitHub Markdown for collapsible sections. Other HTML is still flagged.
 
@@ -220,6 +222,7 @@ jobs:
 ```
 
 Key decisions:
+
 - **`cancel-in-progress: true`** — unlike the release workflow (which must not be cancelled), lint runs are safe to cancel on new pushes.
 - **Formatting check before lint** — fail fast on formatting issues before spending time on lint.
 - **`permissions: contents: read`** — minimal permissions, read-only.

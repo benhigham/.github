@@ -34,7 +34,7 @@ jobs:
   release:
     uses: benhigham/.github/.github/workflows/release-changesets.yml@main
     with:
-      node-version: '24'
+      node-version: "24"
       needs-build: true
 ```
 
@@ -65,5 +65,5 @@ Sets up Node.js and pnpm with dependency caching:
 ```yaml
 - uses: benhigham/.github/.github/actions/setup-node-pnpm@main
   with:
-    node-version: '24'
+    node-version: "24"
 ```
