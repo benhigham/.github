@@ -105,22 +105,26 @@ pre-commit:
   commands:
     prettier:
       priority: 1
-      glob: "**/*.{yml,yaml,md}"
+      glob: "{*.{yml,yaml,md},**/*.{yml,yaml,md}}"
       run: prettier --write {staged_files}
       stage_fixed: true
+      fail_text: "Prettier failed. Run 'mise install' to install required tools."
     actionlint:
       priority: 2
       glob: ".github/workflows/*.yml"
       run: actionlint {staged_files}
+      fail_text: "actionlint failed. Run 'mise install' to install required tools."
     yamllint:
       priority: 2
-      glob: "**/*.{yml,yaml}"
-      run: yamllint {staged_files}
+      glob: "{*.{yml,yaml},**/*.{yml,yaml}}"
+      run: yamllint --strict {staged_files}
+      fail_text: "yamllint failed. Run 'mise install' to install required tools."
     markdownlint:
       priority: 2
-      glob: "**/*.md"
+      glob: "{*.md,**/*.md}"
       run: markdownlint-cli2 --fix {staged_files}
       stage_fixed: true
+      fail_text: "markdownlint failed. Run 'mise install' to install required tools."
 ```
 
 Prettier at priority 1 ensures formatting is applied before linters run at priority 2 (lower number = runs first). The three linters run in parallel at the same priority.
@@ -135,17 +139,18 @@ Strict defaults with targeted overrides:
 extends: default
 
 rules:
+  document-start: disable
   line-length:
     max: 120
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: true
   truthy:
-    forbid-duplicated-merge-keys: true
     check-keys: false
 ```
 
 Key overrides:
 
+- **document-start: disable** — no YAML files in this repo use the `---` document start marker.
 - **line-length: 120** — workflow expressions and long descriptions exceed 80 chars. 120 is a reasonable ceiling.
 - **truthy check-keys: false** — GitHub Actions uses `on:` as a top-level key, which yamllint flags as a truthy value. Disabling key checking avoids false positives while still catching truthy values in other positions.
 
