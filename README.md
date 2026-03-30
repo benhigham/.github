@@ -39,3 +39,70 @@ jobs:
       node-version: "24"
       needs-build: true
 ```
+
+## Composite Actions
+
+Composite actions are composable steps — the caller controls the job, permissions, and timeout.
+
+### claude-invoke
+
+The core Claude Code wrapper. Handles token validation, command file resolution, and tool configuration.
+
+```yaml
+- name: Checkout repository
+  uses: actions/checkout@... # required before claude-invoke
+
+- uses: benhigham/.github/.github/actions/claude-invoke@<sha>
+  with:
+    oauth-token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+    command: quality-audit
+    max-turns: "30"
+    additional-permissions: |
+      actions: read
+```
+
+See `AGENTS.md` for the full input reference.
+
+> **SHA pinning:** Always pin composite action refs to a specific commit SHA rather than `@main`.
+
+### setup-node-pnpm
+
+```yaml
+- name: Checkout repository
+  uses: actions/checkout@...
+
+- uses: benhigham/.github/.github/actions/setup-node-pnpm@<sha>
+  with:
+    node-version: "24"
+```
+
+### setup-terraform
+
+```yaml
+- name: Checkout repository
+  uses: actions/checkout@...
+
+- uses: benhigham/.github/.github/actions/setup-terraform@<sha>
+```
+
+## Claude Code Commands
+
+Reference command files live in `.claude/commands/`. Copy to your repo's `.claude/commands/`
+directory and customise for your stack.
+
+| Command            | Purpose                                  | Trigger                  |
+| ------------------ | ---------------------------------------- | ------------------------ |
+| `code-review`      | PR code review with inline comments      | PR open/reopen           |
+| `renovate-review`  | Review Renovate dependency PRs           | PR open (renovate actor) |
+| `test-gen`         | Generate missing tests for changed files | PR open                  |
+| `security-review`  | Security-focused PR review               | PR open                  |
+| `docs-sync`        | Keep docs accurate after code changes    | PR open                  |
+| `respond`          | Handle @claude mentions                  | issue/PR comment         |
+| `triage`           | Categorise and label new issues          | issue opened             |
+| `release-notes`    | Generate release notes from commits      | release event            |
+| `quality-audit`    | Weekly code quality sweep                | schedule                 |
+| `dependency-audit` | Dependency security audit                | schedule                 |
+| `docs-drift`       | Documentation freshness check            | schedule                 |
+
+Commands are **dual-use**: they run in CI via `claude-invoke` and locally via Claude Code's
+`/command` syntax.
