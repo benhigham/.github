@@ -2,8 +2,7 @@
 
 Default [community health files][chf] and reusable GitHub Actions workflows for all repositories under my account.
 
-[chf]:
-  https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
+[chf]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
 
 ## Community Health Files
 
