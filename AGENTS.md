@@ -38,14 +38,16 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 
 - Use `workflow_call` for reusable workflows
 - Always include `timeout-minutes` on jobs
-- Use concurrency groups: `${{ github.workflow }}-${{ github.ref }}` (or PR number for PR-triggered workflows). Reusable workflows should prefix the group (e.g. `release-${{ github.workflow }}-${{ github.ref }}`) to namespace separately from the caller's concurrency groups
+- Use concurrency groups: `${{ github.workflow }}-${{ github.ref }}` (or PR number for PR-triggered workflows). Reusable
+  workflows should prefix the group (e.g. `release-${{ github.workflow }}-${{ github.ref }}`) to namespace separately
+  from the caller's concurrency groups
 - Minimal permissions (declare only what's needed)
 - kebab-case for input names
 - Use environment variables (not `${{ inputs }}`) in `github-script` blocks to prevent injection
 
 ### Commits
 
-```
+```text
 <type>: <description>
 ```
 
@@ -53,8 +55,10 @@ Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `perf`
 
 ### Files That Affect Other Repos
 
-Community health files, templates, and `.github/dependabot.yml` are inherited by other repositories. Edit carefully — breaking changes affect all repos without their own versions.
+Community health files, templates, and `.github/dependabot.yml` are inherited by other repositories. Edit carefully —
+breaking changes affect all repos without their own versions.
 
 ### Files Local to This Repo
 
-`README.md`, `AGENTS.md`, workflow definitions, and the setup-node-pnpm action. Other repos call workflows explicitly; changes here require consumers to update their references if inputs change.
+`README.md`, `AGENTS.md`, workflow definitions, and the setup-node-pnpm action. Other repos call workflows explicitly;
+changes here require consumers to update their references if inputs change.
