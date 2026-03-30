@@ -1,0 +1,30 @@
+# .github/actions/setup-node-pnpm/action.yml
+name: "Setup Node.js + pnpm"
+description: "Installs pnpm, sets up Node.js with dependency caching, and optionally runs pnpm install."
+
+inputs:
+  node-version:
+    description: "Node.js version to use"
+    required: false
+    default: "24"
+  install:
+    description: "Run pnpm install --frozen-lockfile after setup"
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+
+    - name: Setup Node.js
+      uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+
+    - name: Install dependencies
+      if: inputs.install == 'true'
+      shell: bash
+      run: pnpm install --frozen-lockfile
