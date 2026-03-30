@@ -8,7 +8,6 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
 
 - **Community health files** — inherited by repos without their own (CODE_OF_CONDUCT, SECURITY, SUPPORT, etc.)
 - **Reusable workflows** — called by other repos via `workflow_call`
-- **Shared actions** — composite actions for common setup tasks
 - **Templates** — issue and PR templates
 
 ## What's Here
@@ -23,6 +22,12 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
   pull_request_template.md     # Default PR template
   dependabot.yml               # Dependabot config (npm, github-actions, docker, terraform, etc.)
   FUNDING.yml
+.mise.toml                     # Tool versions + task definitions (mise)
+lefthook.yml                   # Git hook config (pre-commit)
+.yamllint.yml                  # yamllint rules
+.markdownlint-cli2.yaml        # markdownlint rules
+.prettierrc.yaml               # Prettier config
+.prettierignore                # Prettier ignore patterns
 ```
 
 ## Tech Stack

@@ -1,5 +1,8 @@
 # Code Quality: Linting & Formatting — Implementation Plan
 
+> **Note:** This plan has been executed. The final implementation diverges from some details
+> below — see the design spec's divergence note and the actual config files for current state.
+>
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add actionlint, yamllint, markdownlint-cli2, and prettier to the `.github` repository with mise for tool management, lefthook for git hooks, and a CI workflow as a merge gate.
@@ -12,7 +15,7 @@
 
 ---
 
-### Task 1: mise setup
+## Task 1: mise setup
 
 **Files:**
 
@@ -80,7 +83,7 @@ git commit -m "chore: add mise config with linting and formatting tools"
 
 ---
 
-### Task 2: Prettier setup and formatting pass
+## Task 2: Prettier setup and formatting pass
 
 **Files:**
 
@@ -132,7 +135,7 @@ git commit -m "style: format existing files with prettier"
 
 ---
 
-### Task 3: yamllint setup
+## Task 3: yamllint setup
 
 **Files:**
 
@@ -187,7 +190,7 @@ git commit -m "style: fix yamllint violations in existing files"
 
 ---
 
-### Task 4: markdownlint setup
+## Task 4: markdownlint setup
 
 **Files:**
 
@@ -255,7 +258,7 @@ git commit -m "style: fix markdownlint violations in existing files"
 
 ---
 
-### Task 5: actionlint verification
+## Task 5: actionlint verification
 
 **Files:**
 
@@ -289,7 +292,7 @@ git commit -m "fix: resolve actionlint violations in existing workflows"
 
 ---
 
-### Task 6: lefthook setup
+## Task 6: lefthook setup
 
 **Files:**
 
@@ -341,7 +344,7 @@ Note: This commit itself will trigger the pre-commit hook, which validates the s
 
 ---
 
-### Task 7: CI workflow
+## Task 7: CI workflow
 
 **Files:**
 
@@ -402,7 +405,7 @@ git commit -m "ci: add lint workflow for PRs and pushes to main"
 
 ---
 
-### Task 8: Update AGENTS.md
+## Task 8: Update AGENTS.md
 
 **Files:**
 
@@ -454,13 +457,13 @@ Lefthook runs formatting and linting automatically on pre-commit.
 
 The current text references "the setup-node-pnpm action" which was removed. Update line 60 from:
 
-```
+```text
 `README.md`, `AGENTS.md`, workflow definitions, and the setup-node-pnpm action.
 ```
 
 To:
 
-```
+```text
 `README.md`, `AGENTS.md`, and workflow definitions.
 ```
 
@@ -473,7 +476,7 @@ git commit -m "docs: update AGENTS.md with code quality tooling"
 
 ---
 
-### Task 9: Final verification
+## Task 9: Final verification
 
 - [ ] **Step 1: Run the full check suite one final time**
 
@@ -485,7 +488,7 @@ Expected: All checks pass. Zero violations across all linters and formatters.
 Run: `git log --oneline -10`
 Expected: Clean commit history with conventional commit messages. Roughly these commits (order may vary slightly):
 
-```
+```text
 ci: add lint workflow for PRs and pushes to main
 chore: add lefthook pre-commit hooks for linting and formatting
 fix: resolve actionlint violations in existing workflows (if needed)

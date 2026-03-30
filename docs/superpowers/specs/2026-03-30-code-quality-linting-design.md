@@ -1,5 +1,11 @@
 # Code Quality: Linting & Formatting
 
+> **Note:** This is the pre-implementation design spec. The final implementation diverges in several
+> places — yamllint config gained `document-start: disable` and dropped the unsupported
+> `forbid-duplicated-merge-keys` option, lefthook globs use brace expansion to match root-level
+> files, markdownlint has an `ignores` block, and yamllint runs with `--strict`. See the actual
+> config files for the current state.
+
 Design spec for adding actionlint, yamllint, markdownlint, and prettier to the `.github` repository, with mise for tool management, lefthook for git hooks, and a CI workflow as a merge gate.
 
 ## Goals

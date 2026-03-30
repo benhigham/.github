@@ -9,7 +9,3 @@ config:
 ignores:
   # Legal text — do not reformat
   - "LICENSE.md"
-  # PR templates don't need an H1 heading
-  - ".github/pull_request_template.md"
-  # Planning/spec docs are agentic artifacts with long lines and loose formatting
-  - "docs/**/*.md"

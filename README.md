@@ -57,15 +57,3 @@ jobs:
       auto-merge-minor: true
       merge-method: squash
 ```
-
-## Shared Actions
-
-### setup-node-pnpm
-
-Sets up Node.js and pnpm with dependency caching:
-
-```yaml
-- uses: benhigham/.github/.github/actions/setup-node-pnpm@main
-  with:
-    node-version: "24"
-```

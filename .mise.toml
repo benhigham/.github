@@ -15,7 +15,7 @@ run = "actionlint"
 
 [tasks."lint:yaml"]
 description = "Lint YAML files"
-run = "yamllint ."
+run = "yamllint --strict ."
 
 [tasks."lint:markdown"]
 description = "Lint Markdown files"
