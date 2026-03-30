@@ -1,0 +1,9 @@
+# .github/actions/setup-terraform/action.yml
+name: "Setup Terraform toolchain"
+description: "Installs Terraform, Terragrunt, tflint, and related tools via mise from the repo .mise.toml."
+
+runs:
+  using: composite
+  steps:
+    - name: Install Terraform toolchain via mise
+      uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4
