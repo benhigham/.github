@@ -38,6 +38,13 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
     quality-audit.md           # Weekly code quality sweep
     dependency-audit.md        # Dependency security audit
     docs-drift.md              # Documentation freshness check
+  agents/
+    workflow-reviewer.md       # Subagent: review workflows for pitfalls and convention adherence
+  skills/
+    workflow-scaffold/         # Skill: scaffold new workflows and composite actions
+    update-command-file/       # Skill: create/update .claude/commands/*.md files
+  settings.json                # Claude Code hooks (auto-format, sensitive file protection)
+.mcp.json                      # MCP server config (context7, GitHub) — shared across team
 .mise.toml                     # Tool versions + task definitions (mise)
 lefthook.yml                   # Git hook config (pre-commit)
 .yamllint.yml                  # yamllint rules
@@ -161,6 +168,54 @@ When `claude-invoke` receives `command: foo`:
 
 This means zero-config onboarding (use `prompt:` inline) with a clean migration path to command files as
 repos mature.
+
+## Skills
+
+Skills in `.claude/skills/` provide guided workflows for common tasks in this repo.
+
+### workflow-scaffold
+
+Scaffolds new reusable workflows (`workflow_call`) and composite actions with org conventions
+(concurrency groups, timeouts, permissions, SHA pinning, input validation). Includes templates
+and pointers to real examples in this repo.
+
+### update-command-file
+
+Creates or updates `.claude/commands/*.md` files. Encodes the command file structure (opening line,
+context section, steps, output), naming rules (`^[a-zA-Z0-9_-]+$`), and conventions like `$ARGUMENTS`,
+severity levels, and branch naming. Instructs the agent to read existing command files for style.
+
+## Agents
+
+Subagents in `.claude/agents/` are specialised reviewers that can run in parallel.
+
+### workflow-reviewer
+
+Reviews `.github/workflows/` and `.github/actions/` for:
+
+- Missing `timeout-minutes` or overly broad permissions
+- Unpinned action versions (should be full SHA, not `@v4` or `@main`)
+- Injection risks — `${{ inputs }}` or `${{ github.event }}` in `run:` blocks
+- Missing or incorrectly namespaced concurrency groups
+- Secrets handling (explicit forwarding, least-privilege `GITHUB_TOKEN`)
+
+## Hooks
+
+Claude Code hooks in `.claude/settings.json` run automatically during sessions:
+
+- **PostToolUse (Write|Edit):** Runs `prettier --write` on YAML/Markdown files and
+  `markdownlint-cli2 --fix` on Markdown files after every edit
+- **PreToolUse (Edit|Write):** Blocks edits to `.env*` files and `settings.local.json` —
+  these may contain secrets or local permission overrides and should be edited manually
+
+## MCP Servers
+
+`.mcp.json` configures shared MCP servers for all contributors:
+
+- **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other
+  tools used in this repo. Runs via `npx @upstash/context7-mcp@latest`
+- **github** — GitHub API access via `https://api.githubcopilot.com/mcp`. Uses `${GITHUB_TOKEN}`
+  env var (automatic in GitHub Actions; locally, set via `export GITHUB_TOKEN=$(gh auth token)`)
 
 ## Conventions
 
