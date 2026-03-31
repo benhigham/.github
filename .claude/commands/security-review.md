@@ -1,6 +1,6 @@
 Perform a security-focused review of the current PR.
 
-Read CLAUDE.md for project context.
+Read CLAUDE.md for project conventions.
 
 ## Context
 

@@ -17,7 +17,8 @@ inputs:
     description: >
       Command name from .claude/commands/ (without .md extension).
       If .claude/commands/{command}.md exists in the repo, Claude is invoked with /{command} {command-args}.
-      Mutually exclusive with prompt; at least one must be provided.
+      Takes precedence over prompt when the command file exists; at least one of command or prompt
+      must be provided.
     required: false
     default: ""
 
@@ -79,12 +80,22 @@ runs:
           echo "::error::claude-invoke: at least one of 'command' or 'prompt' must be provided"
           exit 1
         fi
+        if [ -n "$COMMAND" ] && ! [[ "$COMMAND" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+          echo "::error::claude-invoke: command name must contain only" \
+            "letters, numbers, hyphens, and underscores. Got '$COMMAND'"
+          exit 1
+        fi
+        if ! [[ "$MAX_TURNS" =~ ^[1-9][0-9]*$ ]]; then
+          echo "::error::claude-invoke: max-turns must be a positive integer, got '$MAX_TURNS'"
+          exit 1
+        fi
       env:
         OAUTH_TOKEN: ${{ inputs.oauth-token }}
         COMMAND: ${{ inputs.command }}
         PROMPT: ${{ inputs.prompt }}
+        MAX_TURNS: ${{ inputs.max-turns }}
 
-    - name: Resolve invocation mode
+    - name: Resolve prompt
       id: resolve
       shell: bash
       run: |
@@ -93,17 +104,32 @@ runs:
           cmd_file=".claude/commands/${COMMAND}.md"
           if [ -f "$cmd_file" ]; then
             echo "Command file found: $cmd_file — using /${COMMAND} syntax"
-            echo "use_command=true" >> "$GITHUB_OUTPUT"
+            prompt="/${COMMAND}"
+            if [ -n "$COMMAND_ARGS" ]; then
+              prompt="${prompt} ${COMMAND_ARGS}"
+            fi
           else
+            if [ -z "$PROMPT" ]; then
+              echo "::error::claude-invoke: command file '$cmd_file' not found and no 'prompt' fallback provided"
+              exit 1
+            fi
             echo "Command file $cmd_file not found — falling back to inline prompt"
-            echo "use_command=false" >> "$GITHUB_OUTPUT"
+            prompt="$PROMPT"
           fi
         else
           echo "No command specified — using inline prompt"
-          echo "use_command=false" >> "$GITHUB_OUTPUT"
+          prompt="$PROMPT"
         fi
+        delimiter="DELIM_$(openssl rand -hex 8)"
+        {
+          echo "prompt<<${delimiter}"
+          echo "$prompt"
+          echo "${delimiter}"
+        } >> "$GITHUB_OUTPUT"
       env:
         COMMAND: ${{ inputs.command }}
+        COMMAND_ARGS: ${{ inputs.command-args }}
+        PROMPT: ${{ inputs.prompt }}
 
     - name: Build claude_args
       id: build-args
@@ -114,19 +140,14 @@ runs:
         if [ -n "$EXTRA_TOOLS" ]; then
           tools="${tools},${EXTRA_TOOLS}"
         fi
-        delimiter="DELIM_$(openssl rand -hex 8)"
-        {
-          echo "claude_args<<${delimiter}"
-          echo "--allowedTools \"${tools}\" --max-turns ${MAX_TURNS}"
-          echo "${delimiter}"
-        } >> "$GITHUB_OUTPUT"
+        # Single-line value — no heredoc delimiter needed
+        echo "claude_args=--allowedTools \"${tools}\" --max-turns ${MAX_TURNS}" >> "$GITHUB_OUTPUT"
       env:
         ALLOWED_TOOLS: ${{ inputs.allowed-tools }}
         EXTRA_TOOLS: ${{ inputs.extra-tools }}
         MAX_TURNS: ${{ inputs.max-turns }}
 
-    - name: Run Claude (command file)
-      if: steps.resolve.outputs.use_command == 'true'
+    - name: Run Claude
       uses: anthropics/claude-code-action@3ac52d0da9f8ec9ca7b4dc23bb477e36ef9c77a9 # v1
       with:
         claude_code_oauth_token: ${{ inputs.oauth-token }}
@@ -139,20 +160,4 @@ runs:
         plugins: |
           context7@claude-plugins-official
           security-guidance@claude-plugins-official
-        prompt: /${{ inputs.command }} ${{ inputs.command-args }} # TODO: trim trailing space when command-args is empty
-
-    - name: Run Claude (inline prompt)
-      if: steps.resolve.outputs.use_command == 'false'
-      uses: anthropics/claude-code-action@3ac52d0da9f8ec9ca7b4dc23bb477e36ef9c77a9 # v1
-      with:
-        claude_code_oauth_token: ${{ inputs.oauth-token }}
-        track_progress: ${{ inputs.track-progress }}
-        classify_inline_comments: ${{ inputs.classify-inline-comments }}
-        additional_permissions: ${{ inputs.additional-permissions }}
-        claude_args: ${{ steps.build-args.outputs.claude_args }}
-        plugin_marketplaces: |
-          https://github.com/anthropics/claude-plugins-official.git
-        plugins: |
-          context7@claude-plugins-official
-          security-guidance@claude-plugins-official
-        prompt: ${{ inputs.prompt }}
+        prompt: ${{ steps.resolve.outputs.prompt }}

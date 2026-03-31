@@ -2,7 +2,7 @@ Audit project dependencies for security vulnerabilities and maintenance concerns
 
 ## Context
 
-- !`cat package.json | head -5` (detect package manager)
+- !`ls pnpm-lock.yaml yarn.lock package-lock.json Pipfile.lock go.sum 2>/dev/null` (detect package manager)
 
 ## Steps
 

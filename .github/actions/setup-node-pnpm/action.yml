@@ -11,6 +11,10 @@ inputs:
     description: "File to read Node.js version from (e.g. package.json, .nvmrc, .node-version)"
     required: false
     default: "package.json"
+  cache-dependency-path:
+    description: "Glob for lockfiles to hash for cache key"
+    required: false
+    default: "**/pnpm-lock.yaml"
   install:
     description: "Run pnpm install --frozen-lockfile after setup"
     required: false
@@ -19,6 +23,17 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Validate inputs
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [[ "$INSTALL" != "true" && "$INSTALL" != "false" ]]; then
+          echo "::error::setup-node-pnpm: 'install' must be 'true' or 'false', got '$INSTALL'"
+          exit 1
+        fi
+      env:
+        INSTALL: ${{ inputs.install }}
+
     - name: Install pnpm
       uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
 
@@ -28,6 +43,7 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     - name: Setup Node.js from file
       if: inputs.node-version == ''
@@ -35,6 +51,7 @@ runs:
       with:
         node-version-file: ${{ inputs.node-version-file }}
         cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
     - name: Install dependencies
       if: inputs.install == 'true'

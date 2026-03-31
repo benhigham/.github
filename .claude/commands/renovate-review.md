@@ -1,6 +1,4 @@
-Review this Renovate dependency update PR.
-
-$ARGUMENTS
+Review this Renovate dependency update PR. $ARGUMENTS
 
 ## Context
 

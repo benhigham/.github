@@ -72,8 +72,7 @@ Lefthook runs formatting and linting automatically on pre-commit.
 Composite actions are steps, not jobs — the caller controls the job shape, permissions, and timeout.
 Reference them with a pinned SHA ref: `benhigham/.github/.github/actions/{name}@<sha>`
 
-> **SHA pinning:** Always pin to a specific commit SHA rather than `@main`. After Phase 1 merges, pin to
-> the merge commit SHA.
+> **SHA pinning:** Always pin to a specific commit SHA rather than `@main`.
 
 ### claude-invoke
 
@@ -93,8 +92,10 @@ Wraps `anthropics/claude-code-action` with org-standard config (tools, plugins, 
 
 1. Fails fast if `oauth-token` is empty
 2. Fails fast if neither `command` nor `prompt` is provided
-3. If `command` is set and `.claude/commands/{command}.md` exists → invokes as `/{command} {command-args}`
-4. Otherwise → uses the `prompt` input directly
+3. Validates `command` name (alphanumeric, hyphens, underscores) and `max-turns` (positive integer)
+4. If `command` is set and `.claude/commands/{command}.md` exists → invokes as `/{command} {command-args}`
+5. If `command` is set but file is missing → falls back to `prompt` (fails if empty)
+6. Otherwise → uses the `prompt` input directly
 
 **Key inputs:**
 
@@ -126,6 +127,7 @@ directly — the former is event-driven (no prompt needed), the latter uses diff
     # node-version: '24'
     # Or point to a different file:
     # node-version-file: '.nvmrc'
+    cache-dependency-path: "**/pnpm-lock.yaml" # optional, default '**/pnpm-lock.yaml'
     install: "true" # optional, default 'true' — runs pnpm install --frozen-lockfile
 ```
 

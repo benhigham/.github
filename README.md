@@ -36,7 +36,6 @@ jobs:
   release:
     uses: benhigham/.github/.github/workflows/release-changesets.yml@main
     with:
-      node-version: "24"
       needs-build: true
 ```
 
