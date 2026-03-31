@@ -43,8 +43,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
   skills/
     workflow-scaffold/         # Skill: scaffold new workflows and composite actions
     update-command-file/       # Skill: create/update .claude/commands/*.md files
-  settings.json                # Claude Code hooks (auto-format, sensitive file protection)
-.mcp.json                      # MCP server config (context7, GitHub) — shared across team
+  settings.json                # Claude Code plugins and hooks (auto-format, sensitive file protection)
 .mise.toml                     # Tool versions + task definitions (mise)
 lefthook.yml                   # Git hook config (pre-commit)
 .yamllint.yml                  # yamllint rules
@@ -208,14 +207,17 @@ Claude Code hooks in `.claude/settings.json` run automatically during sessions:
 - **PreToolUse (Edit|Write):** Blocks edits to `.env*` files and `settings.local.json` —
   these may contain secrets or local permission overrides and should be edited manually
 
-## MCP Servers
+## Plugins
 
-`.mcp.json` configures shared MCP servers for all contributors:
+Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins`:
 
 - **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other
-  tools used in this repo. Runs via `npx @upstash/context7-mcp@<version>`
-- **github** — GitHub API access via `https://api.githubcopilot.com/mcp`. Uses `${GITHUB_TOKEN}`
-  env var (automatic in GitHub Actions; locally, set via `export GITHUB_TOKEN=$(gh auth token)`)
+  tools used in this repo
+- **github** — GitHub API access (automatic in GitHub Actions; locally, requires
+  `export GITHUB_TOKEN=$(gh auth token)`)
+
+Both are from `anthropics/claude-plugins-official` — the same plugins used by the `claude-invoke`
+composite action in CI.
 
 ## Conventions
 
