@@ -86,7 +86,6 @@ jobs:
         uses: actions/checkout@<sha> # v6
 
       - name: Run task
-        shell: bash
         run: |
           set -euo pipefail
           echo "Running with input: $EXAMPLE_INPUT"

@@ -204,13 +204,15 @@ Claude Code hooks in `.claude/settings.json` run automatically during sessions:
 
 - **PostToolUse (Write|Edit):** Runs `prettier --write` on YAML/Markdown files and
   `markdownlint-cli2 --fix` on Markdown files after every edit
-- **PreToolUse (Edit|Write):** Blocks edits to `.env*` files and `settings.local.json` —
-  these may contain secrets or local permission overrides and should be edited manually
+- **PreToolUse (Edit|Write):** Blocks edits to `.env` and `.env.*` files (e.g. `.env.local`,
+  `.env.production`) and `settings.local.json` — these may contain secrets or local permission
+  overrides and should be edited manually
 
 ## Plugins
 
-Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins`. All are from
-`anthropics/claude-plugins-official`:
+Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins` for local
+sessions. The `claude-invoke` composite action has its own plugin list (see Baked-in plugins
+above). All plugins are from `anthropics/claude-plugins-official`:
 
 - **commit-commands** — conventional commit workflow (commit, push, PR creation)
 - **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other

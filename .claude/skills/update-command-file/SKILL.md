@@ -110,14 +110,14 @@ PRs, issues) should specify naming conventions and labels.
 
 ## Conventions Across Command Files
 
-| Pattern           | Convention                                                            |
-| ----------------- | --------------------------------------------------------------------- |
-| Dynamic arguments | `$ARGUMENTS` placeholder — passed via `command-args` in claude-invoke |
-| Severity levels   | CRITICAL / HIGH / MEDIUM / LOW (standardised across audit commands)   |
-| Branch naming     | `chore/TYPE-DATE` or `docs/TYPE-DATE`                                 |
-| Commit messages   | Conventional Commits (`docs:`, `test:`, `chore:`, etc.)               |
-| Labels            | Primary + secondary (e.g., `security` + `dependencies`)               |
-| Superseding       | Close older PRs/issues with the same label before creating new ones   |
+| Pattern           | Convention                                                                 |
+| ----------------- | -------------------------------------------------------------------------- |
+| Dynamic arguments | `$ARGUMENTS` placeholder — passed via `command-args` in claude-invoke      |
+| Severity levels   | CRITICAL / HIGH / MEDIUM / LOW / INFO (standardised across audit commands) |
+| Branch naming     | `chore/TYPE-DATE` or `docs/TYPE-DATE`                                      |
+| Commit messages   | Conventional Commits (`docs:`, `test:`, `chore:`, etc.)                    |
+| Labels            | Primary + secondary (e.g., `security` + `dependencies`)                    |
+| Superseding       | Close older PRs/issues with the same label before creating new ones        |
 
 ## How claude-invoke Uses These Files
 
