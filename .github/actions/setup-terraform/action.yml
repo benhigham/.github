@@ -1,6 +1,5 @@
-# .github/actions/setup-terraform/action.yml
 name: "Setup Terraform toolchain"
-description: "Installs Terraform, Terragrunt, tflint, and related tools via mise from the repo .mise.toml."
+description: "Installs tools defined in the repo's .mise.toml (typically Terraform, Terragrunt, tflint, etc.)."
 
 runs:
   using: composite

@@ -63,6 +63,7 @@ The core Claude Code wrapper. Handles token validation, command file resolution,
 See `AGENTS.md` for the full input reference.
 
 > **SHA pinning:** Always pin composite action refs to a specific commit SHA rather than `@main`.
+> Exception: this repo's own workflows may use `@main` as a self-reference.
 
 ### setup-node-pnpm
 
@@ -87,6 +88,9 @@ See `AGENTS.md` for the full input reference.
 
 Reference command files live in `.claude/commands/`. Copy to your repo's `.claude/commands/`
 directory and customise for your stack.
+
+The Trigger column shows the intended workflow event — you must configure a workflow in your repo to
+invoke these commands on the appropriate event.
 
 | Command            | Purpose                                  | Trigger                  |
 | ------------------ | ---------------------------------------- | ------------------------ |

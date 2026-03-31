@@ -72,7 +72,9 @@ Lefthook runs formatting and linting automatically on pre-commit.
 Composite actions are steps, not jobs — the caller controls the job shape, permissions, and timeout.
 Reference them with a pinned SHA ref: `benhigham/.github/.github/actions/{name}@<sha>`
 
-> **SHA pinning:** Always pin to a specific commit SHA rather than `@main`.
+> **SHA pinning:** Always pin to a specific commit SHA rather than `@main`. Exception: this repo's own
+> workflows may reference its composite actions via `@main` as a self-reference, since the SHA is not
+> available until after merge.
 
 ### claude-invoke
 
@@ -99,18 +101,18 @@ Wraps `anthropics/claude-code-action` with org-standard config (tools, plugins, 
 
 **Key inputs:**
 
-| Input                      | Default      | Notes                                       |
-| -------------------------- | ------------ | ------------------------------------------- |
-| `oauth-token`              | —            | **Required.** Forward the secret explicitly |
-| `command`                  | `''`         | Command name (without .md)                  |
-| `prompt`                   | `''`         | Inline prompt fallback                      |
-| `command-args`             | `''`         | Appended after `/{command}`                 |
-| `max-turns`                | `'20'`       | Tune per concern (review: 20, quality: 30)  |
-| `allowed-tools`            | Standard set | See `action.yml` for the default tool list  |
-| `extra-tools`              | `''`         | Appended to allowed-tools                   |
-| `additional-permissions`   | `''`         | YAML string forwarded to claude-code-action |
-| `track-progress`           | `'true'`     | Visual progress comments                    |
-| `classify-inline-comments` | `'true'`     | Filter test/probe inline comments           |
+| Input                      | Default                                                                            | Notes                                       |
+| -------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------- |
+| `oauth-token`              | —                                                                                  | **Required.** Forward the secret explicitly |
+| `command`                  | `''`                                                                               | Command name (without .md)                  |
+| `prompt`                   | `''`                                                                               | Inline prompt fallback                      |
+| `command-args`             | `''`                                                                               | Appended after `/{command}`                 |
+| `max-turns`                | `'20'`                                                                             | Tune per concern (review: 20, quality: 30)  |
+| `allowed-tools`            | `Read,Glob,Grep,Edit,Write,Bash(pnpm:*),Bash(git:*),Bash(gh:*),WebSearch,WebFetch` | Override to change the tool allowlist       |
+| `extra-tools`              | `''`                                                                               | Appended to allowed-tools                   |
+| `additional-permissions`   | `''`                                                                               | YAML string forwarded to claude-code-action |
+| `track-progress`           | `'true'`                                                                           | Visual progress comments                    |
+| `classify-inline-comments` | `'true'`                                                                           | Filter test/probe inline comments           |
 
 **Baked-in plugins:** `context7@claude-plugins-official`, `security-guidance@claude-plugins-official`
 

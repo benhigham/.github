@@ -2,6 +2,5 @@
 # not a heading.
 MD041: false
 
-# Inherit root line-length setting
-MD013:
-  line_length: 120
+# Line-length checking disabled (matches root config)
+MD013: false

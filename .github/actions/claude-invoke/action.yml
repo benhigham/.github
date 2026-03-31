@@ -1,4 +1,3 @@
-# .github/actions/claude-invoke/action.yml
 name: "Claude Invoke"
 description: >
   Invokes anthropics/claude-code-action with org-standard config.
@@ -89,11 +88,17 @@ runs:
           echo "::error::claude-invoke: max-turns must be a positive integer, got '$MAX_TURNS'"
           exit 1
         fi
+        if [ -n "$EXTRA_TOOLS" ] && ! [[ "$EXTRA_TOOLS" =~ ^[a-zA-Z0-9_,:\*\(\)\ -]+$ ]]; then
+          echo "::error::claude-invoke: extra-tools contains invalid characters." \
+            "Expected comma-separated tool names, got '$EXTRA_TOOLS'"
+          exit 1
+        fi
       env:
         OAUTH_TOKEN: ${{ inputs.oauth-token }}
         COMMAND: ${{ inputs.command }}
         PROMPT: ${{ inputs.prompt }}
         MAX_TURNS: ${{ inputs.max-turns }}
+        EXTRA_TOOLS: ${{ inputs.extra-tools }}
 
     - name: Resolve prompt
       id: resolve
@@ -103,7 +108,7 @@ runs:
         if [ -n "$COMMAND" ]; then
           cmd_file=".claude/commands/${COMMAND}.md"
           if [ -f "$cmd_file" ]; then
-            echo "Command file found: $cmd_file — using /${COMMAND} syntax"
+            echo "::debug::Command file found: $cmd_file — using /${COMMAND} syntax"
             prompt="/${COMMAND}"
             if [ -n "$COMMAND_ARGS" ]; then
               prompt="${prompt} ${COMMAND_ARGS}"
@@ -113,14 +118,14 @@ runs:
               echo "::error::claude-invoke: command file '$cmd_file' not found and no 'prompt' fallback provided"
               exit 1
             fi
-            echo "Command file $cmd_file not found — falling back to inline prompt"
+            echo "::warning::claude-invoke: command file '$cmd_file' not found — falling back to inline prompt"
             prompt="$PROMPT"
           fi
         else
-          echo "No command specified — using inline prompt"
+          echo "::debug::No command specified — using inline prompt"
           prompt="$PROMPT"
         fi
-        delimiter="DELIM_$(openssl rand -hex 8)"
+        delimiter="DELIM_$(openssl rand -hex 8 2>/dev/null || echo "$RANDOM$RANDOM")"
         {
           echo "prompt<<${delimiter}"
           echo "$prompt"
@@ -140,7 +145,6 @@ runs:
         if [ -n "$EXTRA_TOOLS" ]; then
           tools="${tools},${EXTRA_TOOLS}"
         fi
-        # Single-line value — no heredoc delimiter needed
         echo "claude_args=--allowedTools \"${tools}\" --max-turns ${MAX_TURNS}" >> "$GITHUB_OUTPUT"
       env:
         ALLOWED_TOOLS: ${{ inputs.allowed-tools }}
