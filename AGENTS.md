@@ -26,7 +26,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
   dependabot.yml               # Dependabot config (npm, github-actions, docker, terraform, etc.)
   FUNDING.yml
 .claude/
-  commands/                    # Reference command files (11 total — copy to per-repo as needed)
+  commands/                    # Reference command files — copy to per-repo as needed
     code-review.md             # PR code review
     renovate-review.md         # Renovate dependency PR review
     test-gen.md                # Generate missing tests for PR changes
@@ -38,12 +38,20 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
     quality-audit.md           # Weekly code quality sweep
     dependency-audit.md        # Dependency security audit
     docs-drift.md              # Documentation freshness check
+  agents/
+    workflow-reviewer.md       # Subagent: review workflows for pitfalls and convention adherence
+  skills/
+    workflow-scaffold/         # Skill: scaffold new workflows and composite actions
+    update-command-file/       # Skill: create/update .claude/commands/*.md files
+  settings.json                # Claude Code plugins and hooks (auto-format, sensitive file protection)
 .mise.toml                     # Tool versions + task definitions (mise)
 lefthook.yml                   # Git hook config (pre-commit)
 .yamllint.yml                  # yamllint rules
 .markdownlint-cli2.yaml        # markdownlint rules
 .prettierrc.yaml               # Prettier config
 .prettierignore                # Prettier ignore patterns
+CODEOWNERS                     # GitHub code ownership rules
+GOVERNANCE.md                  # Project governance policy
 ```
 
 ## Tech Stack
@@ -56,6 +64,12 @@ lefthook.yml                   # Git hook config (pre-commit)
 - **mise** as the tool manager and task runner
 - **lefthook** for git hooks (pre-commit linting and formatting)
 
+## Setup
+
+```bash
+mise install   # Install all tool dependencies (actionlint, jq, lefthook, prettier, yamllint, markdownlint-cli2)
+```
+
 ## Code Quality
 
 - `mise run check` — run all checks (format + lint)
@@ -64,6 +78,7 @@ lefthook.yml                   # Git hook config (pre-commit)
 - `mise run lint:actions` — actionlint only
 - `mise run lint:yaml` — yamllint only
 - `mise run lint:markdown` — markdownlint-cli2 only
+- `mise run lint:markdown:fix` — auto-fix Markdown lint violations
 
 Lefthook runs formatting and linting automatically on pre-commit.
 
@@ -153,6 +168,61 @@ When `claude-invoke` receives `command: foo`:
 This means zero-config onboarding (use `prompt:` inline) with a clean migration path to command files as
 repos mature.
 
+## Skills
+
+Skills in `.claude/skills/` provide guided workflows for common tasks in this repo.
+
+### workflow-scaffold
+
+Scaffolds new reusable workflows (`workflow_call`) and composite actions with org conventions
+(concurrency groups, timeouts, permissions, SHA pinning, input validation). Includes templates
+and pointers to real examples in this repo.
+
+### update-command-file
+
+Creates or updates `.claude/commands/*.md` files. Encodes the command file structure (opening line,
+context section, steps, output), naming rules (`^[a-zA-Z0-9_-]+$`), and conventions like `$ARGUMENTS`,
+severity levels, and branch naming. Instructs the agent to read existing command files for style.
+
+## Agents
+
+Subagents in `.claude/agents/` are specialised reviewers that can run in parallel.
+
+### workflow-reviewer
+
+Reviews `.github/workflows/` and `.github/actions/` for:
+
+- Missing `timeout-minutes` or overly broad permissions
+- Unpinned action versions (should be full SHA, not `@v4` or `@main`)
+- Injection risks — `${{ inputs }}` or `${{ github.event }}` in `run:` blocks
+- Missing or incorrectly namespaced concurrency groups
+- Secrets handling (explicit forwarding, least-privilege `GITHUB_TOKEN`)
+
+## Hooks
+
+Claude Code hooks in `.claude/settings.json` run automatically during sessions:
+
+- **PostToolUse (Write|Edit):** Runs `prettier --write` on YAML/Markdown files and
+  `markdownlint-cli2 --fix` on Markdown files after every edit
+- **PreToolUse (Edit|Write):** Blocks edits to `.env` and `.env.*` files (e.g. `.env.local`,
+  `.env.production`) and `settings.local.json` — these may contain secrets or local permission
+  overrides and should be edited manually
+
+## Plugins
+
+Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins` for local
+sessions. The `claude-invoke` composite action has its own plugin list (see Baked-in plugins
+above). All plugins are from `anthropics/claude-plugins-official`:
+
+- **commit-commands** — conventional commit workflow (commit, push, PR creation)
+- **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other
+  tools used in this repo
+- **github** — GitHub API access (automatic in GitHub Actions; locally, requires
+  `export GITHUB_TOKEN=$(gh auth token)`)
+- **pr-review-toolkit** — comprehensive PR review with specialised agents (code quality, test
+  coverage, error handling, type design)
+- **security-guidance** — security reminders for workflow editing (injection, permissions, secrets)
+
 ## Conventions
 
 ### Workflows
@@ -164,7 +234,7 @@ repos mature.
   from the caller's concurrency groups
 - Minimal permissions (declare only what's needed)
 - kebab-case for input names
-- Use environment variables (not `${{ inputs }}`) in `github-script` blocks to prevent injection
+- Use environment variables (not `${{ inputs }}` or `${{ github.event }}`) in `run:` and `github-script` blocks to prevent injection
 
 ### Commits
 
