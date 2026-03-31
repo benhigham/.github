@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_response.filePath // .tool_input.file_path' | { read -r f; if [ -z \"$f\" ] || [ \"$f\" = 'null' ]; then echo 'Hook error: could not resolve file path from tool response' >&2; exit 1; fi; [ -f \"$f\" ] || { echo \"Hook: file not found, skipping: $f\" >&2; exit 0; }; case \"$f\" in *.yml|*.yaml|*.md) prettier --write \"$f\" --log-level error 2>&1 || exit 1 ;; esac; case \"$f\" in *.md) markdownlint-cli2 --fix \"$f\" 2>&1 || exit 1 ;; esac; }",
+            "command": "set -o pipefail; jq -r '.tool_response.filePath // .tool_input.file_path' | { read -r f; if [ -z \"$f\" ] || [ \"$f\" = 'null' ]; then echo 'Hook error: could not resolve file path from tool response' >&2; exit 1; fi; [ -f \"$f\" ] || { echo \"Hook: file not found, skipping: $f\" >&2; exit 0; }; case \"$f\" in *.yml|*.yaml|*.md) prettier --write \"$f\" --log-level error || exit 1 ;; esac; case \"$f\" in *.md) markdownlint-cli2 --fix \"$f\" || exit 1 ;; esac; }",
             "statusMessage": "Formatting & linting"
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | { read -r f; if [ -z \"$f\" ] || [ \"$f\" = 'null' ]; then exit 0; fi; case \"${f##*/}\" in .env|.env.*) echo 'BLOCK: .env files may contain secrets — edit manually' >&2; exit 2 ;; settings.local.json) echo 'BLOCK: settings.local.json contains local permissions — edit manually' >&2; exit 2 ;; esac; exit 0; }",
+            "command": "set -o pipefail; jq -r '.tool_input.filePath // .tool_input.file_path' | { read -r f; if [ -z \"$f\" ] || [ \"$f\" = 'null' ]; then echo 'BLOCK: could not resolve file path — refusing edit as a precaution' >&2; exit 2; fi; case \"${f##*/}\" in .env|.env.*) echo 'BLOCK: .env files may contain secrets — edit manually' >&2; exit 2 ;; settings.local.json) echo 'BLOCK: settings.local.json contains local permissions — edit manually' >&2; exit 2 ;; esac; exit 0; }",
             "statusMessage": "Checking protected files"
           }
         ]

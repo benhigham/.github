@@ -40,7 +40,8 @@ runtime and rejects invalid names. Use **kebab-case** by convention (e.g., `code
 
 ## Structure
 
-Every command file follows four sections in order. No YAML frontmatter — just markdown.
+Command files generally follow up to four sections. Include whichever are relevant to the
+command. No YAML frontmatter — just markdown.
 
 ### 1. Opening Line
 

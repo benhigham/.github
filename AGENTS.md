@@ -26,7 +26,7 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
   dependabot.yml               # Dependabot config (npm, github-actions, docker, terraform, etc.)
   FUNDING.yml
 .claude/
-  commands/                    # Reference command files (11 total — copy to per-repo as needed)
+  commands/                    # Reference command files — copy to per-repo as needed
     code-review.md             # PR code review
     renovate-review.md         # Renovate dependency PR review
     test-gen.md                # Generate missing tests for PR changes
@@ -68,7 +68,7 @@ GOVERNANCE.md                  # Project governance policy
 ## Setup
 
 ```bash
-mise install   # Install all tool dependencies (actionlint, lefthook, prettier, yamllint, markdownlint-cli2)
+mise install   # Install all tool dependencies (actionlint, jq, lefthook, prettier, yamllint, markdownlint-cli2)
 ```
 
 ## Code Quality
@@ -213,7 +213,7 @@ Claude Code hooks in `.claude/settings.json` run automatically during sessions:
 `.mcp.json` configures shared MCP servers for all contributors:
 
 - **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other
-  tools used in this repo. Runs via `npx @upstash/context7-mcp@latest`
+  tools used in this repo. Runs via `npx @upstash/context7-mcp@<version>`
 - **github** — GitHub API access via `https://api.githubcopilot.com/mcp`. Uses `${GITHUB_TOKEN}`
   env var (automatic in GitHub Actions; locally, set via `export GITHUB_TOKEN=$(gh auth token)`)
 
@@ -228,7 +228,7 @@ Claude Code hooks in `.claude/settings.json` run automatically during sessions:
   from the caller's concurrency groups
 - Minimal permissions (declare only what's needed)
 - kebab-case for input names
-- Use environment variables (not `${{ inputs }}`) in `github-script` blocks to prevent injection
+- Use environment variables (not `${{ inputs }}` or `${{ github.event }}`) in `run:` and `github-script` blocks to prevent injection
 
 ### Commits
 

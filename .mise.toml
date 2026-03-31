@@ -1,5 +1,6 @@
 [tools]
 actionlint = "latest"
+jq = "latest"
 lefthook = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:prettier" = "latest"

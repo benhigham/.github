@@ -16,7 +16,8 @@ Focus on files in:
 
 - Every job has `timeout-minutes` set
 - Permissions are minimal (only what's needed, never `write-all`)
-- Concurrency groups follow pattern: `${{ github.workflow }}-${{ github.ref }}`
+- Concurrency groups follow pattern: `${{ github.workflow }}-${{ github.ref }}` (or PR number
+  for PR-triggered workflows)
 - Reusable workflows prefix their concurrency group (e.g., `release-${{ github.workflow }}-...`)
   to namespace separately from the caller
 - Composite action inputs have descriptive documentation
