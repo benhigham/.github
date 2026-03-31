@@ -209,15 +209,17 @@ Claude Code hooks in `.claude/settings.json` run automatically during sessions:
 
 ## Plugins
 
-Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins`:
+Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins`. All are from
+`anthropics/claude-plugins-official`:
 
+- **commit-commands** — conventional commit workflow (commit, push, PR creation)
 - **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other
   tools used in this repo
 - **github** — GitHub API access (automatic in GitHub Actions; locally, requires
   `export GITHUB_TOKEN=$(gh auth token)`)
-
-Both are from `anthropics/claude-plugins-official` — the same plugins used by the `claude-invoke`
-composite action in CI.
+- **pr-review-toolkit** — comprehensive PR review with specialised agents (code quality, test
+  coverage, error handling, type design)
+- **security-guidance** — security reminders for workflow editing (injection, permissions, secrets)
 
 ## Conventions
 
