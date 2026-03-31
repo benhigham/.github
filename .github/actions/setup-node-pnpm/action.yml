@@ -1,0 +1,60 @@
+name: "Setup Node.js + pnpm"
+description: "Installs pnpm, sets up Node.js with dependency caching, and optionally runs pnpm install."
+
+inputs:
+  node-version:
+    description: "Explicit Node.js version (takes precedence over node-version-file)"
+    required: false
+    default: ""
+  node-version-file:
+    description: "File to read Node.js version from (e.g. package.json, .nvmrc, .node-version)"
+    required: false
+    default: "package.json"
+  cache-dependency-path:
+    description: "Glob for lockfiles to hash for cache key"
+    required: false
+    default: "**/pnpm-lock.yaml"
+  install:
+    description: "Run pnpm install --frozen-lockfile after setup"
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [[ "$INSTALL" != "true" && "$INSTALL" != "false" ]]; then
+          echo "::error::setup-node-pnpm: 'install' must be 'true' or 'false', got '$INSTALL'"
+          exit 1
+        fi
+      env:
+        INSTALL: ${{ inputs.install }}
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+
+    - name: Setup Node.js
+      if: inputs.node-version != ''
+      uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: Setup Node.js from file
+      if: inputs.node-version == ''
+      uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+      with:
+        node-version-file: ${{ inputs.node-version-file }}
+        cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: Install dependencies
+      if: inputs.install == 'true'
+      shell: bash
+      run: |
+        set -euo pipefail
+        pnpm install --frozen-lockfile

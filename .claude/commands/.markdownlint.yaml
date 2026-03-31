@@ -1,0 +1,6 @@
+# Command files are prompts, not documents — the first line is an instruction,
+# not a heading.
+MD041: false
+
+# Line-length checking disabled (matches root config)
+MD013: false

@@ -1,0 +1,167 @@
+name: "Claude Invoke"
+description: >
+  Invokes anthropics/claude-code-action with org-standard config.
+  Checks for .claude/commands/{command}.md in the calling repo and uses it if present,
+  falling back to the inline prompt input. Fails fast if oauth-token is empty or neither
+  command nor prompt is provided.
+
+inputs:
+  oauth-token:
+    description: >
+      Claude Code OAuth token. Pass as ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}.
+      Composite actions cannot inherit secrets — must be explicitly forwarded.
+    required: true
+
+  command:
+    description: >
+      Command name from .claude/commands/ (without .md extension).
+      If .claude/commands/{command}.md exists in the repo, Claude is invoked with /{command} {command-args}.
+      Takes precedence over prompt when the command file exists; at least one of command or prompt
+      must be provided.
+    required: false
+    default: ""
+
+  prompt:
+    description: >
+      Inline prompt text. Used when no command is specified, or as fallback when the
+      command file doesn't exist in the repo.
+    required: false
+    default: ""
+
+  command-args:
+    description: "Arguments appended after /{command} when using a command file"
+    required: false
+    default: ""
+
+  max-turns:
+    description: "Maximum conversation turns for this invocation"
+    required: false
+    default: "20"
+
+  allowed-tools:
+    description: "Comma-separated tool allowlist passed as --allowedTools"
+    required: false
+    default: "Read,Glob,Grep,Edit,Write,Bash(pnpm:*),Bash(git:*),Bash(gh:*),WebSearch,WebFetch"
+
+  extra-tools:
+    description: "Additional tools appended to allowed-tools (comma-separated, no leading comma)"
+    required: false
+    default: ""
+
+  additional-permissions:
+    description: "Additional permissions block forwarded to claude-code-action (YAML string)"
+    required: false
+    default: ""
+
+  track-progress:
+    description: "Enable visual progress tracking comments on the PR/issue"
+    required: false
+    default: "true"
+
+  classify-inline-comments:
+    description: "Filter test/probe inline comments from output"
+    required: false
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - name: Validate inputs
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ -z "$OAUTH_TOKEN" ]; then
+          echo "::error::claude-invoke: oauth-token is required and must not be empty." \
+            "Pass the secret explicitly: \${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}"
+          exit 1
+        fi
+        if [ -z "$COMMAND" ] && [ -z "$PROMPT" ]; then
+          echo "::error::claude-invoke: at least one of 'command' or 'prompt' must be provided"
+          exit 1
+        fi
+        if [ -n "$COMMAND" ] && ! [[ "$COMMAND" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+          echo "::error::claude-invoke: command name must contain only" \
+            "letters, numbers, hyphens, and underscores. Got '$COMMAND'"
+          exit 1
+        fi
+        if ! [[ "$MAX_TURNS" =~ ^[1-9][0-9]*$ ]]; then
+          echo "::error::claude-invoke: max-turns must be a positive integer, got '$MAX_TURNS'"
+          exit 1
+        fi
+        if [ -n "$EXTRA_TOOLS" ] && ! [[ "$EXTRA_TOOLS" =~ ^[a-zA-Z0-9_,:\*\(\)\ -]+$ ]]; then
+          echo "::error::claude-invoke: extra-tools contains invalid characters." \
+            "Expected comma-separated tool names, got '$EXTRA_TOOLS'"
+          exit 1
+        fi
+      env:
+        OAUTH_TOKEN: ${{ inputs.oauth-token }}
+        COMMAND: ${{ inputs.command }}
+        PROMPT: ${{ inputs.prompt }}
+        MAX_TURNS: ${{ inputs.max-turns }}
+        EXTRA_TOOLS: ${{ inputs.extra-tools }}
+
+    - name: Resolve prompt
+      id: resolve
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ -n "$COMMAND" ]; then
+          cmd_file=".claude/commands/${COMMAND}.md"
+          if [ -f "$cmd_file" ]; then
+            echo "::debug::Command file found: $cmd_file — using /${COMMAND} syntax"
+            prompt="/${COMMAND}"
+            if [ -n "$COMMAND_ARGS" ]; then
+              prompt="${prompt} ${COMMAND_ARGS}"
+            fi
+          else
+            if [ -z "$PROMPT" ]; then
+              echo "::error::claude-invoke: command file '$cmd_file' not found and no 'prompt' fallback provided"
+              exit 1
+            fi
+            echo "::warning::claude-invoke: command file '$cmd_file' not found — falling back to inline prompt"
+            prompt="$PROMPT"
+          fi
+        else
+          echo "::debug::No command specified — using inline prompt"
+          prompt="$PROMPT"
+        fi
+        delimiter="DELIM_$(openssl rand -hex 8 2>/dev/null || echo "$RANDOM$RANDOM")"
+        {
+          echo "prompt<<${delimiter}"
+          echo "$prompt"
+          echo "${delimiter}"
+        } >> "$GITHUB_OUTPUT"
+      env:
+        COMMAND: ${{ inputs.command }}
+        COMMAND_ARGS: ${{ inputs.command-args }}
+        PROMPT: ${{ inputs.prompt }}
+
+    - name: Build claude_args
+      id: build-args
+      shell: bash
+      run: |
+        set -euo pipefail
+        tools="$ALLOWED_TOOLS"
+        if [ -n "$EXTRA_TOOLS" ]; then
+          tools="${tools},${EXTRA_TOOLS}"
+        fi
+        echo "claude_args=--allowedTools \"${tools}\" --max-turns ${MAX_TURNS}" >> "$GITHUB_OUTPUT"
+      env:
+        ALLOWED_TOOLS: ${{ inputs.allowed-tools }}
+        EXTRA_TOOLS: ${{ inputs.extra-tools }}
+        MAX_TURNS: ${{ inputs.max-turns }}
+
+    - name: Run Claude
+      uses: anthropics/claude-code-action@3ac52d0da9f8ec9ca7b4dc23bb477e36ef9c77a9 # v1
+      with:
+        claude_code_oauth_token: ${{ inputs.oauth-token }}
+        track_progress: ${{ inputs.track-progress }}
+        classify_inline_comments: ${{ inputs.classify-inline-comments }}
+        additional_permissions: ${{ inputs.additional-permissions }}
+        claude_args: ${{ steps.build-args.outputs.claude_args }}
+        plugin_marketplaces: |
+          https://github.com/anthropics/claude-plugins-official.git
+        plugins: |
+          context7@claude-plugins-official
+          security-guidance@claude-plugins-official
+        prompt: ${{ steps.resolve.outputs.prompt }}
