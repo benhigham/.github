@@ -29,7 +29,7 @@ run = "prettier --write '**/*.{yml,yaml,md}'"
 description = "Check formatting (no writes)"
 run = "prettier --check '**/*.{yml,yaml,md}'"
 
-[tasks."fix:markdown"]
+[tasks."lint:markdown:fix"]
 description = "Auto-fix Markdown lint violations"
 run = "markdownlint-cli2 --fix '**/*.md'"
 

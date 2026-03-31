@@ -44,6 +44,8 @@ lefthook.yml                   # Git hook config (pre-commit)
 .markdownlint-cli2.yaml        # markdownlint rules
 .prettierrc.yaml               # Prettier config
 .prettierignore                # Prettier ignore patterns
+CODEOWNERS                     # GitHub code ownership rules
+GOVERNANCE.md                  # Project governance policy
 ```
 
 ## Tech Stack
@@ -56,6 +58,12 @@ lefthook.yml                   # Git hook config (pre-commit)
 - **mise** as the tool manager and task runner
 - **lefthook** for git hooks (pre-commit linting and formatting)
 
+## Setup
+
+```bash
+mise install   # Install all tool dependencies (actionlint, lefthook, prettier, yamllint, markdownlint-cli2)
+```
+
 ## Code Quality
 
 - `mise run check` — run all checks (format + lint)
@@ -64,6 +72,7 @@ lefthook.yml                   # Git hook config (pre-commit)
 - `mise run lint:actions` — actionlint only
 - `mise run lint:yaml` — yamllint only
 - `mise run lint:markdown` — markdownlint-cli2 only
+- `mise run lint:markdown:fix` — auto-fix Markdown lint violations
 
 Lefthook runs formatting and linting automatically on pre-commit.
 
