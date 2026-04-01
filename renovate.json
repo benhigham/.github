@@ -1,0 +1,52 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "schedule:weekly"],
+  "assignees": ["benhigham"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "addLabels": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "github-actions (minor and patch)"
+    },
+    {
+      "matchManagers": ["npm"],
+      "addLabels": ["npm"]
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "npm dev dependencies (minor and patch)"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "npm production dependencies (patch)"
+    },
+    {
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "addLabels": ["docker"]
+    },
+    {
+      "matchManagers": ["terraform"],
+      "addLabels": ["terraform"]
+    },
+    {
+      "matchManagers": ["devcontainer"],
+      "addLabels": ["devcontainers"]
+    },
+    {
+      "matchManagers": ["git-submodules"],
+      "addLabels": ["git-submodules"]
+    },
+    {
+      "matchManagers": ["gomod"],
+      "addLabels": ["go"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "go dependencies (minor and patch)"
+    }
+  ]
+}
