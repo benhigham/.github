@@ -214,6 +214,10 @@ Claude Code plugins are enabled in `.claude/settings.json` via `enabledPlugins` 
 sessions. The `claude-invoke` composite action has its own plugin list (see Baked-in plugins
 above). All plugins are from `anthropics/claude-plugins-official`:
 
+- **code-review** — automated code review with confidence-scored bug detection and CLAUDE.md
+  compliance checking
+- **code-simplifier** — identifies opportunities to simplify and refine code for clarity and
+  maintainability
 - **commit-commands** — conventional commit workflow (commit, push, PR creation)
 - **context7** — live documentation lookup for GitHub Actions, mise, Changesets, pnpm, and other
   tools used in this repo
