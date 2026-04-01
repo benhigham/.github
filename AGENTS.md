@@ -63,7 +63,7 @@ renovate.json                  # Renovate dependency update config
 - **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, etc.)
 - **mise** as the tool manager and task runner
 - **lefthook** for git hooks (pre-commit linting and formatting)
-- **Renovate** for automated dependency updates (GitHub App, configured via `renovate.json`)
+- **Renovate** for automated dependency updates (requires Renovate GitHub App; configured via `renovate.json` at repo root)
 
 ## Setup
 
@@ -256,5 +256,5 @@ breaking changes affect all repos without their own versions.
 
 ### Files Local to This Repo
 
-`README.md`, `AGENTS.md`, and workflow definitions. Other repos call workflows explicitly;
+`README.md`, `AGENTS.md`, `renovate.json`, and workflow definitions. Other repos call workflows explicitly;
 changes here require consumers to update their references if inputs change.

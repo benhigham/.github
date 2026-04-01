@@ -1,17 +1,30 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": ["config:recommended", "schedule:weekly"],
   "assignees": ["benhigham"],
   "labels": ["dependencies"],
-  "commitMessagePrefix": "chore(deps):",
   "packageRules": [
     {
       "matchManagers": ["github-actions"],
-      "addLabels": ["github-actions"]
+      "addLabels": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "github-actions (minor and patch)"
     },
     {
       "matchManagers": ["npm"],
       "addLabels": ["npm"]
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "npm dev dependencies (minor and patch)"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["patch"],
+      "groupName": "npm production dependencies (patch)"
     },
     {
       "matchManagers": ["dockerfile", "docker-compose"],
@@ -31,12 +44,9 @@
     },
     {
       "matchManagers": ["gomod"],
-      "addLabels": ["go"]
-    },
-    {
+      "addLabels": ["go"],
       "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "minor and patch dependencies",
-      "automerge": false
+      "groupName": "go dependencies (minor and patch)"
     }
   ]
 }
