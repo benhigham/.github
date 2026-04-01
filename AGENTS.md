@@ -26,7 +26,6 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
   FUNDING.yml
 .claude/
   commands/                    # Reference command files — copy to per-repo as needed
-    code-review.md             # PR code review
     renovate-review.md         # Renovate dependency PR review
     test-gen.md                # Generate missing tests for PR changes
     security-review.md         # Security-focused PR review

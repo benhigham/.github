@@ -20,7 +20,7 @@ enough to produce consistent, high-quality results.
 Read 2-3 existing command files in `.claude/commands/` to absorb the conventions. Good
 representatives that cover different patterns:
 
-- `code-review.md` — standard PR review (context extraction → checklist → inline comments)
+- `security-review.md` — focused PR review (context extraction → checklist → inline comments)
 - `quality-audit.md` — complex multi-step audit (multiple categories → branch → atomic commits → PR)
 - `dependency-audit.md` — tool detection, multi-factor assessment, conditional output
 

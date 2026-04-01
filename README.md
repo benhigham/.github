@@ -97,7 +97,6 @@ invoke these commands on the appropriate event.
 
 | Command            | Purpose                                  | Trigger                  |
 | ------------------ | ---------------------------------------- | ------------------------ |
-| `code-review`      | PR code review with inline comments      | PR open/reopen           |
 | `renovate-review`  | Review Renovate dependency PRs           | PR open (renovate actor) |
 | `test-gen`         | Generate missing tests for changed files | PR open                  |
 | `security-review`  | Security-focused PR review               | PR open                  |
