@@ -23,7 +23,6 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
     release-changesets.yml     # Reusable: versioning and npm publishing via Changesets
   ISSUE_TEMPLATE/              # Issue form templates
   pull_request_template.md     # Default PR template
-  dependabot.yml               # Dependabot config (npm, github-actions, docker, terraform, etc.)
   FUNDING.yml
 .claude/
   commands/                    # Reference command files — copy to per-repo as needed
@@ -52,6 +51,7 @@ lefthook.yml                   # Git hook config (pre-commit)
 .prettierignore                # Prettier ignore patterns
 CODEOWNERS                     # GitHub code ownership rules
 GOVERNANCE.md                  # Project governance policy
+renovate.json                  # Renovate dependency update config
 ```
 
 ## Tech Stack
@@ -63,6 +63,7 @@ GOVERNANCE.md                  # Project governance policy
 - **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`, etc.)
 - **mise** as the tool manager and task runner
 - **lefthook** for git hooks (pre-commit linting and formatting)
+- **Renovate** for automated dependency updates (GitHub App, configured via `renovate.json`)
 
 ## Setup
 
@@ -250,7 +251,7 @@ Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `ci`, `perf`
 
 ### Files That Affect Other Repos
 
-Community health files, templates, and `.github/dependabot.yml` are inherited by other repositories. Edit carefully —
+Community health files and templates are inherited by other repositories. Edit carefully —
 breaking changes affect all repos without their own versions.
 
 ### Files Local to This Repo
