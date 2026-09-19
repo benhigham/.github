@@ -1,6 +1,6 @@
 # benhigham/.github
 
-Default [community health files][chf] and reusable GitHub Actions workflows for all repositories under my account.
+Default [community health files][chf] and shared GitHub Actions composite actions for all repositories under my account.
 
 [chf]: https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file
 
@@ -16,31 +16,6 @@ GitHub uses these as defaults for any public repository that doesn't have its ow
 ## Dependency Management
 
 - `renovate.json` — Renovate dependency update config (assignees, grouping, labels, schedule)
-
-## Reusable Workflows
-
-### Release with Changesets
-
-Automated versioning, changelog, and npm publishing via [Changesets](https://github.com/changesets/changesets).
-
-```yaml
-name: Release
-on:
-  push:
-    branches: [main]
-
-permissions:
-  attestations: write
-  contents: write
-  id-token: write
-  pull-requests: write
-
-jobs:
-  release:
-    uses: benhigham/.github/.github/workflows/release-changesets.yml@main
-    with:
-      needs-build: true
-```
 
 ## Composite Actions
 

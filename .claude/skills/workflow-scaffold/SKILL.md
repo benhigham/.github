@@ -137,8 +137,6 @@ runs:
 Read these for patterns beyond the templates:
 
 - `.github/workflows/lint.yml` — minimal workflow (checkout → mise → run tasks)
-- `.github/workflows/release-changesets.yml` — reusable workflow with multiple inputs, OIDC
-  publishing, and `cancel-in-progress: false`
 - `.github/actions/setup-terraform/action.yml` — minimal composite action (single step, no inputs)
 - `.github/actions/setup-node-pnpm/action.yml` — conditional step execution and boolean input
   validation
