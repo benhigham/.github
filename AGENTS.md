@@ -7,7 +7,7 @@ Guidance for AI coding assistants working on this `.github` repository.
 Centralized defaults and automation for all `benhigham` GitHub repositories:
 
 - **Community health files** — inherited by repos without their own (CODE_OF_CONDUCT, SECURITY, SUPPORT, etc.)
-- **Reusable workflows** — called by other repos via `workflow_call`
+- **Composite actions** — shared steps embedded in other repos' jobs (e.g. `setup-node-pnpm`)
 - **Templates** — issue and PR templates
 
 ## What's Here
@@ -20,7 +20,6 @@ Centralized defaults and automation for all `benhigham` GitHub repositories:
     setup-terraform/           # Composite action: Terraform toolchain via mise
   workflows/
     lint.yml                   # Lint and format check on PRs and pushes to main
-    release-changesets.yml     # Reusable: versioning and npm publishing via Changesets
   ISSUE_TEMPLATE/              # Issue form templates
   pull_request_template.md     # Default PR template
   FUNDING.yml
