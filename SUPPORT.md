@@ -15,10 +15,7 @@ the GitHub Security Advisory "Report a Vulnerability" tab.
 
 ## Documentation
 
-For detailed documentation, please refer to:
-
-- Project Wiki
-- API Reference
+See the project's README for usage and setup instructions.
 
 ## Response Time
 
@@ -31,11 +28,11 @@ feature requests, and community questions in a timely manner. Generally, you can
 
 ## How to Contribute
 
-If you're interested in contributing to this project, please see our [CONTRIBUTING.md](CONTRIBUTING.md) document.
+If you're interested in contributing, please open an issue to discuss the change before submitting a pull request.
 
 ## Support Policy
 
-This project follows [Semantic Versioning](https://semver.org/). Current support status:
+Projects that publish versioned releases follow [Semantic Versioning](https://semver.org/). Current support status:
 
 - Latest major version: Full support
 - Previous major version: Bug fixes only

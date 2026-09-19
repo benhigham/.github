@@ -5,8 +5,7 @@ provide transparency around decision-making processes and to establish a foundat
 
 ## Project Vision
 
-This project aims to provide a repository of reusable templates, workflows and documentation for the GitHub platform.
-The vision is to grow the assets over time to cover more languages, workflows, and applications.
+The project's goals and scope are described in its README.
 
 ## Current Governance
 
@@ -37,9 +36,7 @@ For significant changes, I will:
 
 ## Contribution Process
 
-All contributions are welcome! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines.
-
-The general flow is:
+All contributions are welcome! The general flow is:
 
 1. Open an issue for discussion or select an existing issue
 2. Fork the repository and create a branch
@@ -66,7 +63,7 @@ To ensure project sustainability:
 - Documentation is maintained to enable future contributors to understand the project
 - The project uses standard tools and practices to lower the barrier for new maintainers
 - If I become unavailable or step down, I will seek new maintainers through the following process:
-  1. Post an announcement in GitHub Discussions seeking interested contributors
+  1. Post an announcement in a GitHub issue seeking interested contributors
   2. Prioritize contributors with a history of quality contributions to the project
   3. Evaluate candidates based on technical skills, understanding of project goals, and community engagement
   4. Provide a transition period where new maintainers work alongside me before full handover
@@ -81,8 +78,7 @@ enforcement and addressing code of conduct violations.
 
 ## Communication Channels
 
-- **Issues**: Primary place for feature requests, bug reports, and discussions
-- **Discussions**: For general questions and community conversation
+- **Issues**: Feature requests, bug reports, questions, and general discussion
 
 ## License
 
@@ -92,6 +88,6 @@ This project is licensed under the MIT license. All contributions must be made u
 
 This document may evolve as the project grows. Significant changes will be:
 
-- Announced via GitHub Discussions
+- Announced via a GitHub issue
 - Open for community discussion before implementation
 - Documented with clear reasoning
