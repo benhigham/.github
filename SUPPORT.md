@@ -5,14 +5,8 @@
 This project uses GitHub Issues to track bugs, feature requests, and code improvements. Please search the existing
 issues before filing new issues to avoid duplicates.
 
-### Issue Templates
-
-When creating a new issue, please use the appropriate issue template:
-
-- Bug report: For reporting bugs or unexpected behavior
-- Feature request: For suggesting new features
-- Codebase improvement: For suggesting codebase improvements
-- Question: For asking questions about usage
+When reporting a bug, include what you expected to happen, what actually happened, steps to reproduce, and the
+version you're using.
 
 ## Reporting Security Issues
 
